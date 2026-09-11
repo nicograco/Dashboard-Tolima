@@ -9,16 +9,13 @@ st.set_page_config(
     page_title="Performance & Tactical Lab", page_icon="⚽", layout="wide"
 )
 
-# ----------------------------------------------------
-# PALETA DE COLORES PROFESIONAL DE ANÁLISIS DEPORTIVO
-# ----------------------------------------------------
+# Professional Clean Sports Analytics Palette
 COLOR_NAVY = "#1e3d59"
 COLOR_BLUE = "#17b978"
 COLOR_ACCENT = "#ff6e40"
 COLOR_DARK = "#2b2d42"
 COLOR_LIGHT = "#f5f7fa"
 
-# Estilos CSS Modernos y Tarjetas Analíticas
 st.markdown(
     f"""
     <style>
@@ -45,7 +42,7 @@ st.markdown(
     .analysis-card {{
         background-color: white;
         border: 1px solid #e2e8f0;
-        padding: 20px;
+        padding: 22px;
         border-radius: 8px;
         margin-top: 15px;
         margin-bottom: 15px;
@@ -56,9 +53,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ----------------------------------------------------
-# BARRA LATERAL: NAVEGACIÓN Y BRANDING ANALÍTICO
-# ----------------------------------------------------
+# Sidebar Branding & Author Citation
 st.sidebar.markdown(
     f"""
     <div style="background: linear-gradient(135deg, {COLOR_NAVY}, {COLOR_DARK}); padding: 18px; border-radius: 10px; text-align: center;">
@@ -75,9 +70,6 @@ competicion = st.sidebar.selectbox(
     ["Liga Dimayor I 2026", "Copa Libertadores (Serie Táctica)"],
 )
 
-# ====================================================
-# OPCIÓN 1: LIGA DIMAYOR I 2026 (ANÁLISIS PROFUNDO)
-# ====================================================
 if competicion == "Liga Dimayor I 2026":
   st.title("⚽ Tactical & Performance Dashboard - Liga Dimayor I 2026")
   st.markdown(
@@ -92,7 +84,6 @@ if competicion == "Liga Dimayor I 2026":
     team_df = df.copy()
 
     if not team_df.empty:
-      # Resumen Superior Rápido con tarjetas
       c1, c2, c3, c4 = st.columns(4)
       with c1:
         st.markdown(
@@ -128,7 +119,6 @@ if competicion == "Liga Dimayor I 2026":
 
       st.markdown("---")
 
-      # Pestañas profesionales incluyendo el informe y matriz DOFA
       tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
           "🧠 Identidad Táctica",
           "⚙️ Construcción & Pases",
@@ -180,8 +170,9 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Interpretación Táctica - Identidad y Gegenpressing</h4>
-                    <p>El gráfico superior muestra cómo fluctúan los comportamientos colectivos del equipo en cada jornada. Los picos en el índice 'Heavy Metal' reflejan momentos de alta agresividad en la recuperación tras pérdida (Gegenpressing), obligando al rival a cometer errores en salida baja y generando opciones de gol directas tras recuperación alta en campo contrario.</p>
+                    <h4>💡 Interpretación Táctica Profunda - Identidad y Gegenpressing</h4>
+                    <p><b>Análisis de Comportamiento Colectivo:</b> La evolución partido a partido muestra cómo el equipo estructura su propuesta a partir de la asfixia del rival tras pérdida. Los picos observados en el índice 'Heavy Metal' (Gegenpressing) coinciden con una mayor densidad de recuperaciones en campo contrario, lo que ahoga la salida limpia del adversario y genera situaciones de gol directas con mínima oposición defensiva.</p>
+                    <p><b>Impacto Condicional y Táctico:</b> Este modelo exige una coordinación milimétrica entre la línea defensiva y los mediocentros para evitar espacios a espaldas. La lectura de estos 4 encuentros confirma que cuando el Gegenpressing supera el umbral medio, el equipo monopoliza el control territorial y somete al oponente en su propio tercio.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -203,8 +194,9 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis de Circulación y Pases</h4>
-                    <p>La estabilidad en el porcentaje de acierto en el pase denota la eficacia en la fase de iniciación y construcción. Mantener altos estándares de precisión reduce las pérdidas no forzadas en campo propio, permitiendo dominar los tiempos del partido a través de la posesión.</p>
+                    <h4>💡 Análisis Detallado de Circulación y Construcción</h4>
+                    <p><b>Eficiencia en Fase de Iniciación:</b> El porcentaje de acierto en el pase se mantiene en rangos competitivos de élite, evidenciando una sólida estructura de salida de balón desde el fondo. La conexión entre los centrales y los volantes ancla permite fijar bloques rivales y liberar carriles interiores.</p>
+                    <p><b>Control de Pérdidas:</b> Minimizar los errores no forzados en el primer tercio de cancha es vital para prevenir contrataques rivales. Las métricas indican que el equipo prioriza la seguridad en salida corta antes de arriesgar pases verticales al espacio.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -229,8 +221,8 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Evaluación de Duelos y Segundas Jugadas</h4>
-                    <p>El control de las segundas jugadas y los duelos aéreos define el dominio territorial en partidos cerrados y disputados. Es fundamental corregir la eficacia defensiva en balón parado para evitar concesiones innecesarias en el área propia.</p>
+                    <h4>💡 Evaluación Exhaustiva de Duelos y Segundas Jugadas</h4>
+                    <p><b>Dominio Aéreo y Físico:</b> La disputa por el balón dividido y la captura de segundas jugadas constituyen el termómetro del control territorial en partidos cerrados. Los datos reflejan la necesidad de ajustar las coberturas en duelos aéreos defensivos para neutralizar el juego directo del oponente.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -255,8 +247,8 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Comportamiento del Bloque Defensivo</h4>
-                    <p>La altura promedio de presión en metros indica si el equipo adelantó líneas para asfixiar al rival en su campo o si optó por un bloque medio más resguardado. Este indicador se correlaciona directamente con la intensidad física y el desgaste aeróbico del plantel.</p>
+                    <h4>💡 Comportamiento Estructural del Bloque Defensivo</h4>
+                    <p><b>Altura de Líneas:</b> La altura promedio de presión en metros cuantifica la ambición táctica del equipo para disputar el partido en campo contrario. Un bloque adelantado asfixia la creación rival pero demanda una sincronización perfecta en la línea del fuera de juego y coberturas a espaldas de los laterales.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -267,7 +259,7 @@ if competicion == "Liga Dimayor I 2026":
         st.dataframe(team_df, use_container_width=True)
 
       with tab6:
-        st.subheader("📊 Informe Técnico Global y Matriz DOFA")
+        st.subheader("📊 Informe Técnico Global y Matriz DOFA Avanzada")
 
         col_d1, col_d2 = st.columns(2)
         with col_d1:
@@ -275,9 +267,9 @@ if competicion == "Liga Dimayor I 2026":
               f"""
                     <div style="background-color: #f0fdf4; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_BLUE};">
                         <h3>🟢 Fortalezas</h3>
-                        <p>- Consistencia sólida en el control de posesión y circulación limpia del balón.<br>- Excelente aplicación del <strong>Gegenpressing</strong> (Heavy Metal) en tramos clave de los partidos.<br>- Buena generación de oportunidades de gol medidas a través del xG.</p>
+                        <p>- Consistencia sólida en el control de posesión y circulación limpia del balón.<br>- Excelente aplicación del <strong>Gegenpressing</strong> (Heavy Metal) en tramos clave.<br>- Alta capacidad de generación de oportunidades mediante xG sostenido.</p>
                         <h3>🔵 Oportunidades</h3>
-                        <p>- Explotar las espaldas de los laterales rivales mediante transiciones verticales rápidas.<br>- Optimizar la eficacia de finalización en el último tercio de cancha.</p>
+                        <p>- Explotar las espaldas de los carrileros rivales en transiciones rápidas.<br>- Optimizar la eficacia de finalización en el último tercio.</p>
                     </div>
                     """,
               unsafe_allow_html=True,
@@ -287,31 +279,25 @@ if competicion == "Liga Dimayor I 2026":
               f"""
                     <div style="background-color: #fef2f2; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_ACCENT};">
                         <h3>🔴 Debilidades</h3>
-                        <p>- Vulnerabilidad recurrente en duelos aéreos y disputas físicas defensivas.<br>- Pérdidas de balón críticas en zona de iniciación bajo presión alta del oponente.</p>
+                        <p>- Vulnerabilidad recurrente en duelos aéreos defensivos.<br>- Pérdidas de balón críticas en zona de iniciación bajo presión alta.</p>
                         <h3>⚠️ Amenazas</h3>
-                        <p>- Exposición defensiva ante contrataques verticales de alta velocidad.<br>- Desgaste físico acumulado por mantener un bloque de presión muy adelantado.</p>
+                        <p>- Exposición defensiva ante contrataques verticales de alta velocidad.<br>- Desgaste físico acumulado por el bloque de presión adelantado.</p>
                     </div>
                     """,
               unsafe_allow_html=True,
           )
 
         st.markdown("---")
-        st.markdown(
-            "### 📌 Conclusiones y Recomendaciones del Analista para el Cuerpo"
-            " Técnico"
-        )
+        st.markdown("### 📌 Conclusiones y Recomendaciones del Analista")
         st.markdown("""
-                - **Identidad Táctica:** El equipo demuestra una estructura táctica definida, orientada al dominio territorial mediante posesión y a la asfixia del rival tras pérdida (*Gegenpressing*).
-                - **Línea de Mejora:** Es prioritario ajustar las coberturas defensivas en transiciones rápidas y mejorar el porcentaje de éxito en duelos aéreos para consolidar la solidez en el tramo final del torneo.
+                - **Identidad Táctica:** El equipo demuestra una estructura clara orientada al dominio territorial y a la asfixia del rival tras pérdida (*Gegenpressing*).
+                - **Línea de Mejora:** Ajustar coberturas en transiciones defensivas y mejorar el éxito en duelos aéreos para consolidar la solidez competitiva.
                 """)
     else:
       st.warning("No se encontraron registros en el archivo.")
   else:
     st.error("Archivo Excel no encontrado.")
 
-# ====================================================
-# OPCIÓN 2: COPA LIBERTADORES (SERIE TÁCTICA)
-# ====================================================
 else:
   st.title("⚽ Copa Libertadores - Análisis de Serie Táctica")
   st.markdown(
@@ -330,6 +316,8 @@ else:
           "Módulo 3: Amenaza Real y Calidad de xG",
           "Módulo 4: Duelos, Disputas y Segundas Jugadas",
           "Módulo 5: Comportamiento y Altura de Bloques",
+          "Módulo 6: Progresión, Ruptura y Pases Rompelineas",
+          "Módulo 7: Eficiencia en Transición y Recuperaciones",
       ],
   )
 
@@ -344,7 +332,6 @@ else:
         "Solidez Defensiva",
     ]
     fig = go.Figure()
-    # Se especifica explícitamente "Equipo Tolima" según tus directrices
     fig.add_trace(
         go.Scatterpolar(
             r=[78, 85, 62, 70, 72],
@@ -418,7 +405,7 @@ else:
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(
-    "<p style='text-align:center; color:#666; font-size:11px;'>Performance &"
-    " Tactical Lab</p>",
+    "<p style='text-align:center; color:#666; font-size:11px;'>Dirección"
+    " Analítica: Nicolay Gracia</p>",
     unsafe_allow_html=True,
 )
