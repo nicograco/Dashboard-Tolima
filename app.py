@@ -7,42 +7,43 @@ import streamlit as st
 
 # Configuración de la página
 st.set_page_config(
-    page_title="Performance & Match Analysis | Deportes Tolima",
-    page_icon="⚽",
-    layout="wide",
+    page_title="Elite Match & Tactical Analytics Lab", page_icon="⚡", layout="wide"
 )
 
 # ----------------------------------------------------
-# IDENTIDAD VISUAL OFICIAL: VINOTINTO Y ORO (TOLIMA)
+# PALETA DE COLORES MODERNA Y LLAMATIVA (HIGH-TECH SPORTS)
 # ----------------------------------------------------
-COLOR_VINOTINTO = "#6b1426"  # Color principal Vinotinto Tolima
-COLOR_DORADO = "#d4af37"  # Dorado / Oro
-COLOR_ROJO_VIVO = "#e63946"  # Alerta / Rival
-COLOR_AZUL_PROF = "#1d3557"  # Azul oscuro institucional
-COLOR_GRIS_BG = "#f8f9fa"
+COLOR_PRIMARY = "#3a86ff"  # Azul Eléctrico
+COLOR_SECONDARY = "#ff006e"  # Magenta / Rosa Vibrante
+COLOR_ACCENT = "#8338ec"  # Púrpura Tecnológico
+COLOR_SUCCESS = "#38b000"  # Verde Neón
+COLOR_WARNING = "#fb8500"  # Naranja Ámbar
+COLOR_DARK = "#111827"  # Fondo oscuro elegante
+COLOR_LIGHT_BG = "#f8f9fa"
 
-# Estilos CSS profesionales
+# Estilos CSS con tarjetas y efectos modernos
 st.markdown(
     f"""
     <style>
     .metric-card {{
-        background-color: {COLOR_GRIS_BG};
-        border-left: 5px solid {COLOR_VINOTINTO};
+        background-color: {COLOR_LIGHT_BG};
+        border-left: 5px solid {COLOR_PRIMARY};
         padding: 15px;
-        border-radius: 6px;
+        border-radius: 8px;
         text-align: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.06);
     }}
     .metric-value {{
-        font-size: 26px;
-        font-weight: bold;
-        color: {COLOR_VINOTINTO};
+        font-size: 28px;
+        font-weight: 800;
+        color: {COLOR_PRIMARY};
     }}
     .metric-label {{
         font-size: 13px;
-        color: #495057;
-        font-weight: 600;
+        color: #4b5563;
+        font-weight: 700;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
     }}
     </style>
 """,
@@ -50,13 +51,13 @@ st.markdown(
 )
 
 # ----------------------------------------------------
-# BARRA LATERAL: SELECCIÓN DE TORNEO Y NAVEGACIÓN
+# BARRA LATERAL: NAVEGACIÓN Y BRANDING ANALÍTICO
 # ----------------------------------------------------
 st.sidebar.markdown(
     f"""
-    <div style="background-color:{COLOR_VINOTINTO}; padding:15px; border-radius:8px; text-align:center;">
-        <h3 style="color:white; margin:0; font-size:18px;">DEPORTES TOLIMA</h3>
-        <p style="color:{COLOR_DORADO}; font-size:12px; margin:0; font-weight:bold;">Departamento de Rendimiento y Análisis</p>
+    <div style="background: linear-gradient(135deg, {COLOR_PRIMARY}, {COLOR_ACCENT}); padding:18px; border-radius:10px; text-align:center;">
+        <h3 style="color:white; margin:0; font-size:18px; font-weight:800;">ELITE PERFORMANCE LAB</h3>
+        <p style="color:#e0f2fe; font-size:11px; margin:4px 0 0 0; font-weight:600;">Advanced Match & Tactical Analysis</p>
     </div>
 """,
     unsafe_allow_html=True,
@@ -64,21 +65,18 @@ st.sidebar.markdown(
 
 st.sidebar.markdown("---")
 torneo = st.sidebar.selectbox(
-    "🏆 Seleccionar Competición:",
-    ["Liga Dimayor I 2026 (Tolima)", "Copa Libertadores (Tolima vs IDV)"],
+    "🏆 Seleccionar Módulo de Competición:",
+    ["Liga Dimayor I 2026 (Análisis de Equipo)", "Copa Libertadores (Serie Táctica)"],
 )
 
 # ====================================================
-# OPCIÓN 1: LIGA DIMAYOR I 2026 (ANÁLISIS PROFUNDO EXCLUSIVO TOLIMA)
+# OPCIÓN 1: LIGA DIMAYOR I 2026 (ANÁLISIS PROFUNDO)
 # ====================================================
-if torneo == "Liga Dimayor I 2026 (Tolima)":
-  st.title(
-      "⚽ Análisis Integral de Rendimiento - Liga Dimayor I 2026 (Deportes"
-      " Tolima)"
-  )
+if torneo == "Liga Dimayor I 2026 (Análisis de Equipo)":
+  st.title("⚡ Dashboard Analítico de Rendimiento - Liga Dimayor I 2026")
   st.markdown(
-      "Plataforma avanzada de rendimiento estructurada a partir del universo de"
-      " métricas tácticas y físicas de la Liga."
+      "Plataforma avanzada de procesamiento de datos tácticos, físicos y"
+      " condicionales por partido."
   )
   st.markdown("---")
 
@@ -90,7 +88,7 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
     ].copy()
 
     if not tolima_df.empty:
-      # Resumen Superior Rápido con colores del Tolima
+      # Resumen Superior Rápido con diseño moderno
       col1, col2, col3, col4, col5 = st.columns(5)
       with col1:
         st.markdown(
@@ -130,22 +128,18 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
 
       st.markdown("---")
 
-      # Pestañas profesionales para explotar TODAS las métricas del Excel
+      # Pestañas profesionales con paleta vibrante
       tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
           "🧠 Identidad Táctica",
           "⚙️ Construcción & Pases",
           "⚔️ Duelos & Segundas Jugadas",
-          "🛡️ Presión & Bloques Defensivos",
-          "🎯 Eficiencia Ofensiva & xG",
+          "🛡️ Presión & Bloques",
+          "🎯 Eficiencia & xG",
           "📋 Base Completa",
       ])
 
       with tab1:
         st.subheader("Índices de Comportamiento Táctico Colectivo")
-        st.markdown(
-            "Análisis de los pilares de juego (Heavy Metal, Presión Asfixiante,"
-            " Contra-ataque, Seguridad)."
-        )
         cols_estilo = [
             "Jornada",
             "Heavy metal",
@@ -161,12 +155,13 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
               x="Jornada",
               y=cols_exist[1:],
               markers=True,
-              title="Evolución de Índices Tácticos por Jornada",
+              title="Evolución de Pilares Tácticos por Jornada",
               color_discrete_sequence=[
-                  COLOR_VINOTINTO,
-                  COLOR_DORADO,
-                  COLOR_AZUL_PROF,
-                  COLOR_ROJO_VIVO,
+                  COLOR_PRIMARY,
+                  COLOR_SECONDARY,
+                  COLOR_ACCENT,
+                  COLOR_SUCCESS,
+                  COLOR_WARNING,
               ],
           )
           fig_estilo.update_layout(
@@ -175,7 +170,7 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
           st.plotly_chart(fig_estilo, use_container_width=True)
 
       with tab2:
-        st.subheader("Construcción de Juego y Seguridad con el Balón")
+        st.subheader("Construcción de Juego y Seguridad con Balón")
         c1, c2 = st.columns(2)
         with c1:
           if "Acierto en el pase" in tolima_df.columns:
@@ -184,7 +179,7 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
                 x="Jornada",
                 y="Acierto en el pase",
                 title="Porcentaje de Éxito en Pases (%)",
-                color_discrete_sequence=[COLOR_VINOTINTO],
+                color_discrete_sequence=[COLOR_PRIMARY],
                 text_auto=".3f",
             )
             fig_pass.update_layout(
@@ -198,7 +193,7 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
                 x="Jornada",
                 y="Balones críticos perdidos",
                 title="Balones Críticos Perdidos en Salida",
-                color_discrete_sequence=[COLOR_ROJO_VIVO],
+                color_discrete_sequence=[COLOR_SECONDARY],
                 text_auto=True,
             )
             fig_perd.update_layout(
@@ -216,8 +211,8 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
                 x="Jornada",
                 y="Tasa de Éxito Duelos Aéreos",
                 markers=True,
-                title="Evolución - Tasa de Éxito en Duelos Aéreos",
-                color_discrete_sequence=[COLOR_DORADO],
+                title="Evolución - Tasa Éxito Duelos Aéreos",
+                color_discrete_sequence=[COLOR_ACCENT],
             )
             fig_aero.update_layout(
                 plot_bgcolor="white", paper_bgcolor="white"
@@ -230,7 +225,7 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
                 x="Jornada",
                 y="Tasa de victorias de segundas jugadas (%)",
                 title="Tasa de Éxito en Segundas Jugadas (%)",
-                color_discrete_sequence=[COLOR_AZUL_PROF],
+                color_discrete_sequence=[COLOR_SUCCESS],
                 text_auto=".2f",
             )
             fig_seg.update_layout(
@@ -248,7 +243,7 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
                 x="Jornada",
                 y="Altura de presión promedio (m)",
                 title="Altura Promedio de Presión Defensiva (Metros)",
-                color_discrete_sequence=[COLOR_VINOTINTO],
+                color_discrete_sequence=[COLOR_WARNING],
                 text_auto=True,
             )
             fig_alt.update_layout(
@@ -262,7 +257,7 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
                 x="Jornada",
                 y="Intervenciones Defensivas",
                 title="Volumen de Intervenciones Defensivas",
-                color_discrete_sequence=[COLOR_DORADO],
+                color_discrete_sequence=[COLOR_PRIMARY],
                 text_auto=True,
             )
             fig_int.update_layout(
@@ -271,7 +266,7 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
             st.plotly_chart(fig_int, use_container_width=True)
 
       with tab5:
-        st.subheader("Eficiencia de Remates y xG (Goles Esperados)")
+        st.subheader("Eficiencia Ofensiva y xG (Goles Esperados)")
         if all(
             col in tolima_df.columns
             for col in [
@@ -288,7 +283,7 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
               y=["Goles", "xG basado en la posición del rematador"],
               barmode="group",
               title="Comparativa Goles Reales vs xG por Partido",
-              color_discrete_sequence=[COLOR_VINOTINTO, COLOR_DORADO],
+              color_discrete_sequence=[COLOR_PRIMARY, COLOR_SECONDARY],
           )
           fig_xg_match.update_layout(
               plot_bgcolor="white", paper_bgcolor="white"
@@ -302,12 +297,15 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
               size="Goles",
               color="Jornada",
               hover_name="Jornada",
-              title="Relación Tiros Totales vs Tiros a Puerta (Tamaño = Goles)",
+              title=(
+                  "Relación Tiros Totales vs Tiros a Puerta (Tamaño = Goles"
+                  " Anotados)"
+              ),
               color_discrete_sequence=[
-                  COLOR_VINOTINTO,
-                  COLOR_DORADO,
-                  COLOR_AZUL_PROF,
-                  COLOR_ROJO_VIVO,
+                  COLOR_PRIMARY,
+                  COLOR_SECONDARY,
+                  COLOR_ACCENT,
+                  COLOR_SUCCESS,
               ],
           )
           fig_tiros.update_layout(
@@ -316,22 +314,19 @@ if torneo == "Liga Dimayor I 2026 (Tolima)":
           st.plotly_chart(fig_tiros, use_container_width=True)
 
       with tab6:
-        st.subheader("📋 Base de Datos Completa (Liga Dimayor)")
+        st.subheader("📋 Base Completa de Datos (Liga Dimayor)")
         st.dataframe(tolima_df, use_container_width=True)
 
     else:
-      st.warning(
-          "No se encontraron registros de Deportes Tolima en el archivo de"
-          " Liga."
-      )
+      st.warning("No se encontraron registros de partidos en la Liga.")
   else:
     st.error("No se encontró el archivo 'Liga_Dimayor_I_2026.xlsx'.")
 
 # ====================================================
-# OPCIÓN 2: COPA LIBERTADORES (TOLIMA VS IDV CON MÓDULOS ACTIVOS)
+# OPCIÓN 2: COPA LIBERTADORES (SERIE TÁCTICA)
 # ====================================================
 else:
-  st.title("⚽ Análisis Táctico de Estudio: IDV vs Tolima (Copa Libertadores)")
+  st.title("⚡ Análisis Táctico de Estudio: IDV vs Rival (Copa Libertadores)")
   st.markdown(
       "Plataforma avanzada de análisis de rendimiento estructurada a partir del"
       " universo de las 457 métricas de la eliminatoria."
@@ -354,49 +349,48 @@ else:
       ],
   )
 
-  # Resumen Superior Rápido Libertadores con colores del Tolima
+  # Resumen Superior Rápido con colores vibrantes
   col1, col2, col3, col4 = st.columns(4)
   with col1:
     st.markdown(
-        f'<div class="metric-card"><div class="metric-label">Posesión'
-        f' Tolima</div><div class="metric-value">57%</div><div'
-        f' style="color:{COLOR_VINOTINTO}; font-size:12px; font-weight:bold;">↑'
+        f'<div class="metric-card"><div class="metric-label">Control'
+        f' Posesión</div><div class="metric-value">57%</div><div'
+        f' style="color:{COLOR_PRIMARY}; font-size:12px; font-weight:bold;">↑'
         " Control territorial pasivo</div></div>",
         unsafe_allow_html=True,
     )
   with col2:
     st.markdown(
         f'<div class="metric-card"><div class="metric-label">Contra-ataque'
-        f' IDV</div><div class="metric-value">0.81</div><div'
-        f' style="color:{COLOR_ROJO_VIVO}; font-size:12px; font-weight:bold;">↑'
-        " Vulnerabilidad crítica</div></div>",
+        f' Rival</div><div class="metric-value">0.81</div><div'
+        f' style="color:{COLOR_SECONDARY}; font-size:12px;'
+        ' font-weight:bold;">↑ Vulnerabilidad crítica</div></div>',
         unsafe_allow_html=True,
     )
   with col3:
     st.markdown(
-        f'<div class="metric-card"><div class="metric-label">xG Rematador IDV'
+        f'<div class="metric-card"><div class="metric-label">xG Rematador'
         f' (Vuelta)</div><div class="metric-value">3.42</div><div'
-        f' style="color:{COLOR_DORADO}; font-size:12px;'
-        ' font-weight:bold;">↑ Exposición defensiva</div></div>',
+        f' style="color:{COLOR_WARNING}; font-size:12px; font-weight:bold;">↑'
+        " Exposición defensiva</div></div>",
         unsafe_allow_html=True,
     )
   with col4:
     st.markdown(
         f'<div class="metric-card"><div class="metric-label">Éxito Duelos'
         f' Aéreos</div><div class="metric-value">39.7%</div><div'
-        f' style="color:{COLOR_ROJO_VIVO}; font-size:12px; font-weight:bold;">↑'
-        " Déficit estructural</div></div>",
+        f' style="color:{COLOR_SECONDARY}; font-size:12px;'
+        ' font-weight:bold;">↑ Déficit estructural</div></div>',
         unsafe_allow_html=True,
     )
 
   st.markdown("---")
 
-  # Renderizado con gráficos interactivos reales para cada módulo específico
+  # Renderizado con gráficos interactivos dinámicos para cada módulo
   if modulo == "Radar Multivariable General":
     st.subheader("Perfil Geométrico Comparativo (Dimensiones Globales)")
     st.markdown(
-        "Estructura Competitiva Multidimensional de la Eliminatoria"
-        " Tolima-IDV."
+        "Estructura Competitiva Multidimensional de la Serie de Eliminatoria."
     )
 
     categories = [
@@ -412,9 +406,9 @@ else:
             r=[75, 82, 60, 68, 70],
             theta=categories,
             fill="toself",
-            name="Deportes Tolima",
-            line_color=COLOR_VINOTINTO,
-            fillcolor="rgba(107, 20, 38, 0.3)",
+            name="Equipo Principal",
+            line_color=COLOR_PRIMARY,
+            fillcolor="rgba(58, 134, 255, 0.25)",
         )
     )
     fig.add_trace(
@@ -422,9 +416,9 @@ else:
             r=[65, 88, 72, 85, 62],
             theta=categories,
             fill="toself",
-            name="Independiente Del Valle",
-            line_color=COLOR_AZUL_PROF,
-            fillcolor="rgba(29, 53, 87, 0.2)",
+            name="Oponente (IDV)",
+            line_color=COLOR_SECONDARY,
+            fillcolor="rgba(255, 0, 110, 0.15)",
         )
     )
     fig.update_layout(
@@ -440,33 +434,33 @@ else:
     col_d1, col_d2 = st.columns(2)
     with col_d1:
       st.markdown(
-          f"<div style='background-color:#fdf0f2; padding:15px;"
+          f"<div style='background-color:#eff6ff; padding:15px;"
           f" border-radius:8px; border-left:5px solid"
-          f" {COLOR_VINOTINTO};'><h3>🟢 Debilidades</h3><p>- Bajo porcentaje de"
+          f" {COLOR_PRIMARY};'><h3>🟢 Debilidades</h3><p>- Bajo porcentaje de"
           " éxito en duelos aéreos (39.7%).<br>- Pérdidas críticas en salida en"
           " zona baja.</p></div>",
           unsafe_allow_html=True,
       )
       st.markdown(
-          f"<div style='background-color:#eef4f8; padding:15px;"
-          f" border-radius:8px; border-left:5px solid {COLOR_AZUL_PROF};"
+          f"<div style='background-color:#f5f3ff; padding:15px;"
+          f" border-radius:8px; border-left:5px solid {COLOR_ACCENT};"
           " margin-top:15px;'><h3>🔵 Oportunidades</h3><p>- Explotar las espaldas"
           " de los carrileros rivales en transiciones ofensivas.</p></div>",
           unsafe_allow_html=True,
       )
     with col_d2:
       st.markdown(
-          f"<div style='background-color:#fef9e7; padding:15px;"
+          f"<div style='background-color:#fef3c7; padding:15px;"
           f" border-radius:8px; border-left:5px solid"
-          f" {COLOR_DORADO};'><h3>🟡 Fortalezas</h3><p>- Superioridad en"
+          f" {COLOR_WARNING};'><h3>🟡 Fortalezas</h3><p>- Superioridad en"
           " control de posesión (57% promedio).<br>- Consistencia en la"
           " generación de xG.</p></div>",
           unsafe_allow_html=True,
       )
       st.markdown(
-          f"<div style='background-color:#fdf2f2; padding:15px;"
+          f"<div style='background-color:#fdf2f8; padding:15px;"
           f" border-radius:8px; border-left:5px solid"
-          f" {COLOR_ROJO_VIVO};'><h3>🔴 Amenazas</h3><p>- Vulnerabilidad ante"
+          f" {COLOR_SECONDARY};'><h3>🔴 Amenazas</h3><p>- Vulnerabilidad ante"
           " contra-ataques verticales con alta velocidad del rival.</p></div>",
           unsafe_allow_html=True,
       )
@@ -474,23 +468,23 @@ else:
   else:
     st.subheader(f"Módulo Analítico: {modulo}")
     st.markdown(
-        "Análisis comparativo detallado entre Deportes Tolima e Independiente"
-        " Del Valle en la serie."
+        "Análisis comparativo detallado de rendimiento estructural de la"
+        " eliminatoria."
     )
 
-    # Gráfico interactivo dinámico según el módulo seleccionado
+    # Gráfico interactivo con colores vibrantes
     df_mod = pd.DataFrame({
         "Partido / Fase": ["Partido de Ida (Local)", "Partido de Vuelta (Visita)"],
-        "Deportes Tolima": [76.4, 72.8],
-        "Independiente Del Valle": [70.2, 81.5],
+        "Equipo Principal": [76.4, 72.8],
+        "Oponente (IDV)": [70.2, 81.5],
     })
     fig_m = px.bar(
         df_mod,
         x="Partido / Fase",
-        y=["Deportes Tolima", "Independiente Del Valle"],
+        y=["Equipo Principal", "Oponente (IDV)"],
         barmode="group",
         title=f"Desempeño Comparativo por Partido - {modulo}",
-        color_discrete_sequence=[COLOR_VINOTINTO, COLOR_AZUL_PROF],
+        color_discrete_sequence=[COLOR_PRIMARY, COLOR_SECONDARY],
     )
     fig_m.update_layout(
         plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
@@ -498,11 +492,11 @@ else:
     st.plotly_chart(fig_m, use_container_width=True)
 
     st.markdown(
-        f"<div style='background-color:{COLOR_GRIS_BG}; padding:15px;"
-        f" border-left:4px solid {COLOR_DORADO}; border-radius:4px;'>"
-        f"<strong>Nota de Dirección Táctica:</strong> Este módulo evalúa el"
-        f" comportamiento estructural de la eliminatoria para la toma de"
-        f" decisiones del cuerpo técnico de Deportes Tolima.</div>",
+        f"<div style='background-color:{COLOR_LIGHT_BG}; padding:15px;"
+        f" border-left:4px solid {COLOR_SUCCESS}; border-radius:4px;'>"
+        f"<strong>Nota de Dirección Táctica:</strong> Este módulo evalúa los"
+        f" patrones de comportamiento estructural y métricas avanzadas de"
+        f" rendimiento para la toma de decisiones.</div>",
         unsafe_allow_html=True,
     )
 
