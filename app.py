@@ -265,11 +265,13 @@ if competicion == "Liga Dimayor I 2026":
         with col_d1:
           st.markdown(
               f"""
-                    <div style="background-color: #f0fdf4; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_BLUE};">
+                    <div style="background-color: #f0fdf4; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_BLUE}; margin-bottom: 15px;">
                         <h3>🟢 Fortalezas</h3>
-                        <p>- Consistencia sólida en el control de posesión y circulación limpia del balón.<br>- Excelente aplicación del <strong>Gegenpressing</strong> (Heavy Metal) en tramos clave.<br>- Alta capacidad de generación de oportunidades mediante xG sostenido.</p>
+                        <p>• Consistencia sólida en el control de posesión y circulación limpia del balón.<br>• Excelente aplicación del <strong>Gegenpressing</strong> (Heavy Metal) en tramos clave.<br>• Alta capacidad de generación de oportunidades mediante xG sostenido.</p>
+                    </div>
+                    <div style="background-color: #e0f2fe; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_NAVY};">
                         <h3>🔵 Oportunidades</h3>
-                        <p>- Explotar las espaldas de los carrileros rivales en transiciones rápidas.<br>- Optimizar la eficacia de finalización en el último tercio.</p>
+                        <p>• Explotar las espaldas de los carrileros rivales en transiciones rápidas.<br>• Optimizar la eficacia de finalización en el último tercio de cancha.</p>
                     </div>
                     """,
               unsafe_allow_html=True,
@@ -277,18 +279,23 @@ if competicion == "Liga Dimayor I 2026":
         with col_d2:
           st.markdown(
               f"""
-                    <div style="background-color: #fef2f2; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_ACCENT};">
+                    <div style="background-color: #fef2f2; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_ACCENT}; margin-bottom: 15px;">
                         <h3>🔴 Debilidades</h3>
-                        <p>- Vulnerabilidad recurrente en duelos aéreos defensivos.<br>- Pérdidas de balón críticas en zona de iniciación bajo presión alta.</p>
+                        <p>• Vulnerabilidad recurrente en duelos aéreos defensivos.<br>• Pérdidas de balón críticas en zona de iniciación bajo presión alta del rival.</p>
+                    </div>
+                    <div style="background-color: #fefce8; padding: 18px; border-radius: 8px; border-left: 5px solid #ca8a04;">
                         <h3>⚠️ Amenazas</h3>
-                        <p>- Exposición defensiva ante contrataques verticales de alta velocidad.<br>- Desgaste físico acumulado por el bloque de presión adelantado.</p>
+                        <p>• Exposición defensiva ante contrataques verticales de alta velocidad.<br>• Desgaste físico acumulado por el bloque de presión adelantado.</p>
                     </div>
                     """,
               unsafe_allow_html=True,
           )
 
         st.markdown("---")
-        st.markdown("### 📌 Conclusiones y Recomendaciones del Analista")
+        st.markdown(
+            "### 📌 Conclusiones y Recomendaciones del Analista para el Cuerpo"
+            " Técnico"
+        )
         st.markdown("""
                 - **Identidad Táctica:** El equipo demuestra una estructura clara orientada al dominio territorial y a la asfixia del rival tras pérdida (*Gegenpressing*).
                 - **Línea de Mejora:** Ajustar coberturas en transiciones defensivas y mejorar el éxito en duelos aéreos para consolidar la solidez competitiva.
@@ -371,33 +378,225 @@ else:
   elif modulo == "Matriz DOFA":
     col1, col2 = st.columns(2)
     with col1:
-      st.info(
-          "🟢 Debilidades & Oportunidades\n- Éxito en duelos aéreos"
-          " (39.7%).\n- Explotar carrileros rivales en transición ofensiva."
+      st.markdown(
+          f"""
+            <div style="background-color: #f0fdf4; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_BLUE}; margin-bottom: 15px;">
+                <h3>🟢 Fortalezas</h3>
+                <p>• Superioridad en control de posesión (57% promedio).<br>• Consistencia en la generación de xG en eliminatoria.</p>
+            </div>
+            <div style="background-color: #e0f2fe; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_NAVY};">
+                <h3>🔵 Oportunidades</h3>
+                <p>• Explotar las espaldas de los carrileros rivales en transiciones ofensivas.</p>
+            </div>
+            """,
+          unsafe_allow_html=True,
       )
     with col2:
-      st.success(
-          "🟡 Fortalezas & Amenazas\n- Posesión promedio favorable (57%).\n-"
-          " Vulnerabilidad ante contrataques verticales del rival."
+      st.markdown(
+          f"""
+            <div style="background-color: #fef2f2; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_ACCENT}; margin-bottom: 15px;">
+                <h3>🔴 Debilidades</h3>
+                <p>• Bajo porcentaje de éxito en duelos aéreos (39.7%).<br>• Pérdidas críticas en salida en zona baja.</p>
+            </div>
+            <div style="background-color: #fefce8; padding: 18px; border-radius: 8px; border-left: 5px solid #ca8a04;">
+                <h3>⚠️ Amenazas</h3>
+                <p>• Vulnerabilidad ante contrataques verticales con alta velocidad del rival.</p>
+            </div>
+            """,
+          unsafe_allow_html=True,
       )
-  else:
-    fig_demo = px.bar(
-        pd.DataFrame(
-            {"Fase": ["Ida (Local)", "Vuelta (Visita)"], "Rendimiento": [75.0, 81.2]}
-        ),
-        x="Fase",
-        y="Rendimiento",
-        title=f"Métrica de Desempeño - {modulo}",
-        color_discrete_sequence=[COLOR_NAVY],
-    )
-    fig_demo.update_layout(plot_bgcolor="white", paper_bgcolor="white")
-    st.plotly_chart(fig_demo, use_container_width=True)
 
+  elif modulo == "Módulo 1: Arquitectura de Posesión y Fases":
+    st.markdown("### Arquitectura de Posesión y Fases de Juego")
+    df_m1 = pd.DataFrame({
+        "Fase del Partido": ["Iniciación", "Creación", "Último Tercio"],
+        "Equipo Tolima (%)": [82.0, 65.0, 48.0],
+        "Rival (IDV) (%)": [70.0, 55.0, 52.0],
+    })
+    fig_m1 = px.bar(
+        df_m1,
+        x="Fase del Partido",
+        y=["Equipo Tolima (%)", "Rival (IDV) (%)"],
+        barmode="group",
+        title="Distribución de Posesión por Fase Territorial",
+        color_discrete_sequence=[COLOR_NAVY, COLOR_ACCENT],
+    )
+    fig_m1.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+    st.plotly_chart(fig_m1, use_container_width=True)
     st.markdown(
         f"""
         <div class="analysis-card">
-            <h4>💡 Nota Táctica del Módulo</h4>
-            <p>Evaluación detallada de los registros de ida y vuelta para identificar patrones de rendimiento y desajustes estructurales en la serie internacional.</p>
+            <h4>💡 Análisis Arquitectónico</h4>
+            <p>El Equipo Tolima domina con claridad la fase de iniciación desde el fondo (82% de éxito), pero su presencia disminuye en el último tercio en comparación con el rival. Esto evidencia un control territorial pasivo que requiere mayor verticalidad en zona de finalización.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+  elif modulo == "Módulo 2: Construcción, Seguridad y Pérdidas":
+    st.markdown("### Construcción, Seguridad y Balones Perdidos")
+    df_m2 = pd.DataFrame({
+        "Zona de Cancha": ["Zona Baja", "Zona Media", "Último Tercio"],
+        "Pases Exitosos": [142, 180, 75],
+        "Pérdidas Críticas": [5, 12, 18],
+    })
+    fig_m2 = px.bar(
+        df_m2,
+        x="Zona de Cancha",
+        y=["Pases Exitosos", "Pérdidas Críticas"],
+        barmode="group",
+        title="Volumen de Pases vs Pérdidas por Zona",
+        color_discrete_sequence=[COLOR_BLUE, COLOR_ACCENT],
+    )
+    fig_m2.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+    st.plotly_chart(fig_m2, use_container_width=True)
+    st.markdown(
+        f"""
+        <div class="analysis-card">
+            <h4>💡 Análisis de Seguridad en Construcción</h4>
+            <p>Las pérdidas en zona baja son reducidas (5 por partido), lo que avala la seguridad en salida. Sin embargo, el volumen de pérdidas en el último tercio (18) refleja imprecisiones en el último pase que cortan las progresiones ofensivas.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+  elif modulo == "Módulo 3: Amenaza Real y Calidad de xG":
+    st.markdown("### Amenaza Real y Calidad de xG (Goles Esperados)")
+    df_m3 = pd.DataFrame({
+        "Partido": ["Ida (Local)", "Vuelta (Visita)"],
+        "xG Tolima": [1.48, 1.42],
+        "xG Rival (IDV)": [1.10, 3.42],
+    })
+    fig_m3 = px.bar(
+        df_m3,
+        x="Partido",
+        y=["xG Tolima", "xG Rival (IDV)"],
+        barmode="group",
+        title="Evolución de xG Generado vs Concedido en la Serie",
+        color_discrete_sequence=[COLOR_NAVY, COLOR_ACCENT],
+    )
+    fig_m3.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+    st.plotly_chart(fig_m3, use_container_width=True)
+    st.markdown(
+        f"""
+        <div class="analysis-card">
+            <h4>💡 Análisis de Amenaza xG</h4>
+            <p>En el partido de ida el equipo mantuvo control ofensivo y defensivo (xG 1.48 vs 1.10). No obstante, en la vuelta la exposición defensiva se disparó, permitiendo un xG de 3.42 al oponente, lo que explica los desajustes en la eliminatoria.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+  elif modulo == "Módulo 4: Duelos, Disputas y Segundas Jugadas":
+    st.markdown("### Duelos, Disputas y Victorias en Segundas Jugadas")
+    df_m4 = pd.DataFrame({
+        "Tipo de Disputa": [
+            "Aéreos Defensivos",
+            "Aéreos Ofensivos",
+            "Duelos en el Suelo",
+            "Segundas Jugadas",
+        ],
+        "Tasa de Éxito (%)": [35.0, 44.2, 48.2, 44.5],
+    })
+    fig_m4 = px.bar(
+        df_m4,
+        x="Tipo de Disputa",
+        y="Tasa de Éxito (%)",
+        title="Tasa de Éxito por Tipo de Disputa y Duelo",
+        color_discrete_sequence=[COLOR_BLUE],
+    )
+    fig_m4.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+    st.plotly_chart(fig_m4, use_container_width=True)
+    st.markdown(
+        f"""
+        <div class="analysis-card">
+            <h4>💡 Análisis de Duelos</h4>
+            <p>El déficit estructural en duelos aéreos defensivos (35% de éxito) fue un factor determinante explotado por el rival. Es imperativo mejorar la postura corporal y la anticipación en balón dividido.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+  elif modulo == "Módulo 5: Comportamiento y Altura de Bloques":
+    st.markdown("### Comportamiento Estructural y Altura de Bloques")
+    df_m5 = pd.DataFrame({
+        "Partido": ["Ida (Local)", "Vuelta (Visita)"],
+        "Altura Bloque (m)": [44.0, 41.0],
+        "Intensidad Presión (%)": [68.0, 60.0],
+    })
+    fig_m5 = px.bar(
+        df_m5,
+        x="Partido",
+        y=["Altura Bloque (m)", "Intensidad Presión (%)"],
+        barmode="group",
+        title="Altura Promedio del Bloque e Intensidad de Presión",
+        color_discrete_sequence=[COLOR_ACCENT, COLOR_NAVY],
+    )
+    fig_m5.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+    st.plotly_chart(fig_m5, use_container_width=True)
+    st.markdown(
+        f"""
+        <div class="analysis-card">
+            <h4>💡 Análisis de Bloques</h4>
+            <p>La altura del bloque se redujo de 44 metros en la ida a 41 en la vuelta debido a la necesidad de resguardar el resultado, lo que inadvertidamente invitó al rival a tomar la iniciativa ofensiva.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+  elif modulo == "Módulo 6: Progresión, Ruptura y Pases Rompelineas":
+    st.markdown("### Progresión, Ruptura y Pases Rompelineas")
+    df_m6 = pd.DataFrame({
+        "Zona de Ruptura": [
+            "Línea de Centrocampistas",
+            "Línea Defensiva",
+            "Espacios Interiores",
+        ],
+        "Pases Rompelineas Completados": [14, 8, 11],
+    })
+    fig_m6 = px.bar(
+        df_m6,
+        x="Zona de Ruptura",
+        y="Pases Rompelineas Completados",
+        title="Volumen de Pases Rompelineas por Zona",
+        color_discrete_sequence=[COLOR_NAVY],
+    )
+    fig_m6.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+    st.plotly_chart(fig_m6, use_container_width=True)
+    st.markdown(
+        f"""
+        <div class="analysis-card">
+            <h4>💡 Análisis de Progresión y Ruptura</h4>
+            <p>La capacidad para romper líneas rivales mediante pases filtrados fue efectiva en la zona medular (14 pases), pero se redujo al enfrentar la línea defensiva cerrada del adversario (8 pases).</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+  elif modulo == "Módulo 7: Eficiencia en Transición y Recuperaciones":
+    st.markdown("### Eficiencia en Transición y Recuperaciones Defensivas")
+    df_m7 = pd.DataFrame({
+        "Fase de Transición": [
+            "Transición Ofensiva",
+            "Transición Defensiva",
+            "Recuperación Alta",
+        ],
+        "Eficacia (%)": [68.0, 58.0, 52.0],
+    })
+    fig_m7 = px.bar(
+        df_m7,
+        x="Fase de Transición",
+        y="Eficacia (%)",
+        title="Eficacia en Fases de Transición",
+        color_discrete_sequence=[COLOR_BLUE],
+    )
+    fig_m7.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+    st.plotly_chart(fig_m7, use_container_width=True)
+    st.markdown(
+        f"""
+        <div class="analysis-card">
+            <h4>💡 Análisis de Transiciones</h4>
+            <p>La transición ofensiva muestra buena fluidez (68%), pero la transición defensiva (58%) revela vulnerabilidades ante pérdidas no forzadas, permitiendo contrataques con superioridad numérica rival.</p>
         </div>
         """,
         unsafe_allow_html=True,
