@@ -9,7 +9,7 @@ st.set_page_config(
     page_title="Performance & Tactical Lab", page_icon="⚽", layout="wide"
 )
 
-# Professional Clean Sports Analytics Palette
+# Paleta de Colores Profesional de Análisis Deportivo
 COLOR_NAVY = "#1e3d59"
 COLOR_BLUE = "#17b978"
 COLOR_ACCENT = "#ff6e40"
@@ -53,7 +53,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Sidebar Branding & Author Citation
+# Barra Lateral con Branding e Institucionalidad
 st.sidebar.markdown(
     f"""
     <div style="background: linear-gradient(135deg, {COLOR_NAVY}, {COLOR_DARK}); padding: 18px; border-radius: 10px; text-align: center;">
@@ -124,55 +124,78 @@ if competicion == "Liga Dimayor I 2026":
           "⚙️ Construcción & Pases",
           "⚔️ Duelos & Segundas Jugadas",
           "🛡️ Presión & Bloques",
-          "📋 Base Completa",
+          "🎯 Scatterplot Analítico",
           "📊 Análisis Técnico & DOFA",
       ])
 
       with tab1:
         st.subheader(
-            "🧠 Índices de Comportamiento Táctico Colectivo (Heavy Metal /"
-            " Gegenpressing)"
+            "🧠 Pilares de Identidad Táctica (Desglose Individual y Clara"
+            " Lectura)"
         )
         st.markdown(
             "*(Nota: El índice 'Heavy metal' cuantifica la intensidad del"
             " **Gegenpressing**, midiendo la contra-presión tras pérdida y la"
             " verticalidad inmediata).* "
         )
-        cols_estilo = [
-            "Jornada",
-            "Heavy metal",
-            "Presión asfixiante",
-            "Contra-ataque",
-            "Seguridad lo primero",
-            "Directo y Aéreo",
-        ]
-        cols_exist = [c for c in cols_estilo if c in team_df.columns]
-        if len(cols_exist) > 1:
-          fig_estilo = px.line(
-              team_df,
-              x="Jornada",
-              y=cols_exist[1:],
-              markers=True,
-              title="Evolución de Pilares Tácticos por Jornada",
-              color_discrete_sequence=[
-                  COLOR_NAVY,
-                  COLOR_BLUE,
-                  COLOR_ACCENT,
-                  "#333333",
-                  "#e63946",
-              ],
-          )
-          fig_estilo.update_layout(
-              plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
-          )
-          st.plotly_chart(fig_estilo, use_container_width=True)
+
+        # Gráficos individuales limpios en lugar de líneas cruzadas
+        col_t1, col_t2 = st.columns(2)
+        with col_t1:
+          if "Heavy metal" in team_df.columns:
+            fig_hm = px.bar(
+                team_df,
+                x="Jornada",
+                y="Heavy metal",
+                title="Intensidad Gegenpressing (Heavy Metal) por Jornada",
+                color_discrete_sequence=[COLOR_NAVY],
+                text_auto=True,
+            )
+            fig_hm.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            st.plotly_chart(fig_hm, use_container_width=True)
+
+          if "Contra-ataque" in team_df.columns:
+            fig_ca = px.bar(
+                team_df,
+                x="Jornada",
+                y="Contra-ataque",
+                title="Eficacia en Contra-ataque por Jornada",
+                color_discrete_sequence=[COLOR_BLUE],
+                text_auto=True,
+            )
+            fig_ca.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            st.plotly_chart(fig_ca, use_container_width=True)
+
+        with col_t2:
+          if "Presión asfixiante" in team_df.columns:
+            fig_pa = px.bar(
+                team_df,
+                x="Jornada",
+                y="Presión asfixiante",
+                title="Índice de Presión Asfixiante por Jornada",
+                color_discrete_sequence=[COLOR_ACCENT],
+                text_auto=True,
+            )
+            fig_pa.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            st.plotly_chart(fig_pa, use_container_width=True)
+
+          if "Seguridad lo primero" in team_df.columns:
+            fig_sf = px.bar(
+                team_df,
+                x="Jornada",
+                y="Seguridad lo primero",
+                title="Índice de Seguridad Defensiva por Jornada",
+                color_discrete_sequence=[COLOR_DARK],
+                text_auto=True,
+            )
+            fig_sf.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            st.plotly_chart(fig_sf, use_container_width=True)
 
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Interpretación Táctica Profunda - Identidad y Gegenpressing</h4>
-                    <p><b>Análisis de Comportamiento Colectivo:</b> La evolución partido a partido muestra cómo el equipo estructura su propuesta a partir de la asfixia del rival tras pérdida. Los picos observados en el índice 'Heavy Metal' (Gegenpressing) coinciden con una mayor densidad de recuperaciones en campo contrario, lo que ahoga la salida limpia del adversario y genera situaciones de gol directas con mínima oposición defensiva.</p>
-                    <p><b>Impacto Condicional y Táctico:</b> Este modelo exige una coordinación milimétrica entre la línea defensiva y los mediocentros para evitar espacios a espaldas. La lectura de estos 4 encuentros confirma que cuando el Gegenpressing supera el umbral medio, el equipo monopoliza el control territorial y somete al oponente en su propio tercio.</p>
+                    <h4>💡 Interpretación Táctica Desglosada - Gegenpressing y Pilares</h4>
+                    <p><b>Lectura Clara por Indicador:</b> Al separar los pilares tácticos en barras individuales, evitamos el cruce caótico de líneas. Se observa claramente que los picos de <b>Gegenpressing (Heavy Metal)</b> coinciden con jornadas de alta exigencia física donde el equipo intensificó la contra-presión tras pérdida en campo rival.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -187,6 +210,7 @@ if competicion == "Liga Dimayor I 2026":
               y="Acierto en el pase",
               title="Porcentaje de Éxito en Pases (%)",
               color_discrete_sequence=[COLOR_NAVY],
+              text_auto=".3f",
           )
           fig_pass.update_layout(plot_bgcolor="white", paper_bgcolor="white")
           st.plotly_chart(fig_pass, use_container_width=True)
@@ -194,9 +218,8 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Detallado de Circulación y Construcción</h4>
-                    <p><b>Eficiencia en Fase de Iniciación:</b> El porcentaje de acierto en el pase se mantiene en rangos competitivos de élite, evidenciando una sólida estructura de salida de balón desde el fondo. La conexión entre los centrales y los volantes ancla permite fijar bloques rivales y liberar carriles interiores.</p>
-                    <p><b>Control de Pérdidas:</b> Minimizar los errores no forzados en el primer tercio de cancha es vital para prevenir contrataques rivales. Las métricas indican que el equipo prioriza la seguridad en salida corta antes de arriesgar pases verticales al espacio.</p>
+                    <h4>💡 Análisis de Circulación y Pases</h4>
+                    <p>La estabilidad en el porcentaje de acierto en el pase denota la eficacia en la fase de iniciación y construcción, reduciendo pérdidas no forzadas en campo propio.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -207,13 +230,13 @@ if competicion == "Liga Dimayor I 2026":
         if all(
             c in team_df.columns for c in ["Jornada", "Tasa de Éxito Duelos Aéreos"]
         ):
-          fig_aero = px.line(
+          fig_aero = px.bar(
               team_df,
               x="Jornada",
               y="Tasa de Éxito Duelos Aéreos",
-              markers=True,
               title="Evolución - Tasa de Éxito en Duelos Aéreos",
               color_discrete_sequence=[COLOR_BLUE],
+              text_auto=True,
           )
           fig_aero.update_layout(plot_bgcolor="white", paper_bgcolor="white")
           st.plotly_chart(fig_aero, use_container_width=True)
@@ -221,8 +244,8 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Evaluación Exhaustiva de Duelos y Segundas Jugadas</h4>
-                    <p><b>Dominio Aéreo y Físico:</b> La disputa por el balón dividido y la captura de segundas jugadas constituyen el termómetro del control territorial en partidos cerrados. Los datos reflejan la necesidad de ajustar las coberturas en duelos aéreos defensivos para neutralizar el juego directo del oponente.</p>
+                    <h4>💡 Evaluación de Duelos</h4>
+                    <p>El control de las segundas jugadas y duelos aéreos define el dominio territorial en partidos cerrados. Es clave ajustar coberturas defensivas en balón dividido.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -240,6 +263,7 @@ if competicion == "Liga Dimayor I 2026":
               y="Altura de presión promedio (m)",
               title="Altura Promedio de Presión Defensiva (Metros)",
               color_discrete_sequence=[COLOR_ACCENT],
+              text_auto=True,
           )
           fig_alt.update_layout(plot_bgcolor="white", paper_bgcolor="white")
           st.plotly_chart(fig_alt, use_container_width=True)
@@ -247,16 +271,58 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Comportamiento Estructural del Bloque Defensivo</h4>
-                    <p><b>Altura de Líneas:</b> La altura promedio de presión en metros cuantifica la ambición táctica del equipo para disputar el partido en campo contrario. Un bloque adelantado asfixia la creación rival pero demanda una sincronización perfecta en la línea del fuera de juego y coberturas a espaldas de los laterales.</p>
+                    <h4>💡 Comportamiento del Bloque Defensivo</h4>
+                    <p>La altura promedio de presión en metros cuantifica la ambición táctica para disputar el partido en campo contrario y asfixiar la salida rival.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
         )
 
       with tab5:
-        st.subheader("📋 Matriz Completa de Datos Analíticos")
-        st.dataframe(team_df, use_container_width=True)
+        st.subheader(
+            "🎯 Scatterplot Analítico: Relación Volumen Ofensivo vs Eficacia xG"
+        )
+        if all(
+            c in team_df.columns
+            for c in [
+                "Tiros totales",
+                "xG basado en la posición del rematador",
+                "Goles",
+                "Jornada",
+            ]
+        ):
+          fig_scatter = px.scatter(
+              team_df,
+              x="Tiros totales",
+              y="xG basado en la posición del rematador",
+              size="Goles",
+              color="Jornada",
+              hover_name="Jornada",
+              title=(
+                  "Diagrama de Dispersión: Tiros Totales vs Expectativa de Gol"
+                  " (Tamaño = Goles)"
+              ),
+              color_discrete_sequence=[
+                  COLOR_NAVY,
+                  COLOR_BLUE,
+                  COLOR_ACCENT,
+                  COLOR_DARK,
+              ],
+          )
+          fig_scatter.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white"
+          )
+          st.plotly_chart(fig_scatter, use_container_width=True)
+
+        st.markdown(
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Interpretación del Scatterplot Analítico</h4>
+                    <p>Este diagrama de dispersión cruza el volumen de remates intentados con la calidad de los mismos (xG). Permite identificar rápidamente qué jornadas presentaron una alta generación de peligro real frente a partidos donde se acumuló volumen de remates de baja calidad.</p>
+                </div>
+                """,
+            unsafe_allow_html=True,
+        )
 
       with tab6:
         st.subheader("📊 Informe Técnico Global y Matriz DOFA Avanzada")
