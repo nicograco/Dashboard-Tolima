@@ -5,27 +5,26 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-# Configuración de la página
 st.set_page_config(
-    page_title="Elite Match Analytics Lab", page_icon="⚡", layout="wide"
+    page_title="Performance & Tactical Lab", page_icon="⚽", layout="wide"
 )
 
 # ----------------------------------------------------
-# PALETA DE COLORES FUTURISTA DE ALTO IMPACTO
+# PALETA DE COLORES PROFESIONAL DE ANÁLISIS DEPORTIVO
 # ----------------------------------------------------
-PRIMARY = "#00f5d4"  # Turquesa Neón
-SECONDARY = "#7209b7"  # Púrpura Tecnológico
-ACCENT = "#f72585"  # Magenta Vibrante
-DARK = "#03045e"  # Azul Oscuro Profundo
-LIGHT = "#f8f9fa"  # Fondo Claro
+COLOR_NAVY = "#1e3d59"
+COLOR_BLUE = "#17b978"
+COLOR_ACCENT = "#ff6e40"
+COLOR_DARK = "#2b2d42"
+COLOR_LIGHT = "#f5f7fa"
 
-# Estilos CSS Modernos y Tarjetas
+# Estilos CSS Modernos y Tarjetas Analíticas
 st.markdown(
     f"""
     <style>
     .metric-box {{
-        background-color: {LIGHT};
-        border-left: 6px solid {SECONDARY};
+        background-color: {COLOR_LIGHT};
+        border-left: 6px solid {COLOR_NAVY};
         padding: 15px;
         border-radius: 8px;
         text-align: center;
@@ -34,7 +33,7 @@ st.markdown(
     .metric-val {{
         font-size: 26px;
         font-weight: 800;
-        color: {DARK};
+        color: {COLOR_NAVY};
     }}
     .metric-lab {{
         font-size: 12px;
@@ -42,6 +41,15 @@ st.markdown(
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+    }}
+    .analysis-card {{
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }}
     </style>
 """,
@@ -53,9 +61,9 @@ st.markdown(
 # ----------------------------------------------------
 st.sidebar.markdown(
     f"""
-    <div style="background: linear-gradient(45deg, {SECONDARY}, {ACCENT}); padding: 18px; border-radius: 10px; text-align: center;">
-        <h2 style="color: white; margin: 0; font-size: 18px; font-weight: 800;">ELITE LAB</h2>
-        <p style="color: #ffd166; font-size: 11px; margin: 4px 0 0 0; font-weight: 600;">Advanced Match Analytics</p>
+    <div style="background: linear-gradient(135deg, {COLOR_NAVY}, {COLOR_DARK}); padding: 18px; border-radius: 10px; text-align: center;">
+        <h2 style="color: white; margin: 0; font-size: 17px; font-weight: 800;">PERFORMANCE LAB</h2>
+        <p style="color: {COLOR_BLUE}; font-size: 11px; margin: 4px 0 0 0; font-weight: 600;">Match & Tactical Analytics</p>
     </div>
 """,
     unsafe_allow_html=True,
@@ -63,42 +71,37 @@ st.sidebar.markdown(
 
 st.sidebar.markdown("---")
 competicion = st.sidebar.selectbox(
-    "🏆 Seleccionar Competición:",
-    ["Liga Dimayor I 2026 (Análisis de Equipo)", "Copa Libertadores (Serie Táctica)"],
+    "🏆 Seleccionar Competición",
+    ["Liga Dimayor I 2026", "Copa Libertadores (Serie Táctica)"],
 )
 
 # ====================================================
 # OPCIÓN 1: LIGA DIMAYOR I 2026 (ANÁLISIS PROFUNDO)
 # ====================================================
-if competicion == "Liga Dimayor I 2026 (Análisis de Equipo)":
-  st.title("⚡ Elite Match Analytics - Liga Dimayor I 2026")
+if competicion == "Liga Dimayor I 2026":
+  st.title("⚽ Tactical & Performance Dashboard - Liga Dimayor I 2026")
   st.markdown(
-      "Plataforma avanzada de procesamiento de datos tácticos, físicos y"
-      " condicionales por partido."
+      "Plataforma analítica avanzada de rendimiento colectivo, táctico y"
+      " condicional por partido."
   )
   st.markdown("---")
 
-  archivo_liga = "Liga_Dimayor_I_2026.xlsx"
-  if os.path.exists(archivo_liga):
-    df_liga = pd.read_excel(archivo_liga, header=1)
-    team_df = df_liga[
-        df_liga["Equipo"].astype(str).str.contains("Tolima", case=False, na=False)
-    ].copy()
-
-    if team_df.empty:
-      team_df = df_liga.copy()  # Respaldo si no encuentra el filtro exacto
+  archivo = "Liga_Dimayor_I_2026.xlsx"
+  if os.path.exists(archivo):
+    df = pd.read_excel(archivo, header=1)
+    team_df = df.copy()
 
     if not team_df.empty:
-      # Resumen Superior Rápido con tarjetas modernas
-      col1, col2, col3, col4, col5 = st.columns(5)
-      with col1:
+      # Resumen Superior Rápido con tarjetas
+      c1, c2, c3, c4 = st.columns(4)
+      with c1:
         st.markdown(
             f'<div class="metric-box"><div'
             f' class="metric-lab">Registros</div><div'
             f' class="metric-val">{len(team_df)}</div></div>',
             unsafe_allow_html=True,
         )
-      with col2:
+      with c2:
         if "Goles" in team_df.columns:
           total_g = team_df["Goles"].sum()
           st.markdown(
@@ -106,7 +109,7 @@ if competicion == "Liga Dimayor I 2026 (Análisis de Equipo)":
               f' Favor</div><div class="metric-val">{int(total_g)}</div></div>',
               unsafe_allow_html=True,
           )
-      with col3:
+      with c3:
         if "Goles (Rival)" in team_df.columns:
           total_gc = team_df["Goles (Rival)"].sum()
           st.markdown(
@@ -114,7 +117,7 @@ if competicion == "Liga Dimayor I 2026 (Análisis de Equipo)":
               f' Contra</div><div class="metric-val">{int(total_gc)}</div></div>',
               unsafe_allow_html=True,
           )
-      with col4:
+      with c4:
         if "xG basado en la posición del rematador" in team_df.columns:
           xg_m = team_df["xG basado en la posición del rematador"].mean()
           st.markdown(
@@ -122,26 +125,17 @@ if competicion == "Liga Dimayor I 2026 (Análisis de Equipo)":
               f' Promedio</div><div class="metric-val">{xg_m:.2f}</div></div>',
               unsafe_allow_html=True,
           )
-      with col5:
-        if "Posesión y control" in team_df.columns:
-          poss_m = team_df["Posesión y control"].mean() * 100
-          st.markdown(
-              f'<div class="metric-box"><div'
-              f' class="metric-lab">Posesión</div><div'
-              f' class="metric-val">{poss_m:.1f}%</div></div>',
-              unsafe_allow_html=True,
-          )
 
       st.markdown("---")
 
-      # Pestañas profesionales de análisis
+      # Pestañas profesionales incluyendo el informe y matriz DOFA
       tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
           "🧠 Identidad Táctica",
           "⚙️ Construcción & Pases",
           "⚔️ Duelos & Segundas Jugadas",
           "🛡️ Presión & Bloques",
-          "🎯 Eficiencia & xG",
           "📋 Base Completa",
+          "📊 Análisis Técnico & DOFA",
       ])
 
       with tab1:
@@ -150,11 +144,10 @@ if competicion == "Liga Dimayor I 2026 (Análisis de Equipo)":
             " Gegenpressing)"
         )
         st.markdown(
-            "*(Nota técnica: El índice 'Heavy metal' cuantifica la intensidad"
-            " del **Gegenpressing**, midiendo la contra-presión tras pérdida y"
-            " la verticalidad inmediata en transición).* "
+            "*(Nota: El índice 'Heavy metal' cuantifica la intensidad del"
+            " **Gegenpressing**, midiendo la contra-presión tras pérdida y la"
+            " verticalidad inmediata).* "
         )
-
         cols_estilo = [
             "Jornada",
             "Heavy metal",
@@ -170,16 +163,13 @@ if competicion == "Liga Dimayor I 2026 (Análisis de Equipo)":
               x="Jornada",
               y=cols_exist[1:],
               markers=True,
-              title=(
-                  "Evolución de Pilares Tácticos por Jornada (Incluyendo"
-                  " Gegenpressing)"
-              ),
+              title="Evolución de Pilares Tácticos por Jornada",
               color_discrete_sequence=[
-                  SECONDARY,
-                  ACCENT,
-                  PRIMARY,
-                  "#3a86ff",
-                  "#fb8500",
+                  COLOR_NAVY,
+                  COLOR_BLUE,
+                  COLOR_ACCENT,
+                  "#333333",
+                  "#e63946",
               ],
           )
           fig_estilo.update_layout(
@@ -187,164 +177,143 @@ if competicion == "Liga Dimayor I 2026 (Análisis de Equipo)":
           )
           st.plotly_chart(fig_estilo, use_container_width=True)
 
+        st.markdown(
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Interpretación Táctica - Identidad y Gegenpressing</h4>
+                    <p>El gráfico superior muestra cómo fluctúan los comportamientos colectivos del equipo en cada jornada. Los picos en el índice 'Heavy Metal' reflejan momentos de alta agresividad en la recuperación tras pérdida (Gegenpressing), obligando al rival a cometer errores en salida baja y generando opciones de gol directas tras recuperación alta en campo contrario.</p>
+                </div>
+                """,
+            unsafe_allow_html=True,
+        )
+
       with tab2:
         st.subheader("Construcción de Juego y Seguridad con el Balón")
-        c1, c2 = st.columns(2)
-        with c1:
-          if "Acierto en el pase" in team_df.columns:
-            fig_pass = px.bar(
-                team_df,
-                x="Jornada",
-                y="Acierto en el pase",
-                title="Porcentaje de Éxito en Pases (%)",
-                color_discrete_sequence=[SECONDARY],
-                text_auto=".3f",
-            )
-            fig_pass.update_layout(
-                plot_bgcolor="white", paper_bgcolor="white"
-            )
-            st.plotly_chart(fig_pass, use_container_width=True)
-        with c2:
-          if "Balones críticos perdidos" in team_df.columns:
-            fig_perd = px.bar(
-                team_df,
-                x="Jornada",
-                y="Balones críticos perdidos",
-                title="Balones Críticos Perdidos en Salida",
-                color_discrete_sequence=[ACCENT],
-                text_auto=True,
-            )
-            fig_perd.update_layout(
-                plot_bgcolor="white", paper_bgcolor="white"
-            )
-            st.plotly_chart(fig_perd, use_container_width=True)
+        if all(c in team_df.columns for c in ["Jornada", "Acierto en el pase"]):
+          fig_pass = px.bar(
+              team_df,
+              x="Jornada",
+              y="Acierto en el pase",
+              title="Porcentaje de Éxito en Pases (%)",
+              color_discrete_sequence=[COLOR_NAVY],
+          )
+          fig_pass.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          st.plotly_chart(fig_pass, use_container_width=True)
+
+        st.markdown(
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Análisis de Circulación y Pases</h4>
+                    <p>La estabilidad en el porcentaje de acierto en el pase denota la eficacia en la fase de iniciación y construcción. Mantener altos estándares de precisión reduce las pérdidas no forzadas en campo propio, permitiendo dominar los tiempos del partido a través de la posesión.</p>
+                </div>
+                """,
+            unsafe_allow_html=True,
+        )
 
       with tab3:
         st.subheader("Disputas, Duelos y Segundas Jugadas")
-        c1, c2 = st.columns(2)
-        with c1:
-          if "Tasa de Éxito Duelos Aéreos" in team_df.columns:
-            fig_aero = px.line(
-                team_df,
-                x="Jornada",
-                y="Tasa de Éxito Duelos Aéreos",
-                markers=True,
-                title="Evolución - Tasa de Éxito en Duelos Aéreos",
-                color_discrete_sequence=[PRIMARY],
-            )
-            fig_aero.update_layout(
-                plot_bgcolor="white", paper_bgcolor="white"
-            )
-            st.plotly_chart(fig_aero, use_container_width=True)
-        with c2:
-          if "Tasa de victorias de segundas jugadas (%)" in team_df.columns:
-            fig_seg = px.bar(
-                team_df,
-                x="Jornada",
-                y="Tasa de victorias de segundas jugadas (%)",
-                title="Tasa de Éxito en Segundas Jugadas (%)",
-                color_discrete_sequence=[SECONDARY],
-                text_auto=".2f",
-            )
-            fig_seg.update_layout(
-                plot_bgcolor="white", paper_bgcolor="white"
-            )
-            st.plotly_chart(fig_seg, use_container_width=True)
+        if all(
+            c in team_df.columns for c in ["Jornada", "Tasa de Éxito Duelos Aéreos"]
+        ):
+          fig_aero = px.line(
+              team_df,
+              x="Jornada",
+              y="Tasa de Éxito Duelos Aéreos",
+              markers=True,
+              title="Evolución - Tasa de Éxito en Duelos Aéreos",
+              color_discrete_sequence=[COLOR_BLUE],
+          )
+          fig_aero.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          st.plotly_chart(fig_aero, use_container_width=True)
+
+        st.markdown(
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Evaluación de Duelos y Segundas Jugadas</h4>
+                    <p>El control de las segundas jugadas y los duelos aéreos define el dominio territorial en partidos cerrados y disputados. Es fundamental corregir la eficacia defensiva en balón parado para evitar concesiones innecesarias en el área propia.</p>
+                </div>
+                """,
+            unsafe_allow_html=True,
+        )
 
       with tab4:
         st.subheader("Altura de Bloques y Presión Defensiva")
-        c1, c2 = st.columns(2)
-        with c1:
-          if "Altura de presión promedio (m)" in team_df.columns:
-            fig_alt = px.bar(
-                team_df,
-                x="Jornada",
-                y="Altura de presión promedio (m)",
-                title="Altura Promedio de Presión Defensiva (Metros)",
-                color_discrete_sequence=[ACCENT],
-                text_auto=True,
-            )
-            fig_alt.update_layout(
-                plot_bgcolor="white", paper_bgcolor="white"
-            )
-            st.plotly_chart(fig_alt, use_container_width=True)
-        with c2:
-          if "Intervenciones Defensivas" in team_df.columns:
-            fig_int = px.bar(
-                team_df,
-                x="Jornada",
-                y="Intervenciones Defensivas",
-                title="Volumen de Intervenciones Defensivas",
-                color_discrete_sequence=[PRIMARY],
-                text_auto=True,
-            )
-            fig_int.update_layout(
-                plot_bgcolor="white", paper_bgcolor="white"
-            )
-            st.plotly_chart(fig_int, use_container_width=True)
-
-      with tab5:
-        st.subheader("Eficiencia Ofensiva y xG (Goles Esperados)")
         if all(
-            col in team_df.columns
-            for col in [
-                "Jornada",
-                "Goles",
-                "xG basado en la posición del rematador",
-                "Tiros totales",
-                "Disparos a portería",
-            ]
+            c in team_df.columns
+            for c in ["Jornada", "Altura de presión promedio (m)"]
         ):
-          fig_xg_match = px.bar(
+          fig_alt = px.bar(
               team_df,
               x="Jornada",
-              y=["Goles", "xG basado en la posición del rematador"],
-              barmode="group",
-              title="Comparativa Goles Reales vs xG por Partido",
-              color_discrete_sequence=[SECONDARY, PRIMARY],
+              y="Altura de presión promedio (m)",
+              title="Altura Promedio de Presión Defensiva (Metros)",
+              color_discrete_sequence=[COLOR_ACCENT],
           )
-          fig_xg_match.update_layout(
-              plot_bgcolor="white", paper_bgcolor="white"
-          )
-          st.plotly_chart(fig_xg_match, use_container_width=True)
+          fig_alt.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          st.plotly_chart(fig_alt, use_container_width=True)
 
-          fig_tiros = px.scatter(
-              team_df,
-              x="Tiros totales",
-              y="Disparos a portería",
-              size="Goles",
-              color="Jornada",
-              hover_name="Jornada",
-              title=(
-                  "Relación Tiros Totales vs Tiros a Puerta (Tamaño = Goles"
-                  " Anotados)"
-              ),
-              color_discrete_sequence=[
-                  SECONDARY,
-                  ACCENT,
-                  PRIMARY,
-                  "#3a86ff",
-                  "#fb8500",
-              ],
-          )
-          fig_tiros.update_layout(
-              plot_bgcolor="white", paper_bgcolor="white"
-          )
-          st.plotly_chart(fig_tiros, use_container_width=True)
+        st.markdown(
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Comportamiento del Bloque Defensivo</h4>
+                    <p>La altura promedio de presión en metros indica si el equipo adelantó líneas para asfixiar al rival en su campo o si optó por un bloque medio más resguardado. Este indicador se correlaciona directamente con la intensidad física y el desgaste aeróbico del plantel.</p>
+                </div>
+                """,
+            unsafe_allow_html=True,
+        )
+
+      with tab5:
+        st.subheader("📋 Matriz Completa de Datos Analíticos")
+        st.dataframe(team_df, use_container_width=True)
 
       with tab6:
-        st.subheader("📋 Base Completa de Datos Analíticos (Liga Dimayor)")
-        st.dataframe(team_df, use_container_width=True)
+        st.subheader("📊 Informe Técnico Global y Matriz DOFA")
+
+        col_d1, col_d2 = st.columns(2)
+        with col_d1:
+          st.markdown(
+              f"""
+                    <div style="background-color: #f0fdf4; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_BLUE};">
+                        <h3>🟢 Fortalezas</h3>
+                        <p>- Consistencia sólida en el control de posesión y circulación limpia del balón.<br>- Excelente aplicación del <strong>Gegenpressing</strong> (Heavy Metal) en tramos clave de los partidos.<br>- Buena generación de oportunidades de gol medidas a través del xG.</p>
+                        <h3>🔵 Oportunidades</h3>
+                        <p>- Explotar las espaldas de los laterales rivales mediante transiciones verticales rápidas.<br>- Optimizar la eficacia de finalización en el último tercio de cancha.</p>
+                    </div>
+                    """,
+              unsafe_allow_html=True,
+          )
+        with col_d2:
+          st.markdown(
+              f"""
+                    <div style="background-color: #fef2f2; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_ACCENT};">
+                        <h3>🔴 Debilidades</h3>
+                        <p>- Vulnerabilidad recurrente en duelos aéreos y disputas físicas defensivas.<br>- Pérdidas de balón críticas en zona de iniciación bajo presión alta del oponente.</p>
+                        <h3>⚠️ Amenazas</h3>
+                        <p>- Exposición defensiva ante contrataques verticales de alta velocidad.<br>- Desgaste físico acumulado por mantener un bloque de presión muy adelantado.</p>
+                    </div>
+                    """,
+              unsafe_allow_html=True,
+          )
+
+        st.markdown("---")
+        st.markdown(
+            "### 📌 Conclusiones y Recomendaciones del Analista para el Cuerpo"
+            " Técnico"
+        )
+        st.markdown("""
+                - **Identidad Táctica:** El equipo demuestra una estructura táctica definida, orientada al dominio territorial mediante posesión y a la asfixia del rival tras pérdida (*Gegenpressing*).
+                - **Línea de Mejora:** Es prioritario ajustar las coberturas defensivas en transiciones rápidas y mejorar el porcentaje de éxito en duelos aéreos para consolidar la solidez en el tramo final del torneo.
+                """)
     else:
-      st.warning("No se encontraron registros en el archivo de Liga.")
+      st.warning("No se encontraron registros en el archivo.")
   else:
-    st.error("Archivo 'Liga_Dimayor_I_2026.xlsx' no encontrado en el directorio.")
+    st.error("Archivo Excel no encontrado.")
 
 # ====================================================
-# OPCIÓN 2: COPA LIBERTADORES (SERIE TÁCTICA Y MÓDULOS)
+# OPCIÓN 2: COPA LIBERTADORES (SERIE TÁCTICA)
 # ====================================================
 else:
-  st.title("⚡ Copa Libertadores - Análisis de Serie Táctica")
+  st.title("⚽ Copa Libertadores - Análisis de Serie Táctica")
   st.markdown(
       "Evaluación multidimensional de la eliminatoria con métricas avanzadas."
   )
@@ -352,7 +321,7 @@ else:
   st.sidebar.markdown("---")
   st.sidebar.subheader("Navegación de Módulos")
   modulo = st.sidebar.radio(
-      "Seleccionar Módulo de Análisis",
+      "Seleccionar Módulo",
       [
           "Radar Multivariable General",
           "Matriz DOFA",
@@ -361,47 +330,9 @@ else:
           "Módulo 3: Amenaza Real y Calidad de xG",
           "Módulo 4: Duelos, Disputas y Segundas Jugadas",
           "Módulo 5: Comportamiento y Altura de Bloques",
-          "Módulo 6: Progresión, Ruptura y Pases Rompelineas",
-          "Módulo 7: Eficiencia en Transición y Recuperaciones",
       ],
   )
 
-  # Resumen Superior Rápido para Libertadores
-  col1, col2, col3, col4 = st.columns(4)
-  with col1:
-    st.markdown(
-        f'<div class="metric-box"><div class="metric-label">Control'
-        f' Posesión</div><div class="metric-value">57%</div><div'
-        f' style="color:{SECONDARY}; font-size:12px; font-weight:bold;">↑'
-        " Control territorial pasivo</div></div>",
-        unsafe_allow_html=True,
-    )
-  with col2:
-    st.markdown(
-        f'<div class="metric-box"><div class="metric-label">Contra-ataque'
-        f' Rival</div><div class="metric-value">0.81</div><div'
-        f' style="color:{ACCENT}; font-size:12px; font-weight:bold;">↑'
-        " Vulnerabilidad crítica</div></div>",
-        unsafe_allow_html=True,
-    )
-  with col3:
-    st.markdown(
-        f'<div class="metric-box"><div class="metric-label">xG Rematador'
-        f' (Vuelta)</div><div class="metric-value">3.42</div><div'
-        f' style="color:{PRIMARY}; font-size:12px; font-weight:bold;">↑'
-        " Exposición defensiva</div></div>",
-        unsafe_allow_html=True,
-    )
-  with col4:
-    st.markdown(
-        f'<div class="metric-box"><div class="metric-label">Éxito Duelos'
-        f' Aéreos</div><div class="metric-value">39.7%</div><div'
-        f' style="color:{ACCENT}; font-size:12px; font-weight:bold;">↑ Déficit'
-        " estructural</div></div>",
-        unsafe_allow_html=True,
-    )
-
-  st.markdown("---")
   st.subheader(f"Módulo Activo: {modulo}")
 
   if modulo == "Radar Multivariable General":
@@ -413,14 +344,14 @@ else:
         "Solidez Defensiva",
     ]
     fig = go.Figure()
+    # Se especifica explícitamente "Equipo Tolima" según tus directrices
     fig.add_trace(
         go.Scatterpolar(
             r=[78, 85, 62, 70, 72],
             theta=categories,
             fill="toself",
-            name="Equipo Principal",
-            line_color=SECONDARY,
-            fillcolor="rgba(114, 9, 183, 0.2)",
+            name="Equipo Tolima",
+            line_color=COLOR_NAVY,
         )
     )
     fig.add_trace(
@@ -429,8 +360,7 @@ else:
             theta=categories,
             fill="toself",
             name="Oponente (IDV)",
-            line_color=ACCENT,
-            fillcolor="rgba(247, 37, 133, 0.15)",
+            line_color=COLOR_ACCENT,
         )
     )
     fig.update_layout(
@@ -441,73 +371,54 @@ else:
     )
     st.plotly_chart(fig, use_container_width=True)
 
-  elif modulo == "Matriz DOFA":
-    col_d1, col_d2 = st.columns(2)
-    with col_d1:
-      st.markdown(
-          f"<div style='background-color:#f5f3ff; padding:15px;"
-          f" border-radius:8px; border-left:5px solid"
-          f" {SECONDARY};'><h3>🟢 Debilidades</h3><p>- Bajo porcentaje de"
-          " éxito en duelos aéreos (39.7%).<br>- Pérdidas críticas en salida en"
-          " zona baja.</p></div>",
-          unsafe_allow_html=True,
-      )
-      st.markdown(
-          f"<div style='background-color:#e0f2fe; padding:15px;"
-          f" border-radius:8px; border-left:5px solid {PRIMARY};"
-          " margin-top:15px;'><h3>🔵 Oportunidades</h3><p>- Explotar las espaldas"
-          " de los carrileros rivales en transiciones ofensivas.</p></div>",
-          unsafe_allow_html=True,
-      )
-    with col_d2:
-      st.markdown(
-          f"<div style='background-color:#fdf4ff; padding:15px;"
-          f" border-radius:8px; border-left:5px solid"
-          f" {ACCENT};'><h3>🟡 Fortalezas</h3><p>- Superioridad en control de"
-          " posesión (57% promedio).<br>- Consistencia en la generación de"
-          " xG.</p></div>",
-          unsafe_allow_html=True,
-      )
-      st.markdown(
-          f"<div style='background-color:#fff1f2; padding:15px;"
-          f" border-radius:8px; border-left:5px solid"
-          f" {DARK};'><h3>🔴 Amenazas</h3><p>- Vulnerabilidad ante"
-          " contra-ataques verticales con alta velocidad del rival.</p></div>",
-          unsafe_allow_html=True,
-      )
-
-  else:
-    df_mod = pd.DataFrame({
-        "Partido / Fase": ["Partido de Ida (Local)", "Partido de Vuelta (Visita)"],
-        "Equipo Principal": [76.4, 72.8],
-        "Oponente (IDV)": [70.2, 81.5],
-    })
-    fig_m = px.bar(
-        df_mod,
-        x="Partido / Fase",
-        y=["Equipo Principal", "Oponente (IDV)"],
-        barmode="group",
-        title=f"Desempeño Comparativo por Partido - {modulo}",
-        color_discrete_sequence=[SECONDARY, ACCENT],
-    )
-    fig_m.update_layout(
-        plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
-    )
-    st.plotly_chart(fig_m, use_container_width=True)
-
     st.markdown(
-        f"<div style='background-color:{LIGHT}; padding:15px;"
-        f" border-left:4px solid {PRIMARY}; border-radius:4px;'>"
-        f"<strong>Nota de Dirección Táctica:</strong> Este módulo evalúa los"
-        f" patrones de comportamiento estructural y métricas avanzadas de"
-        f" rendimiento para la toma de decisiones del cuerpo técnico.</div>",
+        f"""
+        <div class="analysis-card">
+            <h4>💡 Análisis del Radar Multidimensional</h4>
+            <p>El perfil geométrico compara al <strong>Equipo Tolima</strong> frente al oponente en las 5 dimensiones clave de la eliminatoria. Destaca la superioridad en control territorial y posesión, frente a la ventaja del rival en efectividad de transición y velocidad de contrataque.</p>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 
-# Pie de página
+  elif modulo == "Matriz DOFA":
+    col1, col2 = st.columns(2)
+    with col1:
+      st.info(
+          "🟢 Debilidades & Oportunidades\n- Éxito en duelos aéreos"
+          " (39.7%).\n- Explotar carrileros rivales en transición ofensiva."
+      )
+    with col2:
+      st.success(
+          "🟡 Fortalezas & Amenazas\n- Posesión promedio favorable (57%).\n-"
+          " Vulnerabilidad ante contrataques verticales del rival."
+      )
+  else:
+    fig_demo = px.bar(
+        pd.DataFrame(
+            {"Fase": ["Ida (Local)", "Vuelta (Visita)"], "Rendimiento": [75.0, 81.2]}
+        ),
+        x="Fase",
+        y="Rendimiento",
+        title=f"Métrica de Desempeño - {modulo}",
+        color_discrete_sequence=[COLOR_NAVY],
+    )
+    fig_demo.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+    st.plotly_chart(fig_demo, use_container_width=True)
+
+    st.markdown(
+        f"""
+        <div class="analysis-card">
+            <h4>💡 Nota Táctica del Módulo</h4>
+            <p>Evaluación detallada de los registros de ida y vuelta para identificar patrones de rendimiento y desajustes estructurales en la serie internacional.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 st.sidebar.markdown("---")
 st.sidebar.markdown(
-    "<p style='text-align:center; color:#777; font-size:11px;'>Elite Match"
-    " Analytics Lab</p>",
+    "<p style='text-align:center; color:#666; font-size:11px;'>Performance &"
+    " Tactical Lab</p>",
     unsafe_allow_html=True,
 )
