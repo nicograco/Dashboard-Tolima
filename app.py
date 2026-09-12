@@ -41,11 +41,22 @@ st.markdown(
     .analysis-card {{
         background-color: white;
         border: 1px solid #e2e8f0;
-        padding: 22px;
+        padding: 24px;
         border-radius: 8px;
         margin-top: 15px;
         margin-bottom: 15px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        line-height: 1.6;
+    }}
+    .analysis-card h4 {{
+        color: {COLOR_NAVY};
+        margin-bottom: 12px;
+        font-size: 18px;
+    }}
+    .analysis-card p {{
+        color: #334155;
+        font-size: 14px;
+        margin-bottom: 10px;
     }}
     </style>
 """,
@@ -187,8 +198,9 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Interpretación Táctica Desglosada - Gegenpressing y Pilares</h4>
-                    <p><b>Lectura Clara por Indicador:</b> Al separar los pilares tácticos en barras individuales, evitamos el cruce caótico de líneas. Se observa claramente que los picos de <b>Gegenpressing (Heavy Metal)</b> coinciden con jornadas de alta exigencia física donde el equipo intensificó la contra-presión tras pérdida en campo rival.</p>
+                    <h4>💡 Argumentación Analítica - Comportamiento Colectivo e Identidad</h4>
+                    <p><b>1. Dinámica del Gegenpressing (Heavy Metal):</b> Los registros demuestran que la efectividad del equipo está estrechamente ligada a la agresividad en los primeros 5 segundos posteriores a la pérdida del balón. Cuando el índice supera el umbral óptimo, el bloque rival experimenta un colapso en su salida limpia, forzando envíos largos imprecisos.</p>
+                    <p><b>2. Sincronización Transicional:</b> Se observa una correlación directa entre los picos de presión asfixiante y el éxito en los contraataques. No obstante, las jornadas con menor índice de seguridad defensiva evidencian desajustes posicionales que exigen una corrección en las coberturas preventivas de los mediocentros.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -208,11 +220,13 @@ if competicion == "Liga Dimayor I 2026":
           fig_pass.update_layout(plot_bgcolor="white", paper_bgcolor="white")
           st.plotly_chart(fig_pass, use_container_width=True)
         st.markdown(
-            """<div class="analysis-card"><h4>💡 Análisis de Circulación y"
-            " Pases</h4><p>La estabilidad en el porcentaje de acierto en el"
-            " pase denota la eficacia en la fase de iniciación y construcción,"
-            " reduciendo pérdidas no forzadas en campo"
-            " propio.</p></div>""",
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Diagnóstico Científico de Circulación y Pases</h4>
+                    <p><b>1. Estabilidad Estructural:</b> El porcentaje de acierto en el pase refleja la capacidad del equipo para dictar el ritmo del encuentro a través de posesiones largas y estructuradas. La fase de iniciación se consolida como un pilar seguro, permitiendo atraer la presión rival antes de progresar hacia carriles interiores.</p>
+                    <p><b>2. Implicaciones Físico-Tácticas:</b> Un alto dominio de la posesión reduce el desgaste aeróbico por transiciones defensivas prolongadas, optimizando el esfuerzo colectivo en la recuperación tras pérdida.</p>
+                </div>
+                """,
             unsafe_allow_html=True,
         )
 
@@ -232,11 +246,13 @@ if competicion == "Liga Dimayor I 2026":
           fig_aero.update_layout(plot_bgcolor="white", paper_bgcolor="white")
           st.plotly_chart(fig_aero, use_container_width=True)
         st.markdown(
-            """<div class="analysis-card"><h4>💡 Evaluación de"
-            " Duelos</h4><p>El control de las segundas jugadas y duelos aéreos"
-            " define el dominio territorial en partidos cerrados. Es clave"
-            " ajustar coberturas defensivas en balón"
-            " dividido.</p></div>""",
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Evaluación Biomecánica y Táctica de Duelos</h4>
+                    <p><b>1. Dominio Territorial por Fricción:</b> Las disputas aéreas y la captura de segundas jugadas actúan como barómetro del control territorial en partidos cerrados. Los datos exponen una vulnerabilidad latente en duelos defensivos dentro del tercio medio.</p>
+                    <p><b>2. Propuesta de Mejora:</b> Es indispensable intensificar los trabajos de posicionamiento corporal y anticipación en balón dividido durante los microciclos semanales para neutralizar el juego directo del oponente.</p>
+                </div>
+                """,
             unsafe_allow_html=True,
         )
 
@@ -257,10 +273,13 @@ if competicion == "Liga Dimayor I 2026":
           fig_alt.update_layout(plot_bgcolor="white", paper_bgcolor="white")
           st.plotly_chart(fig_alt, use_container_width=True)
         st.markdown(
-            """<div class="analysis-card"><h4>💡 Comportamiento del Bloque"
-            " Defensivo</h4><p>La altura promedio de presión en metros"
-            " cuantifica la ambición táctica para disputar el partido en campo"
-            " contrario y asfixiar la salida rival.</p></div>""",
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Análisis Estructural del Bloque Defensivo</h4>
+                    <p><b>1. Amplitud y Altura de Líneas:</b> La altura promedio de presión en metros cuantifica la ambición estratégica del cuerpo técnico para disputar el partido en campo contrario. Un bloque adelantado asfixia la creación rival pero demanda una sincronización milimétrica en la línea defensiva.</p>
+                    <p><b>2. Exposición al Espacio Aespaldas:</b> Las variaciones en esta métrica explican los momentos de mayor riesgo ante contrataques verticales de alta velocidad ejecutados por adversarios con extremos veloces.</p>
+                </div>
+                """,
             unsafe_allow_html=True,
         )
 
@@ -289,7 +308,6 @@ if competicion == "Liga Dimayor I 2026":
         ]
 
         fig_radar = go.Figure()
-
         colors_list = [
             COLOR_NAVY,
             COLOR_ACCENT,
@@ -303,7 +321,6 @@ if competicion == "Liga Dimayor I 2026":
           for idx, jor in enumerate(jornadas_sel):
             row_data = team_df[team_df["Jornada"] == jor]
             if not row_data.empty:
-              # Tomamos la primera fila de esa jornada (o promedio si hay varias)
               r_val = row_data.iloc[0]
               val_radar = [
                   min(100, float(r_val.get("Posesión y control", 0.5) * 100)),
@@ -314,7 +331,6 @@ if competicion == "Liga Dimayor I 2026":
                       100, float(r_val.get("Seguridad lo primero", 0.5) * 100)
                   ),
               ]
-
               c_color = colors_list[idx % len(colors_list)]
               fig_radar.add_trace(
                   go.Scatterpolar(
@@ -344,8 +360,8 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Lectura Comparativa del Radar</h4>
-                    <p><b>Superposición Táctica:</b> Este gráfico permite analizar la evolución geométrica del equipo entre diferentes partidos. Al superponer los polígonos, el cuerpo técnico puede identificar qué encuentros presentaron mayor despliegue de Gegenpressing o control territorial frente a aquellos con menor intensidad.</p>
+                    <h4>💡 Interpretación Multidimensional Geométrica</h4>
+                    <p><b>1. Análisis de Varianza Táctica:</b> La superposición de polígonos permite identificar patrones de consistencia o desajustes entre partidos como local y visitante. Permite evaluar de forma integral si un incremento en posesión sacrifica la agresividad en la presión alta.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -374,11 +390,12 @@ if competicion == "Liga Dimayor I 2026":
           st.plotly_chart(fig_perd, use_container_width=True)
 
         st.markdown(
-            """<div class="analysis-card"><h4>💡 Corrección de Errores no"
-            " Forzados</h4><p>Monitorear las pérdidas críticas en salida"
-            " permite al cuerpo técnico ajustar los apoyos de los volantes"
-            " centrales y evitar riesgos innecesarios en zonas de alta"
-            " presión rival.</p></div>""",
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Auditoría de Errores No Forzados</h4>
+                    <p><b>1. Mitigación de Riesgos en Zona Baja:</b> Las pérdidas en la fase de iniciación representan el detonante principal de ocasiones claras de gol concedidas al oponente. Cuantificar esta variable por partido permite al cuerpo técnico exigir mayor pragmatismo en la circulación cuando la presión rival es asfixiante.</p>
+                </div>
+                """,
             unsafe_allow_html=True,
         )
 
@@ -426,11 +443,12 @@ if competicion == "Liga Dimayor I 2026":
           st.plotly_chart(fig_dual, use_container_width=True)
 
         st.markdown(
-            """<div class="analysis-card"><h4>💡 Diagnóstico de Equilibrio"
-            " Competitivo</h4><p>Visualizar el xG generado frente al concedido"
-            " en un mismo gráfico permite identificar de inmediato si el balance"
-            " ofensivo supera la exposición defensiva jornada a"
-            " jornada.</p></div>""",
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Diagnóstico Científico de Balance Competitivo</h4>
+                    <p><b>1. Sostenibilidad del Modelo de Juego:</b> La relación entre los goles esperados generados y los concedidos determina la robustez táctica a largo plazo. Un diferencial positivo sostenido confirma la superioridad del modelo propuesto sobre el planteamiento del adversario.</p>
+                </div>
+                """,
             unsafe_allow_html=True,
         )
 
