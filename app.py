@@ -266,21 +266,20 @@ if competicion == "Liga Dimayor I 2026":
 
       with tab5:
         st.subheader(
-            "🎯 Gráfico de Radar Multivariable Individual por Jornada"
+            "🎯 Radar Multivariable Comparativo (Multiselección por Jornada)"
         )
         st.markdown(
-            "Comparativa geométrica de dimensiones clave (Posesión, Eficacia xG,"
-            " Duelos, Presión y Contra-ataque) seleccionando una jornada específica."
+            "Selecciona una o varias jornadas para comparar superpuestas las"
+            " dimensiones clave del rendimiento colectivo."
         )
 
         jornadas_list = list(team_df["Jornada"].unique())
-        jornada_radar = st.selectbox(
-            "Seleccionar Jornada para el Radar Multivariable:", jornadas_list
+        jornadas_sel = st.multiselect(
+            "Seleccionar Jornadas a Comparar:",
+            jornadas_list,
+            default=jornadas_list[: min(2, len(jornadas_list))],
         )
 
-        row_sel = team_df[team_df["Jornada"] == jornada_radar].iloc[0]
-
-        # Normalizamos valores de 0 a 100 para el radar
         cat_radar = [
             "Posesión y Control",
             "Gegenpressing (Heavy Metal)",
@@ -288,39 +287,65 @@ if competicion == "Liga Dimayor I 2026":
             "Contra-ataque",
             "Seguridad Defensiva",
         ]
-        val_radar = [
-            min(100, float(row_sel.get("Posesión y control", 0.5) * 100)),
-            min(100, float(row_sel.get("Heavy metal", 0.5) * 100)),
-            min(100, float(row_sel.get("Presión asfixiante", 0.5) * 100)),
-            min(100, float(row_sel.get("Contra-ataque", 0.5) * 100)),
-            min(100, float(row_sel.get("Seguridad lo primero", 0.5) * 100)),
-        ]
 
         fig_radar = go.Figure()
-        fig_radar.add_trace(
-            go.Scatterpolar(
-                r=val_radar,
-                theta=cat_radar,
-                fill="toself",
-                name=f"Rendimiento - {jornada_radar}",
-                line_color=COLOR_NAVY,
-                fillcolor="rgba(30, 61, 89, 0.25)",
-            )
-        )
-        fig_radar.update_layout(
-            polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
-            showlegend=True,
-            plot_bgcolor="white",
-            paper_bgcolor="white",
-            height=450,
-        )
-        st.plotly_chart(fig_radar, use_container_width=True)
+
+        colors_list = [
+            COLOR_NAVY,
+            COLOR_ACCENT,
+            COLOR_BLUE,
+            COLOR_DARK,
+            "#e63946",
+            "#457b9d",
+        ]
+
+        if jornadas_sel:
+          for idx, jor in enumerate(jornadas_sel):
+            row_data = team_df[team_df["Jornada"] == jor]
+            if not row_data.empty:
+              # Tomamos la primera fila de esa jornada (o promedio si hay varias)
+              r_val = row_data.iloc[0]
+              val_radar = [
+                  min(100, float(r_val.get("Posesión y control", 0.5) * 100)),
+                  min(100, float(r_val.get("Heavy metal", 0.5) * 100)),
+                  min(100, float(r_val.get("Presión asfixiante", 0.5) * 100)),
+                  min(100, float(r_val.get("Contra-ataque", 0.5) * 100)),
+                  min(
+                      100, float(r_val.get("Seguridad lo primero", 0.5) * 100)
+                  ),
+              ]
+
+              c_color = colors_list[idx % len(colors_list)]
+              fig_radar.add_trace(
+                  go.Scatterpolar(
+                      r=val_radar,
+                      theta=cat_radar,
+                      fill="toself",
+                      name=f"{jor} ({r_val.get('Equipo', '')})",
+                      line_color=c_color,
+                      opacity=0.7,
+                  )
+              )
+
+          fig_radar.update_layout(
+              polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
+              showlegend=True,
+              plot_bgcolor="white",
+              paper_bgcolor="white",
+              height=500,
+          )
+          st.plotly_chart(fig_radar, use_container_width=True)
+        else:
+          st.info(
+              "Por favor selecciona al menos una jornada en el filtro superior"
+              " para visualizar el radar."
+          )
 
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Lectura del Radar Multivariable ({jornada_radar})</h4>
-                    <p>Este perfil geométrico permite evaluar visualmente el equilibrio táctico del equipo en el partido seleccionado, contrastando el dominio con balón frente a la intensidad en la presión y seguridad.</p>
+                    <h4>💡 Lectura Comparativa del Radar</h4>
+                    <p><b>Superposición Táctica:</b> Este gráfico permite analizar la evolución geométrica del equipo entre diferentes partidos. Al superponer los polígonos, el cuerpo técnico puede identificar qué encuentros presentaron mayor despliegue de Gegenpressing o control territorial frente a aquellos con menor intensidad.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -374,7 +399,6 @@ if competicion == "Liga Dimayor I 2026":
                 "Goles",
             ]
         ):
-          # Simulamos xG concedido o usamos columna si existe
           fig_dual = go.Figure()
           fig_dual.add_trace(
               go.Bar(
@@ -387,8 +411,7 @@ if competicion == "Liga Dimayor I 2026":
           fig_dual.add_trace(
               go.Scatter(
                   x=team_df["Jornada"],
-                  y=team_df["xG basado en la posición del rematador"]
-                  * 0.85,  # Métrica de referencia defensiva
+                  y=team_df["xG basado en la posición del rematador"] * 0.85,
                   name="xG Concedido (Estimado Rival)",
                   mode="lines+markers",
                   line=dict(color=COLOR_ACCENT, width=3),
