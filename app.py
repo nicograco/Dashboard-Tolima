@@ -9,7 +9,6 @@ st.set_page_config(
     page_title="Performance & Tactical Lab", page_icon="⚽", layout="wide"
 )
 
-# Paleta de Colores Profesional de Análisis Deportivo
 COLOR_NAVY = "#1e3d59"
 COLOR_BLUE = "#17b978"
 COLOR_ACCENT = "#ff6e40"
@@ -53,7 +52,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Barra Lateral con Branding e Institucionalidad
 st.sidebar.markdown(
     f"""
     <div style="background: linear-gradient(135deg, {COLOR_NAVY}, {COLOR_DARK}); padding: 18px; border-radius: 10px; text-align: center;">
@@ -73,8 +71,8 @@ competicion = st.sidebar.selectbox(
 if competicion == "Liga Dimayor I 2026":
   st.title("⚽ Tactical & Performance Dashboard - Liga Dimayor I 2026")
   st.markdown(
-      "Plataforma analítica avanzada de rendimiento colectivo, táctico y"
-      " condicional por partido."
+      "Plataforma analítica avanzada de rendimiento colectivo, táctico,"
+      " zonal y condicional por partido."
   )
   st.markdown("---")
 
@@ -119,12 +117,13 @@ if competicion == "Liga Dimayor I 2026":
 
       st.markdown("---")
 
-      tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+      tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
           "🧠 Identidad Táctica",
           "⚙️ Construcción & Pases",
           "⚔️ Duelos & Segundas Jugadas",
           "🛡️ Presión & Bloques",
           "🎯 Scatterplot Analítico",
+          "🗺️ Análisis Zonal & Espacial",
           "📊 Análisis Técnico & DOFA",
       ])
 
@@ -139,7 +138,6 @@ if competicion == "Liga Dimayor I 2026":
             " verticalidad inmediata).* "
         )
 
-        # Gráficos individuales limpios en lugar de líneas cruzadas
         col_t1, col_t2 = st.columns(2)
         with col_t1:
           if "Heavy metal" in team_df.columns:
@@ -325,6 +323,62 @@ if competicion == "Liga Dimayor I 2026":
         )
 
       with tab6:
+        st.subheader(
+            "🗺️ Análisis Zonal & Espacial (Distribución por Zonas de Cancha)"
+        )
+        zone_cols = [
+            "Zona Defensa Central",
+            "Zona Lateral (Derecho)",
+            "Zona Lateral (Izquierdo)",
+            "Zona Mediocentro Defensivo",
+            "Zona Mediocentro",
+            "Zona Centrocampista Ofensivo",
+            "Zona Banda Derecha",
+            "Zona Banda Izquierda",
+        ]
+        existing_zones = [c for c in zone_cols if c in team_df.columns]
+        if existing_zones:
+          zone_melt = team_df.melt(
+              id_vars=["Jornada", "Equipo"],
+              value_vars=existing_zones,
+              var_name="Zona",
+              value_name="Volumen",
+          )
+          fig_zone = px.bar(
+              zone_melt,
+              x="Zona",
+              y="Volumen",
+              color="Jornada",
+              barmode="group",
+              title=(
+                  "Distribución de Acciones y Participación por Zona de la"
+                  " Cancha"
+              ),
+              color_discrete_sequence=[
+                  COLOR_NAVY,
+                  COLOR_BLUE,
+                  COLOR_ACCENT,
+                  COLOR_DARK,
+              ],
+          )
+          fig_zone.update_layout(
+              plot_bgcolor="white",
+              paper_bgcolor="white",
+              xaxis_tickangle=-30,
+          )
+          st.plotly_chart(fig_zone, use_container_width=True)
+
+        st.markdown(
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Interpretación Zonal y Espacial</h4>
+                    <p><b>Concentración de Juego:</b> Este gráfico permite identificar qué pasillos o zonas del campo (e.g., Mediocentro defensivo, bandas o zona central) concentran la mayor actividad del equipo. Facilita detectar sobrecargas espaciales y posibles debilidades en la ocupación de carriles interiores.</p>
+                </div>
+                """,
+            unsafe_allow_html=True,
+        )
+
+      with tab7:
         st.subheader("📊 Informe Técnico Global y Matriz DOFA Avanzada")
 
         col_d1, col_d2 = st.columns(2)
@@ -442,8 +496,8 @@ else:
     )
 
   elif modulo == "Matriz DOFA":
-    col1, col2 = st.columns(2)
-    with col1:
+    col_d1, col_d2 = st.columns(2)
+    with col_d1:
       st.markdown(
           f"""
             <div style="background-color: #f0fdf4; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_BLUE}; margin-bottom: 15px;">
@@ -457,7 +511,7 @@ else:
             """,
           unsafe_allow_html=True,
       )
-    with col2:
+    with col_d2:
       st.markdown(
           f"""
             <div style="background-color: #fef2f2; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_ACCENT}; margin-bottom: 15px;">
@@ -490,7 +544,7 @@ else:
     fig_m1.update_layout(plot_bgcolor="white", paper_bgcolor="white")
     st.plotly_chart(fig_m1, use_container_width=True)
     st.markdown(
-        f"""
+        """
         <div class="analysis-card">
             <h4>💡 Análisis Arquitectónico</h4>
             <p>El Equipo Tolima domina con claridad la fase de iniciación desde el fondo (82% de éxito), pero su presencia disminuye en el último tercio en comparación con el rival. Esto evidencia un control territorial pasivo que requiere mayor verticalidad en zona de finalización.</p>
@@ -517,7 +571,7 @@ else:
     fig_m2.update_layout(plot_bgcolor="white", paper_bgcolor="white")
     st.plotly_chart(fig_m2, use_container_width=True)
     st.markdown(
-        f"""
+        """
         <div class="analysis-card">
             <h4>💡 Análisis de Seguridad en Construcción</h4>
             <p>Las pérdidas en zona baja son reducidas (5 por partido), lo que avala la seguridad en salida. Sin embargo, el volumen de pérdidas en el último tercio (18) refleja imprecisiones en el último pase que cortan las progresiones ofensivas.</p>
@@ -544,7 +598,7 @@ else:
     fig_m3.update_layout(plot_bgcolor="white", paper_bgcolor="white")
     st.plotly_chart(fig_m3, use_container_width=True)
     st.markdown(
-        f"""
+        """
         <div class="analysis-card">
             <h4>💡 Análisis de Amenaza xG</h4>
             <p>En el partido de ida el equipo mantuvo control ofensivo y defensivo (xG 1.48 vs 1.10). No obstante, en la vuelta la exposición defensiva se disparó, permitiendo un xG de 3.42 al oponente, lo que explica los desajustes en la eliminatoria.</p>
@@ -574,7 +628,7 @@ else:
     fig_m4.update_layout(plot_bgcolor="white", paper_bgcolor="white")
     st.plotly_chart(fig_m4, use_container_width=True)
     st.markdown(
-        f"""
+        """
         <div class="analysis-card">
             <h4>💡 Análisis de Duelos</h4>
             <p>El déficit estructural en duelos aéreos defensivos (35% de éxito) fue un factor determinante explotado por el rival. Es imperativo mejorar la postura corporal y la anticipación en balón dividido.</p>
@@ -601,7 +655,7 @@ else:
     fig_m5.update_layout(plot_bgcolor="white", paper_bgcolor="white")
     st.plotly_chart(fig_m5, use_container_width=True)
     st.markdown(
-        f"""
+        """
         <div class="analysis-card">
             <h4>💡 Análisis de Bloques</h4>
             <p>La altura del bloque se redujo de 44 metros en la ida a 41 en la vuelta debido a la necesidad de resguardar el resultado, lo que inadvertidamente invitó al rival a tomar la iniciativa ofensiva.</p>
@@ -611,26 +665,26 @@ else:
     )
 
   elif modulo == "Módulo 6: Progresión, Ruptura y Pases Rompelineas":
-    st.markdown("### Progresión, Ruptura y Pases Rompelineas")
+    st.markdown("### Progresión, Ruptura y Pases Rompelines")
     df_m6 = pd.DataFrame({
         "Zona de Ruptura": [
             "Línea de Centrocampistas",
             "Línea Defensiva",
             "Espacios Interiores",
         ],
-        "Pases Rompelineas Completados": [14, 8, 11],
+        "Pases Rompelines Completados": [14, 8, 11],
     })
     fig_m6 = px.bar(
         df_m6,
         x="Zona de Ruptura",
-        y="Pases Rompelineas Completados",
+        y="Pases Rompelines Completados",
         title="Volumen de Pases Rompelineas por Zona",
         color_discrete_sequence=[COLOR_NAVY],
     )
     fig_m6.update_layout(plot_bgcolor="white", paper_bgcolor="white")
     st.plotly_chart(fig_m6, use_container_width=True)
     st.markdown(
-        f"""
+        """
         <div class="analysis-card">
             <h4>💡 Análisis de Progresión y Ruptura</h4>
             <p>La capacidad para romper líneas rivales mediante pases filtrados fue efectiva en la zona medular (14 pases), pero se redujo al enfrentar la línea defensiva cerrada del adversario (8 pases).</p>
@@ -659,7 +713,7 @@ else:
     fig_m7.update_layout(plot_bgcolor="white", paper_bgcolor="white")
     st.plotly_chart(fig_m7, use_container_width=True)
     st.markdown(
-        f"""
+        """
         <div class="analysis-card">
             <h4>💡 Análisis de Transiciones</h4>
             <p>La transición ofensiva muestra buena fluidez (68%), pero la transición defensiva (58%) revela vulnerabilidades ante pérdidas no forzadas, permitiendo contrataques con superioridad numérica rival.</p>
