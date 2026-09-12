@@ -9,13 +9,10 @@ st.set_page_config(
     page_title="Performance & Tactical Lab", page_icon="⚽", layout="wide"
 )
 
-# -------------------------------------------------------------------------
-# PALETA DE COLORES PROFESIONAL DE ÉLITE (SPORTS ANALYTICS)
-# -------------------------------------------------------------------------
 COLOR_NAVY = "#1e3d59"
 COLOR_BLUE = "#17b978"
 COLOR_ACCENT = "#ff6e40"
-COLOR_DARK = "#2b2d42"
+COLOR_DARK = "#0f172a"
 COLOR_LIGHT = "#f5f7fa"
 
 st.markdown(
@@ -55,9 +52,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# -------------------------------------------------------------------------
-# BARRA LATERAL: INSTITUCIONALIDAD Y NAVEGACIÓN
-# -------------------------------------------------------------------------
 st.sidebar.markdown(
     f"""
     <div style="background: linear-gradient(135deg, {COLOR_NAVY}, {COLOR_DARK}); padding: 18px; border-radius: 10px; text-align: center;">
@@ -74,9 +68,6 @@ competicion = st.sidebar.selectbox(
     ["Liga Dimayor I 2026", "Copa Libertadores (Serie Táctica)"],
 )
 
-# =========================================================================
-# OPCIÓN 1: LIGA DIMAYOR I 2026
-# =========================================================================
 if competicion == "Liga Dimayor I 2026":
   st.title("⚽ Tactical & Performance Dashboard - Liga Dimayor I 2026")
   st.markdown(
@@ -91,7 +82,6 @@ if competicion == "Liga Dimayor I 2026":
     team_df = df.copy()
 
     if not team_df.empty:
-      # Tarjetas de Resumen Superior
       c1, c2, c3, c4 = st.columns(4)
       with c1:
         st.markdown(
@@ -127,22 +117,14 @@ if competicion == "Liga Dimayor I 2026":
 
       st.markdown("---")
 
-      # Pestañas profesionales optimizadas
-      (
-          tab1,
-          tab2,
-          tab3,
-          tab4,
-          tab5,
-          tab6,
-          tab7,
-      ) = st.tabs([
+      tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
           "🧠 Identidad Táctica",
           "⚙️ Construcción & Pases",
           "⚔️ Duelos & Segundas Jugadas",
           "🛡️ Presión & Bloques",
           "🎯 Scatterplot Analítico",
-          "⚽ Zonas & Distribución en Cancha",
+          "⚽ Distribución en Cancha",
+          "🗺️ Zonas & Espacios",
           "📊 Análisis Técnico & DOFA",
       ])
 
@@ -328,20 +310,18 @@ if competicion == "Liga Dimayor I 2026":
 
       with tab6:
         st.subheader(
-            "⚽ Análisis Zonal & Espacial (Distribución en Campo de Fútbol)"
+            "⚽ Mapa Táctico Espacial en Terreno de Juego (Estilo Élite)"
         )
         st.markdown(
-            "Mapa táctico interactivo que representa la concentración de"
-            " acciones y volumen de juego sobre las zonas del terreno de"
-            " juego."
+            "Representación gráfica profesional sobre el terreno de juego con"
+            " zonificación táctica integrada."
         )
 
-        # Selector de jornada o vista global opcional
         jornadas_disponibles = ["Todas las Jornadas"] + list(
             team_df["Jornada"].unique()
         )
         jornada_sel = st.selectbox(
-            "Filtrar por Jornada para el Mapa de Campo:", jornadas_disponibles
+            "Filtrar Jornada para el Mapa Táctico:", jornadas_disponibles
         )
 
         if jornada_sel == "Todas las Jornadas":
@@ -349,27 +329,27 @@ if competicion == "Liga Dimayor I 2026":
         else:
           plot_df = team_df[team_df["Jornada"] == jornada_sel]
 
-        # Dibujo del terreno de juego con Plotly
+        # Creación del campo de fútbol con Plotly (Estilo oscuro/táctico moderno)
         fig_pitch = go.Figure()
 
-        # Contorno del campo (105 x 68 metros)
+        # Contorno del campo (105 x 68)
         fig_pitch.add_shape(
             type="rect",
             x0=0,
             y0=0,
             x1=105,
             y1=68,
-            line=dict(color="#1e3d59", width=3),
-            fillcolor="#f4f9f4",
+            line=dict(color="white", width=2),
+            fillcolor="#0f172a",
         )
-        # Línea de mitad de cancha
+        # Línea media
         fig_pitch.add_shape(
             type="line",
             x0=52.5,
             y0=0,
             x1=52.5,
             y1=68,
-            line=dict(color="#1e3d59", width=2),
+            line=dict(color="rgba(255,255,255,0.6)", width=2),
         )
         # Círculo central
         fig_pitch.add_shape(
@@ -378,61 +358,41 @@ if competicion == "Liga Dimayor I 2026":
             y0=34 - 9.15,
             x1=52.5 + 9.15,
             y1=34 + 9.15,
-            line=dict(color="#1e3d59", width=2),
+            line=dict(color="rgba(255,255,255,0.6)", width=2),
         )
-        # Área grande izquierda
+        # Área izquierda
         fig_pitch.add_shape(
             type="rect",
             x0=0,
             y0=13.84,
             x1=16.5,
             y1=54.16,
-            line=dict(color="#1e3d59", width=2),
+            line=dict(color="rgba(255,255,255,0.6)", width=2),
         )
-        # Área grande derecha
+        # Área derecha
         fig_pitch.add_shape(
             type="rect",
             x0=105 - 16.5,
             y0=13.84,
             x1=105,
             y1=54.16,
-            line=dict(color="#1e3d59", width=2),
-        )
-        # Arcos / Porterías
-        fig_pitch.add_shape(
-            type="rect",
-            x0=-3,
-            y0=30.34,
-            x1=0,
-            y1=37.66,
-            line=dict(color="#1e3d59", width=2),
-            fillcolor="#cccccc",
-        )
-        fig_pitch.add_shape(
-            type="rect",
-            x0=105,
-            y0=30.34,
-            x1=108,
-            y1=37.66,
-            line=dict(color="#1e3d59", width=2),
-            fillcolor="#cccccc",
+            line=dict(color="rgba(255,255,255,0.6)", width=2),
         )
 
-        # Coordenadas espaciales estándar de las zonas tácticas en el campo (105x68)
         pitch_zones = {
             "Zona Defensa Central": {
-                "x": 20,
+                "x": 22,
                 "y": 34,
                 "name": "Defensa Central",
             },
             "Zona Lateral (Derecho)": {
-                "x": 20,
-                "y": 58,
+                "x": 22,
+                "y": 55,
                 "name": "Lateral Derecho",
             },
             "Zona Lateral (Izquierdo)": {
-                "x": 20,
-                "y": 10,
+                "x": 22,
+                "y": 13,
                 "name": "Lateral Izquierdo",
             },
             "Zona Mediocentro Defensivo": {
@@ -442,14 +402,14 @@ if competicion == "Liga Dimayor I 2026":
             },
             "Zona Mediocentro": {"x": 52.5, "y": 34, "name": "Mediocentro"},
             "Zona Centrocampista Ofensivo": {
-                "x": 70,
+                "x": 75,
                 "y": 34,
-                "name": "Mediapunta / Ofensivo",
+                "name": "Mediapunta",
             },
-            "Zona Banda Derecha": {"x": 70, "y": 58, "name": "Banda Derecha"},
+            "Zona Banda Derecha": {"x": 75, "y": 55, "name": "Banda Derecha"},
             "Zona Banda Izquierda": {
-                "x": 70,
-                "y": 10,
+                "x": 75,
+                "y": 13,
                 "name": "Banda Izquierda",
             },
         }
@@ -460,8 +420,8 @@ if competicion == "Liga Dimayor I 2026":
         zone_y = []
         for k, v in pitch_zones.items():
           if k in plot_df.columns:
-            total_val = plot_df[k].sum()
-            zone_vals.append(total_val)
+            val = plot_df[k].sum()
+            zone_vals.append(val)
             zone_names.append(v["name"])
             zone_x.append(v["x"])
             zone_y.append(v["y"])
@@ -473,49 +433,103 @@ if competicion == "Liga Dimayor I 2026":
                   y=zone_y,
                   mode="markers+text",
                   marker=dict(
-                      size=[max(15, v / 2) for v in zone_vals],
+                      size=[np.sqrt(v) * 3.5 for v in zone_vals],
                       color=zone_vals,
                       colorscale="Tealgrn",
                       showscale=True,
                       opacity=0.9,
                       line=dict(width=2, color="white"),
                   ),
-                  text=[f"{n}: {v}" for n, v in zip(zone_names, zone_vals)],
+                  text=[f"{n}\n({v})" for n, v in zip(zone_names, zone_vals)],
                   textposition="top center",
+                  textfont=dict(color="white", size=11, family="sans-serif"),
               )
           )
 
         fig_pitch.update_layout(
-            title=f"Distribución Zonal en Terreno de Juego ({jornada_sel})",
+            title=dict(
+                text=f"Concentración de Acciones por Zona ({jornada_sel})",
+                font=dict(color="white"),
+            ),
             xaxis=dict(
-                range=[-8, 113],
+                range=[-2, 107],
                 showgrid=False,
                 zeroline=False,
                 showticklabels=False,
             ),
             yaxis=dict(
-                range=[-5, 73],
+                range=[-2, 70],
                 showgrid=False,
                 zeroline=False,
                 showticklabels=False,
             ),
-            plot_bgcolor="#e8f4f8",
-            paper_bgcolor="white",
-            height=520,
+            plot_bgcolor="#0f172a",
+            paper_bgcolor="#0f172a",
+            height=500,
+            font=dict(color="white"),
         )
         st.plotly_chart(fig_pitch, use_container_width=True)
-
         st.markdown(
-            f"""
-                <div class="analysis-card">
-                    <h4>💡 Interpretación Táctica del Mapa Zonal en Cancha</h4>
-                    <p><b>Ocupación de Espacios:</b> Este diagrama sitúa geométricamente el volumen de intervenciones sobre el terreno de juego. Permite visualizar con precisión en qué carriles y pasillos (defensa central, mediocentro o bandas) se concentra el juego del equipo en la selección actual de partidos.</p>
-                </div>
-                """,
+            """<div class="analysis-card"><h4>💡 Lectura Táctica del Mapa"
+            " en Cancha</h4><p>Este mapa sitúa de forma limpia y profesional"
+            " el volumen de intervenciones en cada sector del campo, evitando"
+            " saturaciones visuales y facilitando la interpretación"
+            " táctica.</p></div>""",
             unsafe_allow_html=True,
         )
 
       with tab7:
+        st.subheader("🗺️ Análisis Zonal & Espacial (Gráficos de Barras)")
+        zone_cols = [
+            "Zona Defensa Central",
+            "Zona Lateral (Derecho)",
+            "Zona Lateral (Izquierdo)",
+            "Zona Mediocentro Defensivo",
+            "Zona Mediocentro",
+            "Zona Centrocampista Ofensivo",
+            "Zona Banda Derecha",
+            "Zona Banda Izquierda",
+        ]
+        existing_zones = [c for c in zone_cols if c in team_df.columns]
+        if existing_zones:
+          zone_melt = team_df.melt(
+              id_vars=["Jornada", "Equipo"],
+              value_vars=existing_zones,
+              var_name="Zona",
+              value_name="Volumen",
+          )
+          fig_zone = px.bar(
+              zone_melt,
+              x="Zona",
+              y="Volumen",
+              color="Jornada",
+              barmode="group",
+              title=(
+                  "Distribución de Acciones y Participación por Zona de la"
+                  " Cancha"
+              ),
+              color_discrete_sequence=[
+                  COLOR_NAVY,
+                  COLOR_BLUE,
+                  COLOR_ACCENT,
+                  COLOR_DARK,
+              ],
+          )
+          fig_zone.update_layout(
+              plot_bgcolor="white",
+              paper_bgcolor="white",
+              xaxis_tickangle=-30,
+          )
+          st.plotly_chart(fig_zone, use_container_width=True)
+        st.markdown(
+            """<div class="analysis-card"><h4>💡 Interpretación Zonal y"
+            " Espacial</h4><p>Comparativa detallada del volumen de acciones por"
+            " pasillo y zona táctica en cada jornada"
+            " disputada.</p></div>""",
+            unsafe_allow_html=True,
+        )
+
+      with tab8:
         st.subheader("📊 Informe Técnico Global y Matriz DOFA Avanzada")
         col_d1, col_d2 = st.columns(2)
         with col_d1:
@@ -543,9 +557,6 @@ if competicion == "Liga Dimayor I 2026":
   else:
     st.error("Archivo Excel no encontrado.")
 
-# =========================================================================
-# OPCIÓN 2: COPA LIBERTADORES (ANÁLISIS DE SERIE TÁCTICA CON 7 MÓDULOS)
-# =========================================================================
 else:
   st.title("⚽ Copa Libertadores - Análisis de Serie Táctica")
   st.markdown(
