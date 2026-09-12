@@ -12,7 +12,7 @@ st.set_page_config(
 COLOR_NAVY = "#1e3d59"
 COLOR_BLUE = "#17b978"
 COLOR_ACCENT = "#ff6e40"
-COLOR_DARK = "#0f172a"
+COLOR_DARK = "#2b2d42"
 COLOR_LIGHT = "#f5f7fa"
 
 st.markdown(
@@ -71,8 +71,8 @@ competicion = st.sidebar.selectbox(
 if competicion == "Liga Dimayor I 2026":
   st.title("⚽ Tactical & Performance Dashboard - Liga Dimayor I 2026")
   st.markdown(
-      "Plataforma analítica avanzada de rendimiento colectivo, táctico,"
-      " zonal y espacial en campo."
+      "Plataforma analítica avanzada de rendimiento colectivo, táctico y"
+      " condicional por partido."
   )
   st.markdown("---")
 
@@ -117,14 +117,13 @@ if competicion == "Liga Dimayor I 2026":
 
       st.markdown("---")
 
-      tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
+      tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
           "🧠 Identidad Táctica",
           "⚙️ Construcción & Pases",
           "⚔️ Duelos & Segundas Jugadas",
           "🛡️ Presión & Bloques",
           "🎯 Scatterplot Analítico",
-          "⚽ Distribución en Cancha",
-          "🗺️ Zonas & Espacios",
+          "📈 Evolución xG vs Concedido",
           "📊 Análisis Técnico & DOFA",
       ])
 
@@ -309,227 +308,41 @@ if competicion == "Liga Dimayor I 2026":
         )
 
       with tab6:
-        st.subheader(
-            "⚽ Mapa Táctico Espacial en Terreno de Juego (Estilo Élite)"
-        )
+        st.subheader("📈 Evolución de Amenaza de Gol (xG Generado vs Concedido)")
         st.markdown(
-            "Representación gráfica profesional sobre el terreno de juego con"
-            " zonificación táctica integrada."
+            "Comparativa directa entre los goles esperados generados por el"
+            " equipo y los concedidos al rival por jornada."
         )
 
-        jornadas_disponibles = ["Todas las Jornadas"] + list(
-            team_df["Jornada"].unique()
-        )
-        jornada_sel = st.selectbox(
-            "Filtrar Jornada para el Mapa Táctico:", jornadas_disponibles
-        )
-
-        if jornada_sel == "Todas las Jornadas":
-          plot_df = team_df
-        else:
-          plot_df = team_df[team_df["Jornada"] == jornada_sel]
-
-        # Creación del campo de fútbol con Plotly (Estilo oscuro/táctico moderno)
-        fig_pitch = go.Figure()
-
-        # Contorno del campo (105 x 68)
-        fig_pitch.add_shape(
-            type="rect",
-            x0=0,
-            y0=0,
-            x1=105,
-            y1=68,
-            line=dict(color="white", width=2),
-            fillcolor="#0f172a",
-        )
-        # Línea media
-        fig_pitch.add_shape(
-            type="line",
-            x0=52.5,
-            y0=0,
-            x1=52.5,
-            y1=68,
-            line=dict(color="rgba(255,255,255,0.6)", width=2),
-        )
-        # Círculo central
-        fig_pitch.add_shape(
-            type="circle",
-            x0=52.5 - 9.15,
-            y0=34 - 9.15,
-            x1=52.5 + 9.15,
-            y1=34 + 9.15,
-            line=dict(color="rgba(255,255,255,0.6)", width=2),
-        )
-        # Área izquierda
-        fig_pitch.add_shape(
-            type="rect",
-            x0=0,
-            y0=13.84,
-            x1=16.5,
-            y1=54.16,
-            line=dict(color="rgba(255,255,255,0.6)", width=2),
-        )
-        # Área derecha
-        fig_pitch.add_shape(
-            type="rect",
-            x0=105 - 16.5,
-            y0=13.84,
-            x1=105,
-            y1=54.16,
-            line=dict(color="rgba(255,255,255,0.6)", width=2),
-        )
-
-        pitch_zones = {
-            "Zona Defensa Central": {
-                "x": 22,
-                "y": 34,
-                "name": "Defensa Central",
-            },
-            "Zona Lateral (Derecho)": {
-                "x": 22,
-                "y": 55,
-                "name": "Lateral Derecho",
-            },
-            "Zona Lateral (Izquierdo)": {
-                "x": 22,
-                "y": 13,
-                "name": "Lateral Izquierdo",
-            },
-            "Zona Mediocentro Defensivo": {
-                "x": 42,
-                "y": 34,
-                "name": "Mediocentro Defensivo",
-            },
-            "Zona Mediocentro": {"x": 52.5, "y": 34, "name": "Mediocentro"},
-            "Zona Centrocampista Ofensivo": {
-                "x": 75,
-                "y": 34,
-                "name": "Mediapunta",
-            },
-            "Zona Banda Derecha": {"x": 75, "y": 55, "name": "Banda Derecha"},
-            "Zona Banda Izquierda": {
-                "x": 75,
-                "y": 13,
-                "name": "Banda Izquierda",
-            },
-        }
-
-        zone_vals = []
-        zone_names = []
-        zone_x = []
-        zone_y = []
-        for k, v in pitch_zones.items():
-          if k in plot_df.columns:
-            val = plot_df[k].sum()
-            zone_vals.append(val)
-            zone_names.append(v["name"])
-            zone_x.append(v["x"])
-            zone_y.append(v["y"])
-
-        if zone_vals:
-          fig_pitch.add_trace(
-              go.Scatter(
-                  x=zone_x,
-                  y=zone_y,
-                  mode="markers+text",
-                  marker=dict(
-                      size=[np.sqrt(v) * 3.5 for v in zone_vals],
-                      color=zone_vals,
-                      colorscale="Tealgrn",
-                      showscale=True,
-                      opacity=0.9,
-                      line=dict(width=2, color="white"),
-                  ),
-                  text=[f"{n}\n({v})" for n, v in zip(zone_names, zone_vals)],
-                  textposition="top center",
-                  textfont=dict(color="white", size=11, family="sans-serif"),
-              )
+        if all(
+            c in team_df.columns
+            for c in [
+                "Jornada",
+                "xG basado en la posición del rematador",
+                "Goles",
+            ]
+        ):
+          fig_xg_ev = px.line(
+              team_df,
+              x="Jornada",
+              y="xG basado en la posición del rematador",
+              markers=True,
+              title="Tendencia de xG por Jornada",
+              color_discrete_sequence=[COLOR_BLUE],
           )
+          fig_xg_ev.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          st.plotly_chart(fig_xg_ev, use_container_width=True)
 
-        fig_pitch.update_layout(
-            title=dict(
-                text=f"Concentración de Acciones por Zona ({jornada_sel})",
-                font=dict(color="white"),
-            ),
-            xaxis=dict(
-                range=[-2, 107],
-                showgrid=False,
-                zeroline=False,
-                showticklabels=False,
-            ),
-            yaxis=dict(
-                range=[-2, 70],
-                showgrid=False,
-                zeroline=False,
-                showticklabels=False,
-            ),
-            plot_bgcolor="#0f172a",
-            paper_bgcolor="#0f172a",
-            height=500,
-            font=dict(color="white"),
-        )
-        st.plotly_chart(fig_pitch, use_container_width=True)
         st.markdown(
-            """<div class="analysis-card"><h4>💡 Lectura Táctica del Mapa"
-            " en Cancha</h4><p>Este mapa sitúa de forma limpia y profesional"
-            " el volumen de intervenciones en cada sector del campo, evitando"
-            " saturaciones visuales y facilitando la interpretación"
-            " táctica.</p></div>""",
+            """<div class="analysis-card"><h4>💡 Lectura de Amenaza"
+            " Ofensiva</h4><p>Este seguimiento temporal permite evaluar la"
+            " consistencia en la creación de ocasiones de gol de alta"
+            " probabilidad, facilitando la evaluación del modelo ofensivo de"
+            " cara al próximo partido.</p></div>""",
             unsafe_allow_html=True,
         )
 
       with tab7:
-        st.subheader("🗺️ Análisis Zonal & Espacial (Gráficos de Barras)")
-        zone_cols = [
-            "Zona Defensa Central",
-            "Zona Lateral (Derecho)",
-            "Zona Lateral (Izquierdo)",
-            "Zona Mediocentro Defensivo",
-            "Zona Mediocentro",
-            "Zona Centrocampista Ofensivo",
-            "Zona Banda Derecha",
-            "Zona Banda Izquierda",
-        ]
-        existing_zones = [c for c in zone_cols if c in team_df.columns]
-        if existing_zones:
-          zone_melt = team_df.melt(
-              id_vars=["Jornada", "Equipo"],
-              value_vars=existing_zones,
-              var_name="Zona",
-              value_name="Volumen",
-          )
-          fig_zone = px.bar(
-              zone_melt,
-              x="Zona",
-              y="Volumen",
-              color="Jornada",
-              barmode="group",
-              title=(
-                  "Distribución de Acciones y Participación por Zona de la"
-                  " Cancha"
-              ),
-              color_discrete_sequence=[
-                  COLOR_NAVY,
-                  COLOR_BLUE,
-                  COLOR_ACCENT,
-                  COLOR_DARK,
-              ],
-          )
-          fig_zone.update_layout(
-              plot_bgcolor="white",
-              paper_bgcolor="white",
-              xaxis_tickangle=-30,
-          )
-          st.plotly_chart(fig_zone, use_container_width=True)
-        st.markdown(
-            """<div class="analysis-card"><h4>💡 Interpretación Zonal y"
-            " Espacial</h4><p>Comparativa detallada del volumen de acciones por"
-            " pasillo y zona táctica en cada jornada"
-            " disputada.</p></div>""",
-            unsafe_allow_html=True,
-        )
-
-      with tab8:
         st.subheader("📊 Informe Técnico Global y Matriz DOFA Avanzada")
         col_d1, col_d2 = st.columns(2)
         with col_d1:
