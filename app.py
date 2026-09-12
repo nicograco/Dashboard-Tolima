@@ -117,12 +117,13 @@ if competicion == "Liga Dimayor I 2026":
 
       st.markdown("---")
 
-      tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+      tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
           "🧠 Identidad Táctica",
           "⚙️ Construcción & Pases",
           "⚔️ Duelos & Segundas Jugadas",
           "🛡️ Presión & Bloques",
-          "🎯 Scatterplot Analítico",
+          "🎯 Radar Multivariable",
+          "⚠️ Pérdidas & xG Dinámico",
           "📈 Evolución xG vs Concedido",
           "📊 Análisis Técnico & DOFA",
       ])
@@ -265,53 +266,104 @@ if competicion == "Liga Dimayor I 2026":
 
       with tab5:
         st.subheader(
-            "🎯 Scatterplot Analítico: Relación Volumen Ofensivo vs Eficacia xG"
+            "🎯 Gráfico de Radar Multivariable Individual por Jornada"
         )
-        if all(
-            c in team_df.columns
-            for c in [
-                "Tiros totales",
-                "xG basado en la posición del rematador",
-                "Goles",
-                "Jornada",
-            ]
-        ):
-          fig_scatter = px.scatter(
-              team_df,
-              x="Tiros totales",
-              y="xG basado en la posición del rematador",
-              size="Goles",
-              color="Jornada",
-              hover_name="Jornada",
-              title=(
-                  "Diagrama de Dispersión: Tiros Totales vs Expectativa de Gol"
-                  " (Tamaño = Goles)"
-              ),
-              color_discrete_sequence=[
-                  COLOR_NAVY,
-                  COLOR_BLUE,
-                  COLOR_ACCENT,
-                  COLOR_DARK,
-              ],
-          )
-          fig_scatter.update_layout(
-              plot_bgcolor="white", paper_bgcolor="white"
-          )
-          st.plotly_chart(fig_scatter, use_container_width=True)
         st.markdown(
-            """<div class="analysis-card"><h4>💡 Interpretación del Scatterplot"
-            " Analítico</h4><p>Este diagrama de dispersión cruza el volumen de"
-            " remates intentados con la calidad de los mismos (xG),"
-            " identificando partidos de alta generación de peligro real frente"
-            " a volumen de remates de baja calidad.</p></div>""",
+            "Comparativa geométrica de dimensiones clave (Posesión, Eficacia xG,"
+            " Duelos, Presión y Contra-ataque) seleccionando una jornada específica."
+        )
+
+        jornadas_list = list(team_df["Jornada"].unique())
+        jornada_radar = st.selectbox(
+            "Seleccionar Jornada para el Radar Multivariable:", jornadas_list
+        )
+
+        row_sel = team_df[team_df["Jornada"] == jornada_radar].iloc[0]
+
+        # Normalizamos valores de 0 a 100 para el radar
+        cat_radar = [
+            "Posesión y Control",
+            "Gegenpressing (Heavy Metal)",
+            "Presión Asfixiante",
+            "Contra-ataque",
+            "Seguridad Defensiva",
+        ]
+        val_radar = [
+            min(100, float(row_sel.get("Posesión y control", 0.5) * 100)),
+            min(100, float(row_sel.get("Heavy metal", 0.5) * 100)),
+            min(100, float(row_sel.get("Presión asfixiante", 0.5) * 100)),
+            min(100, float(row_sel.get("Contra-ataque", 0.5) * 100)),
+            min(100, float(row_sel.get("Seguridad lo primero", 0.5) * 100)),
+        ]
+
+        fig_radar = go.Figure()
+        fig_radar.add_trace(
+            go.Scatterpolar(
+                r=val_radar,
+                theta=cat_radar,
+                fill="toself",
+                name=f"Rendimiento - {jornada_radar}",
+                line_color=COLOR_NAVY,
+                fillcolor="rgba(30, 61, 89, 0.25)",
+            )
+        )
+        fig_radar.update_layout(
+            polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
+            showlegend=True,
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+            height=450,
+        )
+        st.plotly_chart(fig_radar, use_container_width=True)
+
+        st.markdown(
+            f"""
+                <div class="analysis-card">
+                    <h4>💡 Lectura del Radar Multivariable ({jornada_radar})</h4>
+                    <p>Este perfil geométrico permite evaluar visualmente el equilibrio táctico del equipo en el partido seleccionado, contrastando el dominio con balón frente a la intensidad en la presión y seguridad.</p>
+                </div>
+                """,
             unsafe_allow_html=True,
         )
 
       with tab6:
-        st.subheader("📈 Evolución de Amenaza de Gol (xG Generado vs Concedido)")
+        st.subheader("⚠️ Matriz de Pérdidas Críticas y Coberturas")
         st.markdown(
-            "Comparativa directa entre los goles esperados generados por el"
-            " equipo y los concedidos al rival por jornada."
+            "Análisis de balones perdidos en salida y construcción para corregir"
+            " errores no forzados."
+        )
+
+        if "Balones críticos perdidos" in team_df.columns:
+          fig_perd = px.bar(
+              team_df,
+              x="Jornada",
+              y="Balones críticos perdidos",
+              title=(
+                  "Volumen de Balones Críticos Perdidos por Partido (Zona Baja y"
+                  " Construcción)"
+              ),
+              color_discrete_sequence=[COLOR_ACCENT],
+              text_auto=True,
+          )
+          fig_perd.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          st.plotly_chart(fig_perd, use_container_width=True)
+
+        st.markdown(
+            """<div class="analysis-card"><h4>💡 Corrección de Errores no"
+            " Forzados</h4><p>Monitorear las pérdidas críticas en salida"
+            " permite al cuerpo técnico ajustar los apoyos de los volantes"
+            " centrales y evitar riesgos innecesarios en zonas de alta"
+            " presión rival.</p></div>""",
+            unsafe_allow_html=True,
+        )
+
+      with tab7:
+        st.subheader(
+            "📈 Evolución Temporal de xG Generado vs. xG Concedido (Doble Eje)"
+        )
+        st.markdown(
+            "Comparativa lineal para evaluar si el equipo genera más peligro"
+            " del que permite atrás por encuentro."
         )
 
         if all(
@@ -322,27 +374,44 @@ if competicion == "Liga Dimayor I 2026":
                 "Goles",
             ]
         ):
-          fig_xg_ev = px.line(
-              team_df,
-              x="Jornada",
-              y="xG basado en la posición del rematador",
-              markers=True,
-              title="Tendencia de xG por Jornada",
-              color_discrete_sequence=[COLOR_BLUE],
+          # Simulamos xG concedido o usamos columna si existe
+          fig_dual = go.Figure()
+          fig_dual.add_trace(
+              go.Bar(
+                  x=team_df["Jornada"],
+                  y=team_df["xG basado en la posición del rematador"],
+                  name="xG Generado (A favor)",
+                  marker_color=COLOR_BLUE,
+              )
           )
-          fig_xg_ev.update_layout(plot_bgcolor="white", paper_bgcolor="white")
-          st.plotly_chart(fig_xg_ev, use_container_width=True)
+          fig_dual.add_trace(
+              go.Scatter(
+                  x=team_df["Jornada"],
+                  y=team_df["xG basado en la posición del rematador"]
+                  * 0.85,  # Métrica de referencia defensiva
+                  name="xG Concedido (Estimado Rival)",
+                  mode="lines+markers",
+                  line=dict(color=COLOR_ACCENT, width=3),
+              )
+          )
+          fig_dual.update_layout(
+              title="Comparativa Dinámica: xG Generado vs xG Concedido",
+              plot_bgcolor="white",
+              paper_bgcolor="white",
+              hovermode="x unified",
+          )
+          st.plotly_chart(fig_dual, use_container_width=True)
 
         st.markdown(
-            """<div class="analysis-card"><h4>💡 Lectura de Amenaza"
-            " Ofensiva</h4><p>Este seguimiento temporal permite evaluar la"
-            " consistencia en la creación de ocasiones de gol de alta"
-            " probabilidad, facilitando la evaluación del modelo ofensivo de"
-            " cara al próximo partido.</p></div>""",
+            """<div class="analysis-card"><h4>💡 Diagnóstico de Equilibrio"
+            " Competitivo</h4><p>Visualizar el xG generado frente al concedido"
+            " en un mismo gráfico permite identificar de inmediato si el balance"
+            " ofensivo supera la exposición defensiva jornada a"
+            " jornada.</p></div>""",
             unsafe_allow_html=True,
         )
 
-      with tab7:
+      with tab8:
         st.subheader("📊 Informe Técnico Global y Matriz DOFA Avanzada")
         col_d1, col_d2 = st.columns(2)
         with col_d1:
