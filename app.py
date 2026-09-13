@@ -320,7 +320,7 @@ if competicion == "Liga Dimayor I 2026":
 
         jornadas_list = list(team_df["Jornada"].unique())
         jornadas_sel = st.multiselect(
-            "Seleccionar Jornadas a Comparار:",
+            "Seleccionar Jornadas a Comparar:",
             jornadas_list,
             default=jornadas_list[: min(2, len(jornadas_list))],
         )
@@ -398,7 +398,7 @@ if competicion == "Liga Dimayor I 2026":
         )
         st.markdown(
             "Gráfico de correlación con tamaño de burbuja proporcional a los"
-            " goles y línea de tendencia estadística."
+            " goles anotados."
         )
 
         col_x_opt = st.selectbox(
@@ -434,8 +434,7 @@ if competicion == "Liga Dimayor I 2026":
               size="Goles",
               color="Jornada",
               hover_name="Jornada",
-              trendline="ols",
-              title=f"Dispersión Estilo Tableau: {col_x_opt} vs {col_y_opt} (Tamaño = Goles)",
+              title=f"Dispersión X-Y: {col_x_opt} vs {col_y_opt} (Tamaño = Goles)",
               color_discrete_sequence=[
                   COLOR_NAVY,
                   COLOR_BLUE,
@@ -444,6 +443,7 @@ if competicion == "Liga Dimayor I 2026":
                   "#e63946",
               ],
           )
+          fig_scatter_tableau.update_traces(marker=dict(size=14, opacity=0.85))
           fig_scatter_tableau.update_layout(
               plot_bgcolor="white", paper_bgcolor="white", hovermode="closest"
           )
@@ -451,8 +451,8 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Dispersión Estilo Tableau ({col_x_opt} vs {col_y_opt})</h4>
-                    <p>Inspirado en herramientas de Business Intelligence de élite, este gráfico cruza dos variables clave incorporando el <b>tamaño de burbuja por goles</b> y una <b>línea de tendencia de regresión lineal (OLS)</b>. Permite identificar rápidamente si los puntos de mayor éxito ofensivo se concentran en clústeres específicos de rendimiento táctico.</p>
+                    <h4>💡 Análisis Técnico - Dispersión X-Y ({col_x_opt} vs {col_y_opt})</h4>
+                    <p>Inspirado en herramientas de Business Intelligence de élite, este gráfico cruza dos variables clave incorporando el <b>tamaño de burbuja proporcional a los goles</b>. Permite identificar rápidamente si los puntos de mayor éxito ofensivo se concentran en clústeres específicos de rendimiento táctico.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -772,12 +772,12 @@ else:
             "Línea Defensiva",
             "Espacios Interiores",
         ],
-        "Pases Rompelineas Completados": [14, 8, 11],
+        "Pases Rompelines Completados": [14, 8, 11],
     })
     fig_m6 = px.bar(
         df_m6,
         x="Zona de Ruptura",
-        y="Pases Rompelineas Completados",
+        y="Pases Rompelines Completados",
         title="Volumen de Pases Rompelineas por Zona",
         color_discrete_sequence=[COLOR_NAVY],
         text_auto=True,
