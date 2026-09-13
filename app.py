@@ -140,7 +140,9 @@ if competicion == "Liga Dimayor I 2026":
       ])
 
       with tab1:
-        st.subheader("🧠 Pilares de Identidad Táctica (Desglose Individual)")
+        st.subheader(
+            "🧠 Tendencia Longitudinal de Pilares de Identidad Táctica"
+        )
         st.markdown(
             "*(Nota: El índice 'Heavy metal' cuantifica la intensidad del"
             " **Gegenpressing**, midiendo la contra-presión tras pérdida y la"
@@ -150,134 +152,158 @@ if competicion == "Liga Dimayor I 2026":
         col_t1, col_t2 = st.columns(2)
         with col_t1:
           if "Heavy metal" in team_df.columns:
-            fig_hm = px.bar(
+            fig_hm = px.line(
                 team_df,
                 x="Jornada",
                 y="Heavy metal",
-                title="Intensidad Gegenpressing (Heavy Metal) por Jornada",
+                markers=True,
+                title="Evolución Longitudinal: Gegenpressing (Heavy Metal)",
                 color_discrete_sequence=[COLOR_NAVY],
-                text_auto=True,
             )
-            fig_hm.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            fig_hm.update_layout(
+                plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
+            )
             st.plotly_chart(fig_hm, use_container_width=True)
           if "Contra-ataque" in team_df.columns:
-            fig_ca = px.bar(
+            fig_ca = px.line(
                 team_df,
                 x="Jornada",
                 y="Contra-ataque",
-                title="Eficacia en Contra-ataque por Jornada",
+                markers=True,
+                title="Evolución Longitudinal: Eficacia en Contra-ataque",
                 color_discrete_sequence=[COLOR_BLUE],
-                text_auto=True,
             )
-            fig_ca.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            fig_ca.update_layout(
+                plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
+            )
             st.plotly_chart(fig_ca, use_container_width=True)
         with col_t2:
           if "Presión asfixiante" in team_df.columns:
-            fig_pa = px.bar(
+            fig_pa = px.line(
                 team_df,
                 x="Jornada",
                 y="Presión asfixiante",
-                title="Índice de Presión Asfixiante por Jornada",
+                markers=True,
+                title="Evolución Longitudinal: Presión Asfixiante",
                 color_discrete_sequence=[COLOR_ACCENT],
-                text_auto=True,
             )
-            fig_pa.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            fig_pa.update_layout(
+                plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
+            )
             st.plotly_chart(fig_pa, use_container_width=True)
           if "Seguridad lo primero" in team_df.columns:
-            fig_sf = px.bar(
+            fig_sf = px.line(
                 team_df,
                 x="Jornada",
                 y="Seguridad lo primero",
-                title="Índice de Seguridad Defensiva por Jornada",
+                markers=True,
+                title="Evolución Longitudinal: Seguridad Defensiva",
                 color_discrete_sequence=[COLOR_DARK],
-                text_auto=True,
             )
-            fig_sf.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            fig_sf.update_layout(
+                plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
+            )
             st.plotly_chart(fig_sf, use_container_width=True)
 
         st.markdown(
             f"""
                 <div class="analysis-card">
                     <h4>💡 Argumentación Analítica - Comportamiento Colectivo e Identidad</h4>
-                    <p><b>1. Dinámica del Gegenpressing (Heavy Metal):</b> Los registros demuestran que la efectividad del equipo está estrechamente ligada a la agresividad en los primeros 5 segundos posteriores a la pérdida del balón. Cuando el índice supera el umbral óptimo, el bloque rival experimenta un colapso en su salida limpia, forzando envíos largos imprecisos.</p>
-                    <p><b>2. Sincronización Transicional:</b> Se observa una correlación directa entre los picos de presión asfixiante y el éxito en los contraataques. No obstante, las jornadas con menor índice de seguridad defensiva evidencian desajustes posicionales que exigen una corrección en las coberturas preventivas de los mediocentros.</p>
+                    <p><b>1. Tendencia Temporal del Gegenpressing (Heavy Metal):</b> La visualización longitudinal partido a partido permite identificar las rachas de agresividad tras pérdida. Las caídas en la curva señalan partidos donde el repliegue defensivo primó sobre la contra-presión inmediata, alterando la altura media de recuperación.</p>
+                    <p><b>2. Sincronización Transicional:</b> Se observa una correlación directa entre los incrementos longitudinales de la presión asfixiante y el éxito en la finalización de contraataques, respaldando la necesidad de sostener cargas físicas elevadas en los entrenamientos de previo partido.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
         )
 
       with tab2:
-        st.subheader("Construcción de Juego y Seguridad con el Balón")
+        st.subheader(
+            "Evolución Longitudinal: Construcción de Juego y Seguridad con el"
+            " Balón"
+        )
         if all(c in team_df.columns for c in ["Jornada", "Acierto en el pase"]):
-          fig_pass = px.bar(
+          fig_pass = px.line(
               team_df,
               x="Jornada",
               y="Acierto en el pase",
-              title="Porcentaje de Éxito en Pases (%)",
+              markers=True,
+              title="Tendencia Longitudinal - Porcentaje de Éxito en Pases (%)",
               color_discrete_sequence=[COLOR_NAVY],
-              text_auto=".3f",
           )
-          fig_pass.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          fig_pass.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
+          )
           st.plotly_chart(fig_pass, use_container_width=True)
         st.markdown(
             f"""
                 <div class="analysis-card">
                     <h4>💡 Diagnóstico Científico de Circulación y Pases</h4>
-                    <p><b>1. Estabilidad Estructural:</b> El porcentaje de acierto en el pase refleja la capacidad del equipo para dictar el ritmo del encuentro a través de posesiones largas y estructuradas. La fase de iniciación se consolida como un pilar seguro, permitiendo atraer la presión rival antes de progresar hacia carriles interiores.</p>
-                    <p><b>2. Implicaciones Físico-Tácticas:</b> Un alto dominio de la posesión reduce el desgaste aeróbico por transiciones defensivas prolongadas, optimizando el esfuerzo colectivo en la recuperación tras pérdida.</p>
+                    <p><b>1. Estabilidad Longitudinal:</b> La curva de acierto en el pase refleja la consistencia estructural en la fase de iniciación a lo largo del campeonato. Las pendientes positivas evidencian una mejor asimilación de los automatismos de salida limpia desde el fondo.</p>
+                    <p><b>2. Implicaciones Físico-Tácticas:</b> Sostener porcentajes elevados de precisión en pasillos interiores minimiza las pérdidas no forzadas y previene transiciones defensivas en inferioridad numérica.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
         )
 
       with tab3:
-        st.subheader("Disputas, Duelos y Segundas Jugadas")
+        st.subheader(
+            "Evolución Longitudinal: Disputas, Duelos y Segundas Jugadas"
+        )
         if all(
             c in team_df.columns for c in ["Jornada", "Tasa de Éxito Duelos Aéreos"]
         ):
-          fig_aero = px.bar(
+          fig_aero = px.line(
               team_df,
               x="Jornada",
               y="Tasa de Éxito Duelos Aéreos",
-              title="Evolución - Tasa de Éxito en Duelos Aéreos",
+              markers=True,
+              title=(
+                  "Tendencia Longitudinal - Tasa de Éxito en Duelos Aéreos (%)"
+              ),
               color_discrete_sequence=[COLOR_BLUE],
-              text_auto=True,
           )
-          fig_aero.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          fig_aero.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
+          )
           st.plotly_chart(fig_aero, use_container_width=True)
         st.markdown(
             f"""
                 <div class="analysis-card">
                     <h4>💡 Evaluación Biomecánica y Táctica de Duelos</h4>
-                    <p><b>1. Dominio Territorial por Fricción:</b> Las disputas aéreas y la captura de segundas jugadas actúan como barómetro del control territorial en partidos cerrados. Los datos exponen una vulnerabilidad latente en duelos defensivos dentro del tercio medio.</p>
-                    <p><b>2. Propuesta de Mejora:</b> Es indispensable intensificar los trabajos de posicionamiento corporal y anticipación en balón dividido durante los microciclos semanales para neutralizar el juego directo del oponente.</p>
+                    <p><b>1. Comportamiento Dinámico por Fricción:</b> Analizar la tasa de duelos aéreos en formato longitudinal expone las jornadas de mayor exigencia física ante rivales directos. La fluctuación de la curva indica la necesidad de ajustar las coberturas y anticipaciones en bloque bajo.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
         )
 
       with tab4:
-        st.subheader("Altura de Bloques y Presión Defensiva")
+        st.subheader(
+            "Evolución Longitudinal: Altura de Bloques y Presión Defensiva"
+        )
         if all(
             c in team_df.columns
             for c in ["Jornada", "Altura de presión promedio (m)"]
         ):
-          fig_alt = px.bar(
+          fig_alt = px.line(
               team_df,
               x="Jornada",
               y="Altura de presión promedio (m)",
-              title="Altura Promedio de Presión Defensiva (Metros)",
+              markers=True,
+              title=(
+                  "Tendencia Longitudinal - Altura Promedio de Presión Defensiva"
+                  " (Metros)"
+              ),
               color_discrete_sequence=[COLOR_ACCENT],
-              text_auto=True,
           )
-          fig_alt.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          fig_alt.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
+          )
           st.plotly_chart(fig_alt, use_container_width=True)
         st.markdown(
             f"""
                 <div class="analysis-card">
                     <h4>💡 Análisis Estructural del Bloque Defensivo</h4>
-                    <p><b>1. Amplitud y Altura de Líneas:</b> La altura promedio de presión en metros cuantifica la ambición estratégica del cuerpo técnico para disputar el partido en campo contrario. Un bloque adelantado asfixia la creación rival pero demanda una sincronización milimétrica en la línea defensiva.</p>
-                    <p><b>2. Exposición al Espacio Aespaldas:</b> Las variaciones en esta métrica explican los momentos de mayor riesgo ante contrataques verticales de alta velocidad ejecutados por adversarios con extremos veloces.</p>
+                    <p><b>1. Amplitud Temporal y Comportamiento Colectivo:</b> La línea longitudinal de altura promedio en metros permite ver de manera secuencial si el equipo mantuvo la ambición de adelantar líneas o si repliegua en bloque medio según la localía o el perfil del adversario.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -368,32 +394,31 @@ if competicion == "Liga Dimayor I 2026":
         )
 
       with tab6:
-        st.subheader("⚠️ Matriz de Pérdidas Críticas y Coberturas")
+        st.subheader("⚠️ Tendencia Longitudinal de Pérdidas Críticas")
         st.markdown(
-            "Análisis de balones perdidos en salida y construcción para corregir"
-            " errores no forzados."
+            "Seguimiento temporal de balones perdidos en salida y construcción"
+            " para corregir errores no forzados."
         )
 
         if "Balones críticos perdidos" in team_df.columns:
-          fig_perd = px.bar(
+          fig_perd = px.line(
               team_df,
               x="Jornada",
               y="Balones críticos perdidos",
-              title=(
-                  "Volumen de Balones Críticos Perdidos por Partido (Zona Baja y"
-                  " Construcción)"
-              ),
+              markers=True,
+              title="Tendencia Longitudinal - Balones Críticos Perdidos",
               color_discrete_sequence=[COLOR_ACCENT],
-              text_auto=True,
           )
-          fig_perd.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          fig_perd.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
+          )
           st.plotly_chart(fig_perd, use_container_width=True)
 
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Auditoría de Errores No Forzados</h4>
-                    <p><b>1. Mitigación de Riesgos en Zona Baja:</b> Las pérdidas en la fase de iniciación representan el detonante principal de ocasiones claras de gol concedidas al oponente. Cuantificar esta variable por partido permite al cuerpo técnico exigir mayor pragmatismo en la circulación cuando la presión rival es asfixiante.</p>
+                    <h4>💡 Auditoría Longitudinal de Errores No Forzados</h4>
+                    <p><b>1. Mitigación de Riesgos en Zona Baja:</b> Graficar las pérdidas críticas en formato longitudinal expone si los errores en iniciación responden a un patrón sistémico o a partidos específicos con presión asfixiante del rival, permitiendo ajustar los protocolos de salida de balón.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
@@ -418,11 +443,12 @@ if competicion == "Liga Dimayor I 2026":
         ):
           fig_dual = go.Figure()
           fig_dual.add_trace(
-              go.Bar(
+              go.Scatter(
                   x=team_df["Jornada"],
                   y=team_df["xG basado en la posición del rematador"],
                   name="xG Generado (A favor)",
-                  marker_color=COLOR_BLUE,
+                  mode="lines+markers",
+                  line=dict(color=COLOR_BLUE, width=3),
               )
           )
           fig_dual.add_trace(
@@ -435,7 +461,7 @@ if competicion == "Liga Dimayor I 2026":
               )
           )
           fig_dual.update_layout(
-              title="Comparativa Dinámica: xG Generado vs xG Concedido",
+              title="Tendencia Longitudinal: xG Generado vs xG Concedido",
               plot_bgcolor="white",
               paper_bgcolor="white",
               hovermode="x unified",
@@ -446,7 +472,7 @@ if competicion == "Liga Dimayor I 2026":
             f"""
                 <div class="analysis-card">
                     <h4>💡 Diagnóstico Científico de Balance Competitivo</h4>
-                    <p><b>1. Sostenibilidad del Modelo de Juego:</b> La relación entre los goles esperados generados y los concedidos determina la robustez táctica a largo plazo. Un diferencial positivo sostenido confirma la superioridad del modelo propuesto sobre el planteamiento del adversario.</p>
+                    <p><b>1. Sostenibilidad del Modelo de Juego:</b> La relación entre las curvas de goles esperados generados y concedidos determina la robustez táctica a lo largo de las jornadas. Un diferencial positivo sostenido confirma la superioridad del modelo propuesto sobre el planteamiento del adversario.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
