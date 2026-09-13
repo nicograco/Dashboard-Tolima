@@ -129,13 +129,13 @@ if competicion == "Liga Dimayor I 2026":
       st.markdown("---")
 
       tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
-          "🧠 Identidad Táctica (Barras)",
-          "⚙️ Construcción & Pases",
-          "⚔️ Duelos & Segundas Jugadas",
-          "🛡️ Presión & Bloques",
+          "🧠 Identidad (Barras)",
+          "⚙️ Pases (Dispersión X-Y)",
+          "⚔️ Duelos (Barras)",
+          "🛡️ Presión (Dispersión X-Y)",
           "🎯 Radar Multivariable",
-          "📉 Dispersión X-Y (Estilo Tableau)",
-          "🔄 Embudo de Conversión Ofensiva",
+          "📉 X-Y Avanzado (Estilo Tableau)",
+          "🔄 Embudo de Conversión",
           "📊 Análisis Técnico & DOFA",
       ])
 
@@ -144,8 +144,8 @@ if competicion == "Liga Dimayor I 2026":
             "🧠 Pilares de Identidad Táctica (Gráficos de Barras por Jornada)"
         )
         st.markdown(
-            "*(Nota: Usamos gráficos de barras para comparar el valor absoluto"
-            " de intensidad en cada jornada individual).* "
+            "*(Formato de Barras: Ideal para comparar la magnitud absoluta e"
+            " individual de cada indicador por partido).* "
         )
 
         col_t1, col_t2 = st.columns(2)
@@ -164,8 +164,8 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Gegenpressing</h4>
-                    <p>El uso de barras permite identificar de forma directa las jornadas donde la contra-presión superó el promedio táctico esperado, validando el esfuerzo físico colectivo posterior a la pérdida.</p>
+                    <h4>💡 Análisis Técnico - Gegenpressing (Barras)</h4>
+                    <p>El uso de barras permite identificar de forma directa las jornadas donde la contra-presión superó el promedio táctico esperado, validando el esfuerzo físico colectivo posterior a la pérdida del balón en campo rival.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -185,7 +185,7 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Eficacia en Contra-ataque</h4>
+                    <h4>💡 Análisis Técnico - Contra-ataque (Barras)</h4>
                     <p>Las barras muestran el rendimiento exacto en transiciones ofensivas rápidas, destacando aquellos partidos donde se capitalizaron los espacios dejados por bloques rivales adelantados.</p>
                 </div>
                 """,
@@ -207,7 +207,7 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Presión Asfixiante</h4>
+                    <h4>💡 Análisis Técnico - Presión Asfixiante (Barras)</h4>
                     <p>Cuantifica la agresividad en campo rival. Visualmente en barras facilita evaluar qué encuentros presentaron mayor despliegue condicional en la primera línea de presión.</p>
                 </div>
                 """,
@@ -228,7 +228,7 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Seguridad Defensiva</h4>
+                    <h4>💡 Análisis Técnico - Seguridad Defensiva (Barras)</h4>
                     <p>Mide el pragmatismo defensivo por partido. Las barras resaltan los encuentros donde se priorizó el orden estructural sobre los riesgos en salida.</p>
                 </div>
                 """,
@@ -236,30 +236,55 @@ if competicion == "Liga Dimayor I 2026":
             )
 
       with tab2:
-        st.subheader("Construcción de Juego y Seguridad con el Balón (Barras)")
-        if all(c in team_df.columns for c in ["Jornada", "Acierto en el pase"]):
-          fig_pass = px.bar(
+        st.subheader(
+            "⚙️ Construcción de Juego (Gráfico de Dispersión X-Y)"
+        )
+        st.markdown(
+            "*(Formato X-Y: Cruza la posesión del balón frente al porcentaje"
+            " de acierto en pases para evaluar eficiencia constructiva).* "
+        )
+
+        if all(
+            c in team_df.columns
+            for c in ["Posesión y control", "Acierto en el pase", "Jornada"]
+        ):
+          fig_scatter_pases = px.scatter(
               team_df,
-              x="Jornada",
+              x="Posesión y control",
               y="Acierto en el pase",
-              title="Porcentaje de Éxito en Pases (%)",
-              color_discrete_sequence=[COLOR_NAVY],
-              text_auto=".3f",
+              color="Jornada",
+              hover_name="Jornada",
+              title="Dispersión X-Y: Posesión y Control vs Acierto en el Pase",
+              color_discrete_sequence=[
+                  COLOR_NAVY,
+                  COLOR_BLUE,
+                  COLOR_ACCENT,
+                  COLOR_DARK,
+                  "#e63946",
+              ],
           )
-          fig_pass.update_layout(plot_bgcolor="white", paper_bgcolor="white")
-          st.plotly_chart(fig_pass, use_container_width=True)
+          fig_scatter_pases.update_traces(marker=dict(size=14))
+          fig_scatter_pases.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white"
+          )
+          st.plotly_chart(fig_scatter_pases, use_container_width=True)
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Circulación y Pases</h4>
-                    <p>Las barras de precisión en el pase permiten contrastar el éxito en la iniciación partido a partido, evaluando la estabilidad en la posesión y la reducción de pérdidas no forzadas.</p>
+                    <h4>💡 Análisis Técnico - Dispersión Posesión vs Acierto en Pases</h4>
+                    <p>Este gráfico de dispersión evalúa si un mayor porcentaje de posesión se traduce efectivamente en una mayor precisión de circulación. Permite detectar partidos donde el equipo dominó el balón pero cayó en imprecisiones o, por el contrario, fue altamente clínico con menor posesión.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
           )
 
       with tab3:
-        st.subheader("Disputas, Duelos y Segundas Jugadas (Barras)")
+        st.subheader("⚔️ Disputas y Duelos (Gráficos de Barras)")
+        st.markdown(
+            "*(Formato de Barras: Evaluación individual de la tasa de éxito en"
+            " duelos aéreos por jornada).* "
+        )
+
         if all(
             c in team_df.columns for c in ["Jornada", "Tasa de Éxito Duelos Aéreos"]
         ):
@@ -276,7 +301,7 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Duelos Aéreos</h4>
+                    <h4>💡 Análisis Técnico - Duelos Aéreos (Barras)</h4>
                     <p>Permite visualizar el dominio en balones divididos jornada a jornada, identificando los enfrentamientos donde el rival exigió mayor rigor en los despejes y duelos defensivos.</p>
                 </div>
                 """,
@@ -284,26 +309,45 @@ if competicion == "Liga Dimayor I 2026":
           )
 
       with tab4:
-        st.subheader("Altura de Bloques y Presión Defensiva (Barras)")
+        st.subheader("🛡️ Presión Defensiva (Gráfico de Dispersión X-Y)")
+        st.markdown(
+            "*(Formato X-Y: Relaciona la altura del bloque defensivo frente a"
+            " la presión asfixiante aplicada).* "
+        )
+
         if all(
             c in team_df.columns
-            for c in ["Jornada", "Altura de presión promedio (m)"]
+            for c in [
+                "Altura de presión promedio (m)",
+                "Presión asfixiante",
+                "Jornada",
+            ]
         ):
-          fig_alt = px.bar(
+          fig_scatter_pres = px.scatter(
               team_df,
-              x="Jornada",
-              y="Altura de presión promedio (m)",
-              title="Altura Promedio de Presión Defensiva (Metros)",
-              color_discrete_sequence=[COLOR_ACCENT],
-              text_auto=True,
+              x="Altura de presión promedio (m)",
+              y="Presión asfixiante",
+              color="Jornada",
+              hover_name="Jornada",
+              title="Dispersión X-Y: Altura de Bloque (m) vs Presión Asfixiante",
+              color_discrete_sequence=[
+                  COLOR_NAVY,
+                  COLOR_BLUE,
+                  COLOR_ACCENT,
+                  COLOR_DARK,
+                  "#e63946",
+              ],
           )
-          fig_alt.update_layout(plot_bgcolor="white", paper_bgcolor="white")
-          st.plotly_chart(fig_alt, use_container_width=True)
+          fig_scatter_pres.update_traces(marker=dict(size=14))
+          fig_scatter_pres.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white"
+          )
+          st.plotly_chart(fig_scatter_pres, use_container_width=True)
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Altura de Bloque</h4>
-                    <p>Las barras muestran la ambición de presión en metros por encuentro, evidenciando los cambios tácticos entre partidos de local y visitante.</p>
+                    <h4>💡 Análisis Técnico - Dispersión Altura de Bloque vs Presión</h4>
+                    <p>Cruza la ambición espacial defensiva (metros desde la portería) con la efectividad de la presión. Ayuda a comprobar si adelantar el bloque realmente generó mayor asfixia al rival o si dejó espacios vulnerables a espaldas.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -397,8 +441,8 @@ if competicion == "Liga Dimayor I 2026":
             "📉 Gráfico de Dispersión X-Y Avanzado (Estilo Tableau / BI)"
         )
         st.markdown(
-            "Gráfico de correlación con tamaño de burbuja proporcional a los"
-            " goles anotados."
+            "Gráfico de correlación libre con tamaño de burbuja proporcional a"
+            " los goles anotados."
         )
 
         col_x_opt = st.selectbox(
@@ -451,7 +495,7 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Dispersión X-Y ({col_x_opt} vs {col_y_opt})</h4>
+                    <h4>💡 Análisis Técnico - Dispersión Estilo Tableau ({col_x_opt} vs {col_y_opt})</h4>
                     <p>Inspirado en herramientas de Business Intelligence de élite, este gráfico cruza dos variables clave incorporando el <b>tamaño de burbuja proporcional a los goles</b>. Permite identificar rápidamente si los puntos de mayor éxito ofensivo se concentran en clústeres específicos de rendimiento táctico.</p>
                 </div>
                 """,
@@ -543,7 +587,7 @@ if competicion == "Liga Dimayor I 2026":
             """
         <div class="analysis-card">
             <h4>📋 Conclusión Analítica Integral - Dirección de Rendimiento</h4>
-            <p><b>1. Consolidación Estructural:</b> El uso combinado de gráficos de barras absolutas, dispersión X-Y avanzada estilo Tableau y el embudo de conversión demuestra que el modelo de juego se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
+            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y y el embudo de conversión demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
             <p><b>2. Factores de Riesgo Táctico:</b> Los momentos de mayor vulnerabilidad coinciden con caídas en la efectividad del embudo ofensivo en el último tercio, lo que subraya la necesidad de mejorar la toma de decisiones en zona de finalización.</p>
             <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión X-Y y el análisis de conversión para enfocar los entrenamientos en la optimización de remates tras la progresión por bandas.</p>
         </div>
