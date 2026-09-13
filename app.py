@@ -156,7 +156,7 @@ if competicion == "Liga Dimayor I 2026":
                 x="Jornada",
                 y="Heavy metal",
                 title="Intensidad Gegenpressing (Heavy Metal) por Jornada",
-                color_discrete_sequence=[COLOR_NAVY],
+                color="Jornada",
                 text_auto=True,
             )
             fig_hm.update_layout(plot_bgcolor="white", paper_bgcolor="white")
@@ -165,7 +165,7 @@ if competicion == "Liga Dimayor I 2026":
                 f"""
                 <div class="analysis-card">
                     <h4>💡 Análisis Técnico - Gegenpressing (Barras)</h4>
-                    <p>El uso de barras permite identificar de forma directa las jornadas donde la contra-presión superó el promedio táctico esperado, validando el esfuerzo físico colectivo posterior a la pérdida del balón en campo rival.</p>
+                    <p>El uso de barras con distinción cromática por jornada permite identificar de forma directa los encuentros donde la contra-presión superó el promedio táctico esperado, validando el esfuerzo físico colectivo posterior a la pérdida del balón en campo rival.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -177,7 +177,7 @@ if competicion == "Liga Dimayor I 2026":
                 x="Jornada",
                 y="Contra-ataque",
                 title="Eficacia en Contra-ataque por Jornada",
-                color_discrete_sequence=[COLOR_BLUE],
+                color="Jornada",
                 text_auto=True,
             )
             fig_ca.update_layout(plot_bgcolor="white", paper_bgcolor="white")
@@ -199,7 +199,7 @@ if competicion == "Liga Dimayor I 2026":
                 x="Jornada",
                 y="Presión asfixiante",
                 title="Índice de Presión Asfixiante por Jornada",
-                color_discrete_sequence=[COLOR_ACCENT],
+                color="Jornada",
                 text_auto=True,
             )
             fig_pa.update_layout(plot_bgcolor="white", paper_bgcolor="white")
@@ -220,7 +220,7 @@ if competicion == "Liga Dimayor I 2026":
                 x="Jornada",
                 y="Seguridad lo primero",
                 title="Índice de Seguridad Defensiva por Jornada",
-                color_discrete_sequence=[COLOR_DARK],
+                color="Jornada",
                 text_auto=True,
             )
             fig_sf.update_layout(plot_bgcolor="white", paper_bgcolor="white")
@@ -259,13 +259,6 @@ if competicion == "Liga Dimayor I 2026":
               color="Jornada",
               hover_name="Jornada",
               title="Dispersión X-Y con Medias: Posesión y Control vs Acierto en el Pase",
-              color_discrete_sequence=[
-                  COLOR_NAVY,
-                  COLOR_BLUE,
-                  COLOR_ACCENT,
-                  COLOR_DARK,
-                  "#e63946",
-              ],
           )
           fig_scatter_pases.update_traces(marker=dict(size=14))
           fig_scatter_pases.add_vline(
@@ -287,8 +280,8 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Dispersión con Medias (Posesión vs Acierto)</h4>
-                    <p>Las líneas discontinuas representan la <b>media aritmética del torneo</b> para cada eje, generando 4 cuadrantes. Los partidos ubicados en el cuadrante superior derecho reflejan una circulación de balón óptima y superior al promedio, mientras que el cuadrante inferior izquierdo señala alertas de imprecisión y bajo control territorial.</p>
+                    <h4>💡 Análisis Técnico Detallado - Cuadrantes de Dispersión (Posesión vs Acierto)</h4>
+                    <p><b>¿Por qué algunos puntos quedan por encima de la media y otros por debajo?</b> Las líneas discontinuas representan la <b>media aritmética del torneo</b>. Cuando un punto se ubica en el <i>cuadrante superior derecho (Alto/Alto)</i>, indica un partido donde el equipo dominó la posesión y mantuvo una circulación sumamente limpia. En contraste, puntos en el <i>cuadrante superior izquierdo (Bajo Posesión / Alto Acierto)</i> revelan encuentros de resistencia o bloque bajo altamente clínicos, donde se priorizó el pase seguro sin acaparar el balón. Los puntos por debajo de la media en ambos ejes exponen partidos de imprecisión general.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -309,7 +302,7 @@ if competicion == "Liga Dimayor I 2026":
               x="Jornada",
               y="Tasa de Éxito Duelos Aéreos",
               title="Evolución - Tasa de Éxito en Duelos Aéreos",
-              color_discrete_sequence=[COLOR_BLUE],
+              color="Jornada",
               text_auto=True,
           )
           fig_aero.update_layout(plot_bgcolor="white", paper_bgcolor="white")
@@ -351,13 +344,6 @@ if competicion == "Liga Dimayor I 2026":
               color="Jornada",
               hover_name="Jornada",
               title="Dispersión X-Y con Medias: Altura de Bloque (m) vs Presión Asfixiante",
-              color_discrete_sequence=[
-                  COLOR_NAVY,
-                  COLOR_BLUE,
-                  COLOR_ACCENT,
-                  COLOR_DARK,
-                  "#e63946",
-              ],
           )
           fig_scatter_pres.update_traces(marker=dict(size=14))
           fig_scatter_pres.add_vline(
@@ -379,8 +365,8 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Dispersión con Medias (Bloque vs Presión)</h4>
-                    <p>Al trazar las medias de altura de bloque y presión asfixiante, este gráfico divide la ambición defensiva en cuadrantes. Permite detectar qué partidos mantuvieron una presión alta sincronizada por encima del promedio del torneo.</p>
+                    <h4>💡 Análisis Técnico Detallado - Cuadrantes de Dispersión (Bloque vs Presión)</h4>
+                    <p><b>¿Por qué algunos puntos quedan por encima de la media y otros por debajo?</b> Al cruzar la altura del bloque con la presión asfixiante, observamos que hay jornadas donde el equipo adelantó sus líneas (a la derecha de la media X) pero no logró asfixiar eficazmente al rival (por debajo de la media Y), lo que evidencia un desajuste temporal entre la línea defensiva y los centrocampistas. Los puntos en el cuadrante superior derecho muestran la sincronización perfecta de una presión alta y adelantada.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -516,13 +502,6 @@ if competicion == "Liga Dimayor I 2026":
               color="Jornada",
               hover_name="Jornada",
               title=f"Dispersión X-Y con Medias: {col_x_opt} vs {col_y_opt} (Tamaño = Goles)",
-              color_discrete_sequence=[
-                  COLOR_NAVY,
-                  COLOR_BLUE,
-                  COLOR_ACCENT,
-                  COLOR_DARK,
-                  "#e63946",
-              ],
           )
           fig_scatter_med.update_traces(marker=dict(size=14, opacity=0.85))
           fig_scatter_med.add_vline(
@@ -544,8 +523,8 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Dispersión con Medias ({col_x_opt} vs {col_y_opt})</h4>
-                    <p>Al incorporar las líneas de media aritmética en ambos ejes, este gráfico divide el rendimiento en cuatro cuadrantes claros. Los partidos ubicados en el cuadrante superior derecho representan el estándar de excelencia colectiva (superando ambas medias), mientras que los cuadrantes opuestos exigen planes de mejora específicos.</p>
+                    <h4>💡 Análisis Técnico Detallado - Dispersión con Medias ({col_x_opt} vs {col_y_opt})</h4>
+                    <p><b>¿Por qué algunos puntos quedan por encima de la media y otros por debajo?</b> Al incorporar las líneas de referencia media, cada jornada se posiciona en uno de los cuatro cuadrantes del rendimiento. Los puntos con burbujas grandes situados por encima de la media en ambas dimensiones representan partidos de máxima eficacia colectiva. Aquellos partidos que quedan por debajo de la media en el eje Y a pesar de tener buenos valores en el eje X indican problemas de conversión o pérdida de eficacia en el último tercio.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -639,7 +618,7 @@ if competicion == "Liga Dimayor I 2026":
             """
         <div class="analysis-card">
             <h4>📋 Conclusión Analítica Integral - Dirección de Rendimiento</h4>
-            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y con líneas de media, y el embudo de conversión real demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
+            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y con líneas de referencia media, y el embudo de conversión real demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
             <p><b>2. Factores de Riesgo Táctico:</b> Los momentos de mayor vulnerabilidad coinciden con caídas en la efectividad del embudo ofensivo en el último tercio, lo que subraya la necesidad de mejorar la toma de decisiones en zona de finalización.</p>
             <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión con líneas de referencia media para enfocar los entrenamientos en la optimización de rendimientos que se encuentren por debajo del estándar colectivo.</p>
         </div>
