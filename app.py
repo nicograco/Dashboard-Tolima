@@ -134,7 +134,7 @@ if competicion == "Liga Dimayor I 2026":
           "⚔️ Duelos (Barras)",
           "🛡️ Presión (Dispersión X-Y)",
           "🎯 Radar Multivariable",
-          "📉 X-Y Avanzado (Estilo Tableau)",
+          "🗺️ Zonas (Diagrama de Árbol)",
           "🔄 Embudo de Conversión",
           "📊 Análisis Técnico & DOFA",
       ])
@@ -438,65 +438,53 @@ if competicion == "Liga Dimayor I 2026":
 
       with tab6:
         st.subheader(
-            "📉 Gráfico de Dispersión X-Y Avanzado (Estilo Tableau / BI)"
+            "🗺️ Distribución Zonal (Diagrama de Árbol / Treemap Jerárquico)"
         )
         st.markdown(
-            "Gráfico de correlación libre con tamaño de burbuja proporcional a"
-            " los goles anotados."
+            "Representación jerárquica mediante rectángulos proporcionales para"
+            " visualizar qué zonas del campo concentran mayor volumen de"
+            " operaciones."
         )
 
-        col_x_opt = st.selectbox(
-            "Eje X (Variable Independiente):",
-            [
-                "Posesión y control",
-                "Heavy metal",
-                "Presión asfixiante",
-                "Contra-ataque",
-                "Tiros totales",
-            ],
-            index=0,
-        )
-        col_y_opt = st.selectbox(
-            "Eje Y (Variable Dependiente):",
-            [
-                "xG basado en la posición del rematador",
-                "Acierto en el pase",
-                "Goles",
-                "Balones críticos perdidos",
-            ],
-            index=0,
-        )
+        zone_cols_tree = [
+            "Zona Defensa Central",
+            "Zona Lateral (Derecho)",
+            "Zona Lateral (Izquierdo)",
+            "Zona Mediocentro Defensivo",
+            "Zona Mediocentro",
+            "Zona Centrocampista Ofensivo",
+            "Zona Banda Derecha",
+            "Zona Banda Izquierda",
+        ]
+        existing_tree_cols = [c for c in zone_cols_tree if c in team_df.columns]
 
-        if all(
-            c in team_df.columns
-            for c in [col_x_opt, col_y_opt, "Jornada", "Goles"]
-        ):
-          fig_scatter_tableau = px.scatter(
-              team_df,
-              x=col_x_opt,
-              y=col_y_opt,
-              size="Goles",
-              color="Jornada",
-              hover_name="Jornada",
-              title=f"Dispersión X-Y: {col_x_opt} vs {col_y_opt} (Tamaño = Goles real)",
-              color_discrete_sequence=[
-                  COLOR_NAVY,
-                  COLOR_BLUE,
-                  COLOR_ACCENT,
-                  COLOR_DARK,
-                  "#e63946",
-              ],
+        if existing_tree_cols:
+          # Agrupamos por zona sumando sus valores
+          tree_data = []
+          for col in existing_tree_cols:
+            tree_data.append(
+                {"Zona Táctica": col, "Volumen": team_df[col].sum()}
+            )
+          df_tree = pd.DataFrame(tree_data)
+
+          fig_treemap = px.treemap(
+              df_tree,
+              path=["Zona Táctica"],
+              values="Volumen",
+              title=(
+                  "Mapa de Árbol Proporcional: Concentración Operacional por"
+                  " Zona"
+              ),
+              color="Volumen",
+              color_continuous_scale="Teal",
           )
-          fig_scatter_tableau.update_traces(marker=dict(size=14, opacity=0.85))
-          fig_scatter_tableau.update_layout(
-              plot_bgcolor="white", paper_bgcolor="white", hovermode="closest"
-          )
-          st.plotly_chart(fig_scatter_tableau, use_container_width=True)
+          fig_treemap.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          st.plotly_chart(fig_treemap, use_container_width=True)
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Dispersión Estilo Tableau ({col_x_opt} vs {col_y_opt})</h4>
-                    <p>Inspirado en herramientas de Business Intelligence de élite, este gráfico cruza dos variables clave incorporando el <b>tamaño de burbuja proporcional a los goles reales</b>. Permite identificar rápidamente si los puntos de mayor éxito ofensivo se concentran en clústeres específicos de rendimiento táctico.</p>
+                    <h4>💡 Análisis Técnico - Diagrama de Árbol Zonal (Treemap)</h4>
+                    <p>Este diagrama jerárquico representa el volumen total de intervenciones mediante rectángulos proporcionales. Permite al cuerpo técnico identificar con absoluta claridad qué pasillos del campo (por ejemplo, el mediocentro defensivo o la defensa central) acaparan la mayor densidad operacional del equipo a lo largo del torneo.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -510,7 +498,6 @@ if competicion == "Liga Dimayor I 2026":
             " Goles reales)."
         )
 
-        # Datos reales exactos extraídos del Excel
         total_pases = (
             int(team_df["Pases exitosos"].sum())
             if "Pases exitosos" in team_df.columns
@@ -524,7 +511,7 @@ if competicion == "Liga Dimayor I 2026":
         total_goles = (
             int(team_df["Goles"].sum()) if "Goles" in team_df.columns else 14
         )
-        fase_penetracion = int(total_pases * 0.45)  # Estimado de penetración
+        fase_penetracion = int(total_pases * 0.45)
 
         funnel_stages = [
             "Pases Exitosos en Construcción",
@@ -558,7 +545,6 @@ if competicion == "Liga Dimayor I 2026":
             paper_bgcolor="white",
         )
         st.plotly_chart(fig_funnel, use_container_width=True)
-
         st.markdown(
             f"""
                 <div class="analysis-card">
@@ -592,7 +578,7 @@ if competicion == "Liga Dimayor I 2026":
             """
         <div class="analysis-card">
             <h4>📋 Conclusión Analítica Integral - Dirección de Rendimiento</h4>
-            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y, gráficos de dispersión avanzados tipo Tableau y el embudo de conversión real demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
+            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y, mapas de árbol jerárquicos y el embudo de conversión real demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
             <p><b>2. Factores de Riesgo Táctico:</b> Los momentos de mayor vulnerabilidad coinciden con caídas en la efectividad del embudo ofensivo en el último tercio, lo que subraya la necesidad de mejorar la toma de decisiones en zona de finalización.</p>
             <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión X-Y y el análisis de conversión para enfocar los entrenamientos en la optimización de remates tras la progresión por bandas.</p>
         </div>
