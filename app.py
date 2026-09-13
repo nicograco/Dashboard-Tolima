@@ -134,7 +134,7 @@ if competicion == "Liga Dimayor I 2026":
           "⚔️ Duelos (Barras)",
           "🛡️ Presión (Dispersión X-Y)",
           "🎯 Radar Multivariable",
-          "🗺️ Zonas (Diagrama de Árbol)",
+          "📉 X-Y con Líneas de Media",
           "🔄 Embudo de Conversión",
           "📊 Análisis Técnico & DOFA",
       ])
@@ -237,24 +237,28 @@ if competicion == "Liga Dimayor I 2026":
 
       with tab2:
         st.subheader(
-            "⚙️ Construcción de Juego (Gráfico de Dispersión X-Y)"
+            "⚙️ Construcción de Juego (Gráfico de Dispersión X-Y con Medias)"
         )
         st.markdown(
-            "*(Formato X-Y: Cruza la posesión del balón frente al porcentaje"
-            " de acierto en pases para evaluar eficiencia constructiva).* "
+            "*(Formato X-Y con Medias: Cruza la posesión del balón frente al"
+            " porcentaje de acierto en pases, dividiendo el gráfico en"
+            " cuadrantes analíticos).* "
         )
 
         if all(
             c in team_df.columns
             for c in ["Posesión y control", "Acierto en el pase", "Jornada"]
         ):
+          mean_x = team_df["Posesión y control"].mean()
+          mean_y = team_df["Acierto en el pase"].mean()
+
           fig_scatter_pases = px.scatter(
               team_df,
               x="Posesión y control",
               y="Acierto en el pase",
               color="Jornada",
               hover_name="Jornada",
-              title="Dispersión X-Y: Posesión y Control vs Acierto en el Pase",
+              title="Dispersión X-Y con Medias: Posesión y Control vs Acierto en el Pase",
               color_discrete_sequence=[
                   COLOR_NAVY,
                   COLOR_BLUE,
@@ -264,6 +268,18 @@ if competicion == "Liga Dimayor I 2026":
               ],
           )
           fig_scatter_pases.update_traces(marker=dict(size=14))
+          fig_scatter_pases.add_vline(
+              x=mean_x,
+              line_dash="dash",
+              line_color="gray",
+              annotation_text=f"Media X: {mean_x:.2f}",
+          )
+          fig_scatter_pases.add_hline(
+              y=mean_y,
+              line_dash="dash",
+              line_color="gray",
+              annotation_text=f"Media Y: {mean_y:.2f}",
+          )
           fig_scatter_pases.update_layout(
               plot_bgcolor="white", paper_bgcolor="white"
           )
@@ -271,8 +287,8 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Dispersión Posesión vs Acierto en Pases</h4>
-                    <p>Este gráfico de dispersión evalúa si un mayor porcentaje de posesión se traduce efectivamente en una mayor precisión de circulación. Permite detectar partidos donde el equipo dominó el balón pero cayó en imprecisiones o, por el contrario, fue altamente clínico con menor posesión.</p>
+                    <h4>💡 Análisis Técnico - Dispersión con Medias (Posesión vs Acierto)</h4>
+                    <p>Las líneas discontinuas representan la <b>media aritmética del torneo</b> para cada eje, generando 4 cuadrantes. Los partidos ubicados en el cuadrante superior derecho reflejan una circulación de balón óptima y superior al promedio, mientras que el cuadrante inferior izquierdo señala alertas de imprecisión y bajo control territorial.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -309,10 +325,12 @@ if competicion == "Liga Dimayor I 2026":
           )
 
       with tab4:
-        st.subheader("🛡️ Presión Defensiva (Gráfico de Dispersión X-Y)")
+        st.subheader(
+            "🛡️ Presión Defensiva (Gráfico de Dispersión X-Y con Medias)"
+        )
         st.markdown(
-            "*(Formato X-Y: Relaciona la altura del bloque defensivo frente a"
-            " la presión asfixiante aplicada).* "
+            "*(Formato X-Y con Medias: Relaciona la altura del bloque defensivo"
+            " frente a la presión asfixiante con líneas de referencia).* "
         )
 
         if all(
@@ -323,13 +341,16 @@ if competicion == "Liga Dimayor I 2026":
                 "Jornada",
             ]
         ):
+          mean_alt = team_df["Altura de presión promedio (m)"].mean()
+          mean_pres = team_df["Presión asfixiante"].mean()
+
           fig_scatter_pres = px.scatter(
               team_df,
               x="Altura de presión promedio (m)",
               y="Presión asfixiante",
               color="Jornada",
               hover_name="Jornada",
-              title="Dispersión X-Y: Altura de Bloque (m) vs Presión Asfixiante",
+              title="Dispersión X-Y con Medias: Altura de Bloque (m) vs Presión Asfixiante",
               color_discrete_sequence=[
                   COLOR_NAVY,
                   COLOR_BLUE,
@@ -339,6 +360,18 @@ if competicion == "Liga Dimayor I 2026":
               ],
           )
           fig_scatter_pres.update_traces(marker=dict(size=14))
+          fig_scatter_pres.add_vline(
+              x=mean_alt,
+              line_dash="dash",
+              line_color="gray",
+              annotation_text=f"Media X: {mean_alt:.1f}m",
+          )
+          fig_scatter_pres.add_hline(
+              y=mean_pres,
+              line_dash="dash",
+              line_color="gray",
+              annotation_text=f"Media Y: {mean_pres:.2f}",
+          )
           fig_scatter_pres.update_layout(
               plot_bgcolor="white", paper_bgcolor="white"
           )
@@ -346,8 +379,8 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Dispersión Altura de Bloque vs Presión</h4>
-                    <p>Cruza la ambición espacial defensiva (metros desde la portería) con la efectividad de la presión. Ayuda a comprobar si adelantar el bloque realmente generó mayor asfixia al rival o si dejó espacios vulnerables a espaldas.</p>
+                    <h4>💡 Análisis Técnico - Dispersión con Medias (Bloque vs Presión)</h4>
+                    <p>Al trazar las medias de altura de bloque y presión asfixiante, este gráfico divide la ambición defensiva en cuadrantes. Permite detectar qué partidos mantuvieron una presión alta sincronizada por encima del promedio del torneo.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -438,53 +471,81 @@ if competicion == "Liga Dimayor I 2026":
 
       with tab6:
         st.subheader(
-            "🗺️ Distribución Zonal (Diagrama de Árbol / Treemap Jerárquico)"
+            "📉 Gráfico de Dispersión X-Y con Líneas de Media (Correlación de"
+            " Variables)"
         )
         st.markdown(
-            "Representación jerárquica mediante rectángulos proporcionales para"
-            " visualizar qué zonas del campo concentran mayor volumen de"
-            " operaciones."
+            "Gráfico de correlación libre con tamaño de burbuja proporcional a"
+            " los goles anotados y líneas de referencia de la media."
         )
 
-        zone_cols_tree = [
-            "Zona Defensa Central",
-            "Zona Lateral (Derecho)",
-            "Zona Lateral (Izquierdo)",
-            "Zona Mediocentro Defensivo",
-            "Zona Mediocentro",
-            "Zona Centrocampista Ofensivo",
-            "Zona Banda Derecha",
-            "Zona Banda Izquierda",
-        ]
-        existing_tree_cols = [c for c in zone_cols_tree if c in team_df.columns]
+        col_x_opt = st.selectbox(
+            "Eje X (Variable Independiente):",
+            [
+                "Posesión y control",
+                "Heavy metal",
+                "Presión asfixiante",
+                "Contra-ataque",
+                "Tiros totales",
+            ],
+            index=0,
+        )
+        col_y_opt = st.selectbox(
+            "Eje Y (Variable Dependiente):",
+            [
+                "xG basado en la posición del rematador",
+                "Acierto en el pase",
+                "Goles",
+                "Balones críticos perdidos",
+            ],
+            index=0,
+        )
 
-        if existing_tree_cols:
-          # Agrupamos por zona sumando sus valores
-          tree_data = []
-          for col in existing_tree_cols:
-            tree_data.append(
-                {"Zona Táctica": col, "Volumen": team_df[col].sum()}
-            )
-          df_tree = pd.DataFrame(tree_data)
+        if all(
+            c in team_df.columns
+            for c in [col_x_opt, col_y_opt, "Jornada", "Goles"]
+        ):
+          mx = team_df[col_x_opt].mean()
+          my = team_df[col_y_opt].mean()
 
-          fig_treemap = px.treemap(
-              df_tree,
-              path=["Zona Táctica"],
-              values="Volumen",
-              title=(
-                  "Mapa de Árbol Proporcional: Concentración Operacional por"
-                  " Zona"
-              ),
-              color="Volumen",
-              color_continuous_scale="Teal",
+          fig_scatter_med = px.scatter(
+              team_df,
+              x=col_x_opt,
+              y=col_y_opt,
+              size="Goles",
+              color="Jornada",
+              hover_name="Jornada",
+              title=f"Dispersión X-Y con Medias: {col_x_opt} vs {col_y_opt} (Tamaño = Goles)",
+              color_discrete_sequence=[
+                  COLOR_NAVY,
+                  COLOR_BLUE,
+                  COLOR_ACCENT,
+                  COLOR_DARK,
+                  "#e63946",
+              ],
           )
-          fig_treemap.update_layout(plot_bgcolor="white", paper_bgcolor="white")
-          st.plotly_chart(fig_treemap, use_container_width=True)
+          fig_scatter_med.update_traces(marker=dict(size=14, opacity=0.85))
+          fig_scatter_med.add_vline(
+              x=mx,
+              line_dash="dash",
+              line_color="gray",
+              annotation_text=f"Media X: {mx:.2f}",
+          )
+          fig_scatter_med.add_hline(
+              y=my,
+              line_dash="dash",
+              line_color="gray",
+              annotation_text=f"Media Y: {my:.2f}",
+          )
+          fig_scatter_med.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white", hovermode="closest"
+          )
+          st.plotly_chart(fig_scatter_med, use_container_width=True)
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Diagrama de Árbol Zonal (Treemap)</h4>
-                    <p>Este diagrama jerárquico representa el volumen total de intervenciones mediante rectángulos proporcionales. Permite al cuerpo técnico identificar con absoluta claridad qué pasillos del campo (por ejemplo, el mediocentro defensivo o la defensa central) acaparan la mayor densidad operacional del equipo a lo largo del torneo.</p>
+                    <h4>💡 Análisis Técnico - Dispersión con Medias ({col_x_opt} vs {col_y_opt})</h4>
+                    <p>Al incorporar las líneas de media aritmética en ambos ejes, este gráfico divide el rendimiento en cuatro cuadrantes claros. Los partidos ubicados en el cuadrante superior derecho representan el estándar de excelencia colectiva (superando ambas medias), mientras que los cuadrantes opuestos exigen planes de mejora específicos.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -578,9 +639,9 @@ if competicion == "Liga Dimayor I 2026":
             """
         <div class="analysis-card">
             <h4>📋 Conclusión Analítica Integral - Dirección de Rendimiento</h4>
-            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y, mapas de árbol jerárquicos y el embudo de conversión real demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
+            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y con líneas de media, y el embudo de conversión real demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
             <p><b>2. Factores de Riesgo Táctico:</b> Los momentos de mayor vulnerabilidad coinciden con caídas en la efectividad del embudo ofensivo en el último tercio, lo que subraya la necesidad de mejorar la toma de decisiones en zona de finalización.</p>
-            <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión X-Y y el análisis de conversión para enfocar los entrenamientos en la optimización de remates tras la progresión por bandas.</p>
+            <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión con líneas de referencia media para enfocar los entrenamientos en la optimización de rendimientos que se encuentren por debajo del estándar colectivo.</p>
         </div>
         """,
             unsafe_allow_html=True,
