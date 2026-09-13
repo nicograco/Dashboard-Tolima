@@ -44,7 +44,7 @@ st.markdown(
         padding: 24px;
         border-radius: 8px;
         margin-top: 15px;
-        margin-bottom: 15px;
+        margin-bottom: 25px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         line-height: 1.6;
     }}
@@ -134,7 +134,7 @@ if competicion == "Liga Dimayor I 2026":
           "⚔️ Duelos & Segundas Jugadas",
           "🛡️ Presión & Bloques",
           "🎯 Radar Multivariable",
-          "⚠️ Pérdidas & xG Dinámico",
+          "📈 Dispersión X-Y Analítica",
           "📈 Evolución xG vs Concedido",
           "📊 Análisis Técnico & DOFA",
       ])
@@ -164,6 +164,16 @@ if competicion == "Liga Dimayor I 2026":
                 plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
             )
             st.plotly_chart(fig_hm, use_container_width=True)
+            st.markdown(
+                f"""
+                <div class="analysis-card">
+                    <h4>💡 Análisis Técnico - Gegenpressing</h4>
+                    <p>La curva longitudinal permite aislar las jornadas donde la contra-presión tras pérdida fue más eficiente. Los puntos altos reflejan un bloque corto que asfixió la salida rival en campo contrario, mientras que los valles indican periodos de transición pasiva hacia bloque bajo.</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
           if "Contra-ataque" in team_df.columns:
             fig_ca = px.line(
                 team_df,
@@ -177,6 +187,16 @@ if competicion == "Liga Dimayor I 2026":
                 plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
             )
             st.plotly_chart(fig_ca, use_container_width=True)
+            st.markdown(
+                f"""
+                <div class="analysis-card">
+                    <h4>💡 Análisis Técnico - Eficacia en Contra-ataque</h4>
+                    <p>Evalúa el aprovechamiento de los espacios a espaldas del rival tras recuperaciones en bloque medio. Las crestas de esta gráfica coinciden con partidos de alta verticalidad y finalización en pocos toques.</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
         with col_t2:
           if "Presión asfixiante" in team_df.columns:
             fig_pa = px.line(
@@ -191,6 +211,16 @@ if competicion == "Liga Dimayor I 2026":
                 plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
             )
             st.plotly_chart(fig_pa, use_container_width=True)
+            st.markdown(
+                f"""
+                <div class="analysis-card">
+                    <h4>💡 Análisis Técnico - Presión Asfixiante</h4>
+                    <p>Mide la agresividad colectiva para restringir las líneas de pase del oponente en salida de balón. Las variaciones longitudinales exigen sincronizar las cargas de entrenamiento condicional físico.</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
           if "Seguridad lo primero" in team_df.columns:
             fig_sf = px.line(
                 team_df,
@@ -204,17 +234,15 @@ if competicion == "Liga Dimayor I 2026":
                 plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
             )
             st.plotly_chart(fig_sf, use_container_width=True)
-
-        st.markdown(
-            f"""
+            st.markdown(
+                f"""
                 <div class="analysis-card">
-                    <h4>💡 Argumentación Analítica - Comportamiento Colectivo e Identidad</h4>
-                    <p><b>1. Tendencia Temporal del Gegenpressing (Heavy Metal):</b> La visualización longitudinal partido a partido permite identificar las rachas de agresividad tras pérdida. Las caídas en la curva señalan partidos donde el repliegue defensivo primó sobre la contra-presión inmediata, alterando la altura media de recuperación.</p>
-                    <p><b>2. Sincronización Transicional:</b> Se observa una correlación directa entre los incrementos longitudinales de la presión asfixiante y el éxito en la finalización de contraataques, respaldando la necesidad de sostener cargas físicas elevadas en los entrenamientos de previo partido.</p>
+                    <h4>💡 Análisis Técnico - Seguridad Defensiva</h4>
+                    <p>Cuantifica el pragmatismo y la minimización de riesgos en zona baja. Niveles óptimos en esta curva reducen drásticamente las concesiones de oportunidades claras de gol al adversario.</p>
                 </div>
                 """,
-            unsafe_allow_html=True,
-        )
+                unsafe_allow_html=True,
+            )
 
       with tab2:
         st.subheader(
@@ -234,16 +262,15 @@ if competicion == "Liga Dimayor I 2026":
               plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
           )
           st.plotly_chart(fig_pass, use_container_width=True)
-        st.markdown(
-            f"""
+          st.markdown(
+              f"""
                 <div class="analysis-card">
-                    <h4>💡 Diagnóstico Científico de Circulación y Pases</h4>
-                    <p><b>1. Estabilidad Longitudinal:</b> La curva de acierto en el pase refleja la consistencia estructural en la fase de iniciación a lo largo del campeonato. Las pendientes positivas evidencian una mejor asimilación de los automatismos de salida limpia desde el fondo.</p>
-                    <p><b>2. Implicaciones Físico-Tácticas:</b> Sostener porcentajes elevados de precisión en pasillos interiores minimiza las pérdidas no forzadas y previene transiciones defensivas en inferioridad numérica.</p>
+                    <h4>💡 Análisis Técnico - Circulación y Pases</h4>
+                    <p>La curva de precisión en el pase refleja la estabilidad en la fase de iniciación. Mantener un porcentaje elevado disminuye el desgaste físico por persecuciones defensivas prolongadas y asegura el dominio territorial.</p>
                 </div>
                 """,
-            unsafe_allow_html=True,
-        )
+              unsafe_allow_html=True,
+          )
 
       with tab3:
         st.subheader(
@@ -266,15 +293,15 @@ if competicion == "Liga Dimayor I 2026":
               plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
           )
           st.plotly_chart(fig_aero, use_container_width=True)
-        st.markdown(
-            f"""
+          st.markdown(
+              f"""
                 <div class="analysis-card">
-                    <h4>💡 Evaluación Biomecánica y Táctica de Duelos</h4>
-                    <p><b>1. Comportamiento Dinámico por Fricción:</b> Analizar la tasa de duelos aéreos en formato longitudinal expone las jornadas de mayor exigencia física ante rivales directos. La fluctuación de la curva indica la necesidad de ajustar las coberturas y anticipaciones en bloque bajo.</p>
+                    <h4>💡 Análisis Técnico - Duelos y Fricción</h4>
+                    <p>Las fluctuaciones en los duelos aéreos indican las exigencias físicas de cada rival en balón dividido. Los valles señalan la necesidad de reforzar la postura corporal y la carga de fuerza explosiva en saltos.</p>
                 </div>
                 """,
-            unsafe_allow_html=True,
-        )
+              unsafe_allow_html=True,
+          )
 
       with tab4:
         st.subheader(
@@ -299,15 +326,15 @@ if competicion == "Liga Dimayor I 2026":
               plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
           )
           st.plotly_chart(fig_alt, use_container_width=True)
-        st.markdown(
-            f"""
+          st.markdown(
+              f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Estructural del Bloque Defensivo</h4>
-                    <p><b>1. Amplitud Temporal y Comportamiento Colectivo:</b> La línea longitudinal de altura promedio en metros permite ver de manera secuencial si el equipo mantuvo la ambición de adelantar líneas o si repliegua en bloque medio según la localía o el perfil del adversario.</p>
+                    <h4>💡 Análisis Técnico - Altura del Bloque</h4>
+                    <p>Mide la ambición táctica defensiva en metros desde la propia portería. Una línea alta asfixia al rival, pero exige coberturas perfectas a espaldas de los centrales para evitar contrataques en velocidad.</p>
                 </div>
                 """,
-            unsafe_allow_html=True,
-        )
+              unsafe_allow_html=True,
+          )
 
       with tab5:
         st.subheader(
@@ -377,52 +404,85 @@ if competicion == "Liga Dimayor I 2026":
               height=500,
           )
           st.plotly_chart(fig_radar, use_container_width=True)
+          st.markdown(
+              f"""
+                <div class="analysis-card">
+                    <h4>💡 Análisis Técnico - Radar Multivariable</h4>
+                    <p>La superposición de polígonos permite detectar de forma geométrica el perfil táctico de cada partido. Facilita observar si un aumento en el control de posesión reduce los índices de presión alta o viceversa.</p>
+                </div>
+                """,
+              unsafe_allow_html=True,
+          )
         else:
           st.info(
               "Por favor selecciona al menos una jornada en el filtro superior"
               " para visualizar el radar."
           )
 
-        st.markdown(
-            f"""
-                <div class="analysis-card">
-                    <h4>💡 Interpretación Multidimensional Geométrica</h4>
-                    <p><b>1. Análisis de Varianza Táctica:</b> La superposición de polígonos permite identificar patrones de consistencia o desajustes entre partidos como local y visitante. Permite evaluar de forma integral si un incremento en posesión sacrifica la agresividad en la presión alta.</p>
-                </div>
-                """,
-            unsafe_allow_html=True,
-        )
-
       with tab6:
-        st.subheader("⚠️ Tendencia Longitudinal de Pérdidas Críticas")
+        st.subheader(
+            "📈 Gráfico de Dispersión X-Y Analítico (Relación de Métricas)"
+        )
         st.markdown(
-            "Seguimiento temporal de balones perdidos en salida y construcción"
-            " para corregir errores no forzados."
+            "Cruza dos variables clave de rendimiento por partido para identificar"
+            " correlaciones y valores atípicos (*outliers*)."
         )
 
-        if "Balones críticos perdidos" in team_df.columns:
-          fig_perd = px.line(
-              team_df,
-              x="Jornada",
-              y="Balones críticos perdidos",
-              markers=True,
-              title="Tendencia Longitudinal - Balones Críticos Perdidos",
-              color_discrete_sequence=[COLOR_ACCENT],
-          )
-          fig_perd.update_layout(
-              plot_bgcolor="white", paper_bgcolor="white", hovermode="x unified"
-          )
-          st.plotly_chart(fig_perd, use_container_width=True)
+        col_x_opt = st.selectbox(
+            "Seleccionar Eje X:",
+            [
+                "Posesión y control",
+                "Heavy metal",
+                "Presión asfixiante",
+                "Contra-ataque",
+                "Tiros totales",
+            ],
+            index=0,
+        )
+        col_y_opt = st.selectbox(
+            "Seleccionar Eje Y:",
+            [
+                "xG basado en la posición del rematador",
+                "Acierto en el pase",
+                "Goles",
+                "Balones críticos perdidos",
+            ],
+            index=0,
+        )
 
-        st.markdown(
-            f"""
+        if all(
+            c in team_df.columns for c in [col_x_opt, col_y_opt, "Jornada"]
+        ):
+          fig_scatter_xy = px.scatter(
+              team_df,
+              x=col_x_opt,
+              y=col_y_opt,
+              color="Jornada",
+              hover_name="Jornada",
+              title=f"Dispersión X-Y: {col_x_opt} vs {col_y_opt}",
+              color_discrete_sequence=[
+                  COLOR_NAVY,
+                  COLOR_BLUE,
+                  COLOR_ACCENT,
+                  COLOR_DARK,
+                  "#e63946",
+              ],
+              size_max=15,
+          )
+          fig_scatter_xy.update_traces(marker=dict(size=14))
+          fig_scatter_xy.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white"
+          )
+          st.plotly_chart(fig_scatter_xy, use_container_width=True)
+          st.markdown(
+              f"""
                 <div class="analysis-card">
-                    <h4>💡 Auditoría Longitudinal de Errores No Forzados</h4>
-                    <p><b>1. Mitigación de Riesgos en Zona Baja:</b> Graficar las pérdidas críticas en formato longitudinal expone si los errores en iniciación responden a un patrón sistémico o a partidos específicos con presión asfixiante del rival, permitiendo ajustar los protocolos de salida de balón.</p>
+                    <h4>💡 Análisis Técnico - Dispersión X-Y ({col_x_opt} vs {col_y_opt})</h4>
+                    <p>Este diagrama de dispersión permite evaluar el grado de correlación entre el indicador del eje horizontal y el resultado del eje vertical. Los puntos alejados de la media señalan partidos donde el rendimiento táctico se desvió notablemente del patrón habitual, requiriendo revisión de videoanálisis específico.</p>
                 </div>
                 """,
-            unsafe_allow_html=True,
-        )
+              unsafe_allow_html=True,
+          )
 
       with tab7:
         st.subheader(
@@ -467,16 +527,15 @@ if competicion == "Liga Dimayor I 2026":
               hovermode="x unified",
           )
           st.plotly_chart(fig_dual, use_container_width=True)
-
-        st.markdown(
-            f"""
+          st.markdown(
+              f"""
                 <div class="analysis-card">
-                    <h4>💡 Diagnóstico Científico de Balance Competitivo</h4>
-                    <p><b>1. Sostenibilidad del Modelo de Juego:</b> La relación entre las curvas de goles esperados generados y concedidos determina la robustez táctica a lo largo de las jornadas. Un diferencial positivo sostenido confirma la superioridad del modelo propuesto sobre el planteamiento del adversario.</p>
+                    <h4>💡 Análisis Técnico - Balance de Goles Esperados (xG)</h4>
+                    <p>La separación entre las curvas de xG generado y concedido representa la superioridad competitiva neta del equipo. Un margen positivo sostenido garantiza la consolidación en la parte alta de la tabla de posiciones.</p>
                 </div>
                 """,
-            unsafe_allow_html=True,
-        )
+              unsafe_allow_html=True,
+          )
 
       with tab8:
         st.subheader("📊 Informe Técnico Global y Matriz DOFA Avanzada")
@@ -491,15 +550,22 @@ if competicion == "Liga Dimayor I 2026":
               f"""<div style="background-color: #fef2f2; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_ACCENT}; margin-bottom: 15px;"><h3>🔴 Debilidades</h3><p>• Vulnerabilidad recurrente en duelos aéreos defensivos.<br>• Pérdidas de balón críticas en zona de iniciación bajo presión alta.</p></div><div style="background-color: #fefce8; padding: 18px; border-radius: 8px; border-left: 5px solid #ca8a04;"><h3>⚠️ Amenazas</h3><p>• Exposición defensiva ante contrataques verticales de alta velocidad.<br>• Desgaste físico acumulado por el bloque de presión adelantado.</p></div>""",
               unsafe_allow_html=True,
           )
+
         st.markdown("---")
         st.markdown(
-            "### 📌 Conclusiones y Recomendaciones del Analista para el Cuerpo"
-            " Técnico"
+            "### 📌 Ampliación del Análisis General y Conclusiones para el"
+            " Cuerpo Técnico"
         )
         st.markdown(
-            "- **Identidad Táctica:** Estructura clara orientada al dominio"
-            " territorial y Gegenpressing.\n- **Línea de Mejora:** Ajustar"
-            " coberturas en transiciones defensivas y duelos aéreos."
+            """
+        <div class="analysis-card">
+            <h4>📋 Conclusión Analítica Integral - Dirección de Rendimiento</h4>
+            <p><b>1. Consolidación Estructural:</b> El análisis longitudinal y de dispersión confirma que el modelo de juego del equipo se sustenta en el control territorial a través de la posesión y una rápida contra-presión tras pérdida (*Gegenpressing*).</p>
+            <p><b>2. Factores de Riesgo Condicional y Táctico:</b> Se detecta que los momentos de mayor vulnerabilidad defensiva coinciden con descensos en la altura media del bloque y bajas tasas de éxito en duelos aéreos. Esto subraya la necesidad de ajustar las coberturas preventivas durante la fase ofensiva.</p>
+            <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión X-Y para focalizar las sesiones de videoanálisis individual con los mediocentros, reduciendo las pérdidas críticas en salida baja y potenciando la verticalidad en el último tercio.</p>
+        </div>
+        """,
+            unsafe_allow_html=True,
         )
     else:
       st.warning("No se encontraron registros en el archivo.")
