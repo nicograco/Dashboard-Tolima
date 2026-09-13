@@ -134,7 +134,7 @@ if competicion == "Liga Dimayor I 2026":
           "⚔️ Duelos & Segundas Jugadas",
           "🛡️ Presión & Bloques",
           "🎯 Radar Multivariable",
-          "📉 Dispersión X-Y Analítica",
+          "📉 Dispersión X-Y (Estilo Tableau)",
           "🔄 Embudo de Conversión Ofensiva",
           "📊 Análisis Técnico & DOFA",
       ])
@@ -320,7 +320,7 @@ if competicion == "Liga Dimayor I 2026":
 
         jornadas_list = list(team_df["Jornada"].unique())
         jornadas_sel = st.multiselect(
-            "Seleccionar Jornadas a Comparar:",
+            "Seleccionar Jornadas a Comparار:",
             jornadas_list,
             default=jornadas_list[: min(2, len(jornadas_list))],
         )
@@ -394,15 +394,15 @@ if competicion == "Liga Dimayor I 2026":
 
       with tab6:
         st.subheader(
-            "📉 Gráfico de Dispersión X-Y Analítico (Correlación de Variables)"
+            "📉 Gráfico de Dispersión X-Y Avanzado (Estilo Tableau / BI)"
         )
         st.markdown(
-            "Cruza dos variables cuantitativas clave para detectar"
-            " correlaciones y partidos atípicos (*outliers*)."
+            "Gráfico de correlación con tamaño de burbuja proporcional a los"
+            " goles y línea de tendencia estadística."
         )
 
         col_x_opt = st.selectbox(
-            "Seleccionar Eje X (Variable Independiente):",
+            "Eje X (Variable Independiente):",
             [
                 "Posesión y control",
                 "Heavy metal",
@@ -413,7 +413,7 @@ if competicion == "Liga Dimayor I 2026":
             index=0,
         )
         col_y_opt = st.selectbox(
-            "Seleccionar Eje Y (Variable Dependiente):",
+            "Eje Y (Variable Dependiente):",
             [
                 "xG basado en la posición del rematador",
                 "Acierto en el pase",
@@ -424,15 +424,18 @@ if competicion == "Liga Dimayor I 2026":
         )
 
         if all(
-            c in team_df.columns for c in [col_x_opt, col_y_opt, "Jornada"]
+            c in team_df.columns
+            for c in [col_x_opt, col_y_opt, "Jornada", "Goles"]
         ):
-          fig_scatter_xy = px.scatter(
+          fig_scatter_tableau = px.scatter(
               team_df,
               x=col_x_opt,
               y=col_y_opt,
+              size="Goles",
               color="Jornada",
               hover_name="Jornada",
-              title=f"Dispersión X-Y: {col_x_opt} vs {col_y_opt}",
+              trendline="ols",
+              title=f"Dispersión Estilo Tableau: {col_x_opt} vs {col_y_opt} (Tamaño = Goles)",
               color_discrete_sequence=[
                   COLOR_NAVY,
                   COLOR_BLUE,
@@ -441,16 +444,15 @@ if competicion == "Liga Dimayor I 2026":
                   "#e63946",
               ],
           )
-          fig_scatter_xy.update_traces(marker=dict(size=14))
-          fig_scatter_xy.update_layout(
-              plot_bgcolor="white", paper_bgcolor="white"
+          fig_scatter_tableau.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white", hovermode="closest"
           )
-          st.plotly_chart(fig_scatter_xy, use_container_width=True)
+          st.plotly_chart(fig_scatter_tableau, use_container_width=True)
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Dispersión X-Y ({col_x_opt} vs {col_y_opt})</h4>
-                    <p>Este diagrama de dispersión evalúa la relación causa-efecto entre ambas métricas. Los puntos alejados de la tendencia general señalan encuentros donde el comportamiento táctico se desvió del estándar, siendo clave para el videoanálisis.</p>
+                    <h4>💡 Análisis Técnico - Dispersión Estilo Tableau ({col_x_opt} vs {col_y_opt})</h4>
+                    <p>Inspirado en herramientas de Business Intelligence de élite, este gráfico cruza dos variables clave incorporando el <b>tamaño de burbuja por goles</b> y una <b>línea de tendencia de regresión lineal (OLS)</b>. Permite identificar rápidamente si los puntos de mayor éxito ofensivo se concentran en clústeres específicos de rendimiento táctico.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -463,7 +465,6 @@ if competicion == "Liga Dimayor I 2026":
             " circulación de pases hasta la generación de remates y goles."
         )
 
-        # Calculamos los totales agregados para el embudo de conversión
         total_pases = (
             int(team_df["Pases exitosos"].sum())
             if "Pases exitosos" in team_df.columns
@@ -490,7 +491,7 @@ if competicion == "Liga Dimayor I 2026":
             fase_creacion,
             total_tiros,
             total_goles * 10,
-        ]  # Escalado visual
+        ]
 
         fig_funnel = go.Figure(
             go.Funnel(
@@ -542,7 +543,7 @@ if competicion == "Liga Dimayor I 2026":
             """
         <div class="analysis-card">
             <h4>📋 Conclusión Analítica Integral - Dirección de Rendimiento</h4>
-            <p><b>1. Consolidación Estructural:</b> El uso combinado de gráficos de barras absolutas, dispersión X-Y y el embudo de conversión demuestra que el modelo de juego se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
+            <p><b>1. Consolidación Estructural:</b> El uso combinado de gráficos de barras absolutas, dispersión X-Y avanzada estilo Tableau y el embudo de conversión demuestra que el modelo de juego se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
             <p><b>2. Factores de Riesgo Táctico:</b> Los momentos de mayor vulnerabilidad coinciden con caídas en la efectividad del embudo ofensivo en el último tercio, lo que subraya la necesidad de mejorar la toma de decisiones en zona de finalización.</p>
             <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión X-Y y el análisis de conversión para enfocar los entrenamientos en la optimización de remates tras la progresión por bandas.</p>
         </div>
@@ -628,7 +629,7 @@ else:
       )
     with col2:
       st.markdown(
-          f"""<div style="background-color: #fef2f2; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_ACCENT}; margin-bottom: 15px;"><h3>🔴 Debilidades</h3><p>• Bajo éxito en duelos aéreos (39.7%).<br>• Pérdidas críticas en salida.</p></div><div style="background-color: #fefce8; padding: 18px; border-radius: 8px; border-left: 5px solid #ca8a04;">⚠️ Amenazas</h3><p>• Vulnerabilidad ante contrataques verticales rápidos.</p></div>""",
+          f"""<div style="background-color: #fef2f2; padding: 18px; border-radius: 8px; border-left: 5px solid {COLOR_ACCENT}; margin-bottom: 15px;"><h3>🔴 Debilidades</h3><p>• Bajo éxito en duelos aéreos (39.7%).<br>• Pérdidas críticas en salida.</p></div><div style="background-color: #fefce8; padding: 18px; border-radius: 8px; border-left: 5px solid #ca8a04;"><h3>⚠️ Amenazas</h3><p>• Vulnerabilidad ante contrataques verticales rápidos.</p></div>""",
           unsafe_allow_html=True,
       )
 
