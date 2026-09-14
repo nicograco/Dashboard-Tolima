@@ -136,48 +136,50 @@ if competicion == "Liga Dimayor I 2026":
 
   archivo = "Liga_Dimayor_I_2026.xlsx"
   if os.path.exists(archivo):
-    df = pd.read_excel(archivo, header=1)
+    raw_df = pd.read_excel(archivo, header=1)
 
     # Sustitución explícita de Equidad por Internacional de Bogotá
-    for col in df.select_dtypes(include=["object"]).columns:
-      df[col] = df[col].astype(str).str.replace(
+    for col in raw_df.select_dtypes(include=["object"]).columns:
+      raw_df[col] = raw_df[col].astype(str).str.replace(
           "CD La Equidad Seguros SA", "Internacional de Bogotá", regex=False
       )
-      df[col] = df[col].astype(str).str.replace(
+      raw_df[col] = raw_df[col].astype(str).str.replace(
           "Equidad Seguros", "Internacional de Bogotá", regex=False
       )
-      df[col] = df[col].astype(str).str.replace(
+      raw_df[col] = raw_df[col].astype(str).str.replace(
           "Equidad", "Internacional de Bogotá", regex=False
       )
 
-    # Procesamiento para extraer el rival y etiquetar limpio
-    if "Equipo" in df.columns and "Jornada" in df.columns:
-      opponents = []
-      for i in range(0, len(df), 2):
-        if i + 1 < len(df):
-          raw_rival = str(df.loc[i + 1, "Equipo"])
-          rival_name = raw_rival.split(" (")[0].strip()
-          if (
-              "Equidad" in rival_name
-              or "Seguros" in rival_name
-              or "Internacional" in rival_name
-          ):
-            rival_name = "Internacional de Bogotá"
-          opponents.extend([rival_name, rival_name])
-        else:
-          opponents.extend(["Rival", "Rival"])
-      df["Rival_Clean"] = opponents
+    # Procesamiento emparejado de partidos (Tolima vs Rival)
+    match_records = []
+    for i in range(0, len(raw_df), 2):
+      if i + 1 < len(raw_df):
+        tolima_row = raw_df.iloc[i]
+        rival_row = raw_df.iloc[i + 1]
 
-      team_df = df[
-          df["Equipo"].str.contains("Deportes Tolima", na=False)
-      ].copy()
-      team_df["Match_Label"] = (
-          team_df["Jornada"] + " vs " + team_df["Rival_Clean"]
-      )
-    else:
-      team_df = df.copy()
-      team_df["Match_Label"] = team_df["Jornada"]
+        raw_rival = str(rival_row["Equipo"])
+        rival_name = raw_rival.split(" (")[0].strip()
+        if (
+            "Equidad" in rival_name
+            or "Seguros" in rival_name
+            or "Internacional" in rival_name
+        ):
+          rival_name = "Internacional de Bogotá"
 
+        jornada_str = str(tolima_row["Jornada"])
+        match_label = f"{jornada_str} vs {rival_name}"
+
+        match_records.append({
+            "Match_Label": match_label,
+            "Jornada": jornada_str,
+            "Rival_Name": rival_name,
+            "Tolima": tolima_row,
+            "Rival": rival_row,
+        })
+
+    team_df = raw_df[
+        raw_df["Equipo"].str.contains("Deportes Tolima", na=False)
+    ].copy()
     if not team_df.empty:
       c1, c2, c3, c4 = st.columns(4)
       with c1:
@@ -215,6 +217,7 @@ if competicion == "Liga Dimayor I 2026":
       st.markdown("---")
 
       if modulo_dimayor == "🧠 Pilares de Identidad Táctica":
+        team_df["Match_Label"] = [m["Match_Label"] for m in match_records]
         st.subheader(
             "🧠 Pilares de Identidad Táctica (Gráficos de Barras por Partido)"
         )
@@ -328,6 +331,7 @@ if competicion == "Liga Dimayor I 2026":
             )
 
       elif modulo_dimayor == "⚙️ Construcción & Pases (X-Y)":
+        team_df["Match_Label"] = [m["Match_Label"] for m in match_records]
         st.subheader(
             "⚙️ Construcción de Juego (Gráfico de Dispersión X-Y con Medias)"
         )
@@ -378,6 +382,7 @@ if competicion == "Liga Dimayor I 2026":
           )
 
       elif modulo_dimayor == "⚔️ Disputas & Duelos Aéreos":
+        team_df["Match_Label"] = [m["Match_Label"] for m in match_records]
         st.subheader("⚔️ Disputas y Duelos (Gráficos de Barras)")
         if all(
             c in team_df.columns
@@ -409,6 +414,7 @@ if competicion == "Liga Dimayor I 2026":
           )
 
       elif modulo_dimayor == "🛡️ Altura de Bloques & Presión":
+        team_df["Match_Label"] = [m["Match_Label"] for m in match_records]
         st.subheader(
             "🛡️ Presión Defensiva (Gráfico de Dispersión X-Y con Medias)"
         )
@@ -463,9 +469,9 @@ if competicion == "Liga Dimayor I 2026":
           )
 
       elif modulo_dimayor == "🎯 Radar Multivariable":
-        st.subheader("🎯 Módulo de Radares Tácticos (Análisis Multivariable)")
-        match_list = list(team_df["Match_Label"].unique())
-
+        st.subheader(
+            "🎯 Módulo de Radares Tácticos (Tolima vs Rival & Comparativa)"
+        )
         cat_radar = [
             "Posesión y Control",
             "Gegenpressing (Heavy Metal)",
@@ -473,130 +479,150 @@ if competicion == "Liga Dimayor I 2026":
             "Contra-ataque",
             "Seguridad Defensiva",
         ]
-        colors_list = [
-            COLOR_NAVY,
-            COLOR_ACCENT,
-            COLOR_BLUE,
-            COLOR_DARK,
-            "#e63946",
-            "#457b9d",
-        ]
+        match_labels_list = [m["Match_Label"] for m in match_records]
 
-        # Pestañas internas para separar el Radar Individual y el Radar Comparativo
         sub_tab1, sub_tab2 = st.tabs([
-            "🎯 1. Análisis de Partido Individual (Jornada a Jornada)",
-            "📊 2. Radar Comparativo Multirrival",
+            "🎯 1. Análisis Cara a Cara (Tolima vs Rival por Partido)",
+            "📊 2. Radar Comparativo Multirrival (Tolima)",
         ])
 
         with sub_tab1:
-          st.markdown("##### 📌 Perfil Táctico Aislado por Partido")
-          selected_single_match = st.selectbox(
-              "Seleccionar Partido para Análisis Individual:", match_list
+          st.markdown(
+              "##### 📌 Comparativa Directa: Deportes Tolima vs Oponente"
+          )
+          selected_match_label = st.selectbox(
+              "Seleccionar Partido para Comparativa Directa:",
+              match_labels_list,
           )
 
-          if selected_single_match:
-            row_data = team_df[team_df["Match_Label"] == selected_single_match]
-            if not row_data.empty:
-              r_val = row_data.iloc[0]
-              val_radar = [
-                  min(100, float(r_val.get("Posesión y control", 0.5) * 100)),
-                  min(100, float(r_val.get("Heavy metal", 0.5) * 100)),
-                  min(100, float(r_val.get("Presión asfixiante", 0.5) * 100)),
-                  min(100, float(r_val.get("Contra-ataque", 0.5) * 100)),
-                  min(
-                      100, float(r_val.get("Seguridad lo primero", 0.5) * 100)
-                  ),
-              ]
+          # Buscar el registro seleccionado
+          selected_record = next(
+              (m for m in match_records if m["Match_Label"] == selected_match_label),
+              None,
+          )
+          if selected_record:
+            tolima_r = selected_record["Tolima"]
+            rival_r = selected_record["Rival"]
+            rival_name = selected_record["Rival_Name"]
 
-              fig_single = go.Figure()
-              fig_single.add_trace(
-                  go.Scatterpolar(
-                      r=val_radar,
-                      theta=cat_radar,
-                      fill="toself",
-                      name=selected_single_match,
-                      line_color=COLOR_NAVY,
-                      opacity=0.7,
-                  )
-              )
-              fig_single.update_layout(
-                  polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
-                  showlegend=True,
-                  plot_bgcolor="white",
-                  paper_bgcolor="white",
-                  height=450,
-                  title=f"Perfil Táctico: {selected_single_match}",
-              )
-              st.plotly_chart(fig_single, use_container_width=True)
-              st.markdown(
-                  f"""
-                    <div class="analysis-card">
-                        <h4>💡 Diagnóstico Individual - {selected_single_match}</h4>
-                        <p>Este radar aísla el comportamiento táctico del Deportes Tolima en este encuentro específico, permitiendo evaluar la distribución de los 5 pilares frente a las exigencias particulares del oponente.</p>
-                    </div>
-                    """,
-                  unsafe_allow_html=True,
-              )
+            tolima_vals = [
+                min(100, float(tolima_r.get("Posesión y control", 0.5) * 100)),
+                min(100, float(tolima_r.get("Heavy metal", 0.5) * 100)),
+                min(100, float(tolima_r.get("Presión asfixiante", 0.5) * 100)),
+                min(100, float(tolima_r.get("Contra-ataque", 0.5) * 100)),
+                min(
+                    100, float(tolima_r.get("Seguridad lo primero", 0.5) * 100)
+                ),
+            ]
+
+            rival_vals = [
+                min(100, float(rival_r.get("Posesión y control", 0.5) * 100)),
+                min(100, float(rival_r.get("Heavy metal", 0.5) * 100)),
+                min(100, float(rival_r.get("Presión asfixiante", 0.5) * 100)),
+                min(100, float(rival_r.get("Contra-ataque", 0.5) * 100)),
+                min(100, float(rival_r.get("Seguridad lo primero", 0.5) * 100)),
+            ]
+
+            fig_cara = go.Figure()
+            # Traza de Deportes Tolima
+            fig_cara.add_trace(
+                go.Scatterpolar(
+                    r=tolima_vals,
+                    theta=cat_radar,
+                    fill="toself",
+                    name="Deportes Tolima",
+                    line_color=COLOR_NAVY,
+                    opacity=0.6,
+                )
+            )
+            # Traza del Rival
+            fig_cara.add_trace(
+                go.Scatterpolar(
+                    r=rival_vals,
+                    theta=cat_radar,
+                    fill="toself",
+                    name=rival_name,
+                    line_color=COLOR_ACCENT,
+                    opacity=0.6,
+                )
+            )
+
+            fig_cara.update_layout(
+                polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
+                showlegend=True,
+                plot_bgcolor="white",
+                paper_bgcolor="white",
+                height=500,
+                title=f"Cara a Cara Táctico: Deportes Tolima vs {rival_name}",
+            )
+            st.plotly_chart(fig_cara, use_container_width=True)
+            st.markdown(
+                f"""
+                <div class="analysis-card">
+                    <h4>💡 Diagnóstico Cara a Cara - {selected_match_label}</h4>
+                    <p>Este radar superpone el rendimiento estructural del <b>Deportes Tolima</b> frente a <b>{rival_name}</b>, evidenciando qué equipo dominó cada una de las 5 dimensiones clave del juego durante el partido.</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
         with sub_tab2:
-          st.markdown(
-              "##### 📌 Comparativa Cruzada (Tolima vs Múltiples Rivales)"
-          )
-          # Por defecto toma todos los partidos para comparar (ej. Junior vs Medellín)
+          st.markdown("##### 📌 Comparativa General del Tolima entre Rondas")
           matches_sel = st.multiselect(
-              "Seleccionar Partidos a Comparar en el Radar:",
-              match_list,
-              default=match_list,
+              "Seleccionar Partidos del Tolima a Comparar:",
+              match_labels_list,
+              default=match_labels_list,
           )
-
           if not matches_sel:
-            matches_sel = match_list
+            matches_sel = match_labels_list
 
-          fig_radar = go.Figure()
+          colors_list = [
+              COLOR_NAVY,
+              COLOR_ACCENT,
+              COLOR_BLUE,
+              COLOR_DARK,
+              "#e63946",
+          ]
+          fig_multi = go.Figure()
+
           for idx, m_lbl in enumerate(matches_sel):
-            row_data = team_df[team_df["Match_Label"] == m_lbl]
-            if not row_data.empty:
-              r_val = row_data.iloc[0]
-              val_radar = [
-                  min(100, float(r_val.get("Posesión y control", 0.5) * 100)),
-                  min(100, float(r_val.get("Heavy metal", 0.5) * 100)),
-                  min(100, float(r_val.get("Presión asfixiante", 0.5) * 100)),
-                  min(100, float(r_val.get("Contra-ataque", 0.5) * 100)),
-                  min(
-                      100, float(r_val.get("Seguridad lo primero", 0.5) * 100)
-                  ),
+            rec = next((m for m in match_records if m["Match_Label"] == m_lbl), None)
+            if rec:
+              t_r = rec["Tolima"]
+              v_vals = [
+                  min(100, float(t_r.get("Posesión y control", 0.5) * 100)),
+                  min(100, float(t_r.get("Heavy metal", 0.5) * 100)),
+                  min(100, float(t_r.get("Presión asfixiante", 0.5) * 100)),
+                  min(100, float(t_r.get("Contra-ataque", 0.5) * 100)),
+                  min(100, float(t_r.get("Seguridad lo primero", 0.5) * 100)),
               ]
-              c_color = colors_list[idx % len(colors_list)]
-              fig_radar.add_trace(
+              fig_multi.add_trace(
                   go.Scatterpolar(
-                      r=val_radar,
+                      r=v_vals,
                       theta=cat_radar,
                       fill="toself",
                       name=m_lbl,
-                      line_color=c_color,
+                      line_color=colors_list[idx % len(colors_list)],
                       opacity=0.5,
                   )
               )
 
-          fig_radar.update_layout(
+          fig_multi.update_layout(
               polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
               showlegend=True,
               plot_bgcolor="white",
               paper_bgcolor="white",
               height=500,
-              title=(
-                  "Radar Multirrival: Comparativa de Rendimiento del Tolima"
-              ),
+              title="Radar Multirrival: Evolución del Tolima",
           )
-          st.plotly_chart(fig_radar, use_container_width=True)
+          st.plotly_chart(fig_multi, use_container_width=True)
           st.markdown(
-              f"""
-                <div class="analysis-card">
-                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Radar Comparativo</h4>
-                    <p><b>Diagnóstico Geométrico:</b> La superposición simultánea permite contrastar el rendimiento del Deportes Tolima entre diferentes enfrentamientos (por ejemplo, evaluar cómo varió la posesión frente al Junior en comparación con el Medellín).</p>
-                    <p><b>Prescripción Metodológica:</b> Tomar el polígono de mayor equilibrio como <i>modelo de referencia táctica</i> para ajustar los microciclos semanales.</p>
-                </div>
-                """,
+              """
+            <div class="analysis-card">
+                <h4>💡 Diagnóstico Científico - Evolución Táctica del Tolima</h4>
+                <p>Permite auditar la estabilidad del modelo de juego del Deportes Tolima a lo largo de los diferentes encuentros del torneo.</p>
+            </div>
+            """,
               unsafe_allow_html=True,
           )
 
@@ -687,6 +713,7 @@ if competicion == "Liga Dimayor I 2026":
           )
 
       elif modulo_dimayor == "🔥 Mapa de Calor Táctico":
+        team_df["Match_Label"] = [m["Match_Label"] for m in match_records]
         st.subheader("🔥 Mapa de Calor Táctico (Heatmap por Partido)")
         heat_vars = [
             "Posesión y control",
