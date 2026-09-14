@@ -15,10 +15,11 @@ COLOR_ACCENT = "#f97316"
 COLOR_DARK = "#1e293b"
 COLOR_LIGHT = "#f8fafc"
 
-# Estilos CSS de élite ejecutiva para eliminar el fondo blanco plano y dar un toque corporativo deportivo
+# Estilos CSS ejecutivos + Reglas profesionales de exportación a PDF (Impresión)
 st.markdown(
     f"""
     <style>
+    /* Estilos visuales de pantalla */
     .stApp {{
         background-color: #f1f5f9;
     }}
@@ -63,6 +64,35 @@ st.markdown(
         color: #334155;
         font-size: 14px;
         margin-bottom: 10px;
+    }}
+
+    /* 📄 REGLAS DE EXPORTACIÓN PROFESIONAL A PDF (IMPRESIÓN) */
+    @media print {{
+        /* Ocultar elementos de navegación, barra lateral y controles de Streamlit */
+        header, footer, [data-testid="stSidebar"], .stButton {{
+            display: none !important;
+        }}
+        
+        /* Ajustar el contenedor principal para aprovechar toda la hoja en blanco */
+        .stApp {{
+            background-color: #ffffff !important;
+        }}
+        
+        /* Forzar salto de página limpio y evitar cortes en las tarjetas de análisis */
+        .analysis-card, div[data-testid="stVerticalBlock"] > div {{
+            page-break-after: always !important;
+            break-after: page !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            margin-bottom: 20px;
+        }}
+        
+        /* Configurar márgenes limpios y tipografía en papel */
+        body {{
+            margin: 1.5cm !important;
+            font-size: 12pt !important;
+            color: #000000 !important;
+        }}
     }}
     </style>
 """,
@@ -196,7 +226,7 @@ if competicion == "Liga Dimayor I 2026":
                 <div class="analysis-card">
                     <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Contra-ataque</h4>
                     <p><b>Diagnóstico Táctico:</b> La inestabilidad en la eficacia transicional refleja desacoples temporales entre el recuperador y los carrileros/extremos en ruptura.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Prescribir <i>situaciones simuladoras de partido (SSG) de transición rápida 3v2 y 4v3 en amplitud</i> con máxima exigencia metabólica anaeróbica para sincronizar la velocidad gestual y perceptual.</p>
+                    <p><b>Prescripción Metodológica:</b> Prescribir <i>situaciones simuladoras de partido (SSG) de transición rápida 3v2 y 4v3 en amplitud</i> con máxima exigencia metabólica anaeróbica para sincronizar la velocidad gestual y perceptual.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -365,7 +395,7 @@ if competicion == "Liga Dimayor I 2026":
                 <div class="analysis-card">
                     <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Cuadrantes (Bloque vs Presión)</h4>
                     <p><b>Lectura Analítica de Cuadrantes:</b> Los puntos ubicados a la derecha de la media en altura pero por debajo de la media en presión asfixiante revelan un bloque adelantado pasivo, dejando espacios críticos a espaldas de la línea defensiva.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Sincronizar el salto de la línea defensiva con la presión del delantero centro mediante <i>ejercicios analíticos de achique y basculación defensiva en 7v7</i>.</p>
+                    <p><b>Prescripción Metodológica:</b> Sincronizar el salto de la línea defensiva con la presión del delantero centro mediante <i>ejercicios analíticos de achique y basculación defensiva en 7v7</i>.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -621,7 +651,7 @@ if competicion == "Liga Dimayor I 2026":
                 <div class="analysis-card">
                     <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Distribución Zonal</h4>
                     <p><b>Diagnóstico Táctico:</b> El mapa proporcional detalla la densidad operacional. Un exceso de volumen en zona baja defensiva indica problemas para superar la primera línea de presión rival.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Reajustar la ubicación posicional de los mediocentros ofensivos para garantizar apoyos constantes entre líneas, descongestionando la salida desde el fondo.</p>
+                    <p><b>Prescripción Metodológica:</b> Reajustar la ubicación posicional de los mediocentros ofensivos para garantizar apoyos constantes entre líneas, descongestionando la salida desde el fondo.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
