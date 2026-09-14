@@ -138,20 +138,36 @@ if competicion == "Liga Dimayor I 2026":
   if os.path.exists(archivo):
     df = pd.read_excel(archivo, header=1)
 
-    # Procesamiento inteligente para extraer el rival de cada jornada y etiquetar limpio
+    # Sustitución explícita de Equidad por Internacional de Bogotá en todo el dataframe
+    for col in df.select_dtypes(include=["object"]).columns:
+      df[col] = df[col].astype(str).str.replace(
+          "CD La Equidad Seguros SA", "Internacional de Bogotá", regex=False
+      )
+      df[col] = df[col].astype(str).str.replace(
+          "Equidad Seguros", "Internacional de Bogotá", regex=False
+      )
+      df[col] = df[col].astype(str).str.replace(
+          "Equidad", "Internacional de Bogotá", regex=False
+      )
+
+    # Procesamiento para extraer el rival y etiquetar limpio
     if "Equipo" in df.columns and "Jornada" in df.columns:
       opponents = []
       for i in range(0, len(df), 2):
         if i + 1 < len(df):
-          rival_name = str(df.loc[i + 1, "Equipo"]).split(" (")[
-              0
-          ]  # Extraer nombre limpio del rival
+          raw_rival = str(df.loc[i + 1, "Equipo"])
+          rival_name = raw_rival.split(" (")[0].strip()
+          if (
+              "Equidad" in rival_name
+              or "Seguros" in rival_name
+              or "Internacional" in rival_name
+          ):
+            rival_name = "Internacional de Bogotá"
           opponents.extend([rival_name, rival_name])
         else:
           opponents.extend(["Rival", "Rival"])
       df["Rival_Clean"] = opponents
 
-      # Filtramos solo las filas del Deportes Tolima y creamos la etiqueta combinada
       team_df = df[
           df["Equipo"].str.contains("Deportes Tolima", na=False)
       ].copy()
@@ -209,11 +225,17 @@ if competicion == "Liga Dimayor I 2026":
                 team_df,
                 x="Match_Label",
                 y="Heavy metal",
-                title="Intensidad Gegenpressing (Heavy Metal) por Partido",
+                title=(
+                    "Intensidad Gegenpressing (Heavy Metal) por Partido Rival"
+                ),
                 color="Match_Label",
                 text_auto=True,
             )
-            fig_hm.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            fig_hm.update_layout(
+                plot_bgcolor="white",
+                paper_bgcolor="white",
+                xaxis_title="Partido / Rival",
+            )
             st.plotly_chart(fig_hm, use_container_width=True)
             st.markdown(
                 f"""
@@ -231,11 +253,15 @@ if competicion == "Liga Dimayor I 2026":
                 team_df,
                 x="Match_Label",
                 y="Contra-ataque",
-                title="Eficacia en Contra-ataque por Partido",
+                title="Eficacia en Contra-ataque por Partido Rival",
                 color="Match_Label",
                 text_auto=True,
             )
-            fig_ca.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            fig_ca.update_layout(
+                plot_bgcolor="white",
+                paper_bgcolor="white",
+                xaxis_title="Partido / Rival",
+            )
             st.plotly_chart(fig_ca, use_container_width=True)
             st.markdown(
                 f"""
@@ -254,11 +280,15 @@ if competicion == "Liga Dimayor I 2026":
                 team_df,
                 x="Match_Label",
                 y="Presión asfixiante",
-                title="Índice de Presión Asfixiante por Partido",
+                title="Índice de Presión Asfixiante por Partido Rival",
                 color="Match_Label",
                 text_auto=True,
             )
-            fig_pa.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            fig_pa.update_layout(
+                plot_bgcolor="white",
+                paper_bgcolor="white",
+                xaxis_title="Partido / Rival",
+            )
             st.plotly_chart(fig_pa, use_container_width=True)
             st.markdown(
                 f"""
@@ -276,11 +306,15 @@ if competicion == "Liga Dimayor I 2026":
                 team_df,
                 x="Match_Label",
                 y="Seguridad lo primero",
-                title="Índice de Seguridad Defensiva por Partido",
+                title="Índice de Seguridad Defensiva por Partido Rival",
                 color="Match_Label",
                 text_auto=True,
             )
-            fig_sf.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+            fig_sf.update_layout(
+                plot_bgcolor="white",
+                paper_bgcolor="white",
+                xaxis_title="Partido / Rival",
+            )
             st.plotly_chart(fig_sf, use_container_width=True)
             st.markdown(
                 f"""
@@ -310,7 +344,10 @@ if competicion == "Liga Dimayor I 2026":
               y="Acierto en el pase",
               color="Match_Label",
               hover_name="Match_Label",
-              title="Dispersión X-Y con Medias: Posesión y Control vs Acierto en el Pase",
+              title=(
+                  "Dispersión X-Y con Medias: Posesión y Control vs Acierto en"
+                  " el Pase"
+              ),
           )
           fig_scatter_pases.update_traces(marker=dict(size=14))
           fig_scatter_pases.add_vline(
@@ -354,7 +391,11 @@ if competicion == "Liga Dimayor I 2026":
               color="Match_Label",
               text_auto=True,
           )
-          fig_aero.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          fig_aero.update_layout(
+              plot_bgcolor="white",
+              paper_bgcolor="white",
+              xaxis_title="Partido / Rival",
+          )
           st.plotly_chart(fig_aero, use_container_width=True)
           st.markdown(
               f"""
@@ -388,7 +429,10 @@ if competicion == "Liga Dimayor I 2026":
               y="Presión asfixiante",
               color="Match_Label",
               hover_name="Match_Label",
-              title="Dispersión X-Y con Medias: Altura de Bloque (m) vs Presión Asfixiante",
+              title=(
+                  "Dispersión X-Y con Medias: Altura de Bloque (m) vs Presión"
+                  " Asfixiante"
+              ),
           )
           fig_scatter_pres.update_traces(marker=dict(size=14))
           fig_scatter_pres.add_vline(
@@ -600,7 +644,7 @@ if competicion == "Liga Dimayor I 2026":
               df_heat,
               labels=dict(
                   x="Métrica Táctica",
-                  y="Partido",
+                  y="Partido Rival",
                   color="Intensidad / Índice",
               ),
               x=available_heat,
