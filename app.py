@@ -9,49 +9,55 @@ st.set_page_config(
     page_title="Performance & Tactical Lab", page_icon="⚽", layout="wide"
 )
 
-COLOR_NAVY = "#1e3d59"
-COLOR_BLUE = "#17b978"
-COLOR_ACCENT = "#ff6e40"
-COLOR_DARK = "#2b2d42"
-COLOR_LIGHT = "#f5f7fa"
+COLOR_NAVY = "#0f172a"
+COLOR_BLUE = "#10b981"
+COLOR_ACCENT = "#f97316"
+COLOR_DARK = "#1e293b"
+COLOR_LIGHT = "#f8fafc"
 
+# Estilos CSS de élite ejecutiva para eliminar el fondo blanco plano y dar un toque corporativo deportivo
 st.markdown(
     f"""
     <style>
+    .stApp {{
+        background-color: #f1f5f9;
+    }}
     .metric-box {{
-        background-color: {COLOR_LIGHT};
-        border-left: 6px solid {COLOR_NAVY};
-        padding: 15px;
-        border-radius: 8px;
+        background-color: #ffffff;
+        border-left: 5px solid {COLOR_NAVY};
+        padding: 16px;
+        border-radius: 10px;
         text-align: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }}
     .metric-val {{
-        font-size: 26px;
+        font-size: 28px;
         font-weight: 800;
         color: {COLOR_NAVY};
     }}
     .metric-lab {{
-        font-size: 12px;
-        color: #444;
+        font-size: 11px;
+        color: #64748b;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.8px;
     }}
     .analysis-card {{
-        background-color: white;
+        background-color: #ffffff;
         border: 1px solid #e2e8f0;
+        border-top: 4px solid {COLOR_NAVY};
         padding: 24px;
-        border-radius: 8px;
+        border-radius: 10px;
         margin-top: 15px;
         margin-bottom: 25px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        line-height: 1.6;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        line-height: 1.7;
     }}
     .analysis-card h4 {{
         color: {COLOR_NAVY};
         margin-bottom: 12px;
         font-size: 18px;
+        font-weight: 700;
     }}
     .analysis-card p {{
         color: #334155;
@@ -65,9 +71,9 @@ st.markdown(
 
 st.sidebar.markdown(
     f"""
-    <div style="background: linear-gradient(135deg, {COLOR_NAVY}, {COLOR_DARK}); padding: 18px; border-radius: 10px; text-align: center;">
-        <h2 style="color: white; margin: 0; font-size: 17px; font-weight: 800;">PERFORMANCE LAB</h2>
-        <p style="color: {COLOR_BLUE}; font-size: 11px; margin: 4px 0 0 0; font-weight: 600;">Match & Tactical Analytics</p>
+    <div style="background: linear-gradient(135deg, {COLOR_NAVY}, {COLOR_DARK}); padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h2 style="color: white; margin: 0; font-size: 18px; font-weight: 800; letter-spacing: 0.5px;">PERFORMANCE LAB</h2>
+        <p style="color: {COLOR_BLUE}; font-size: 11px; margin: 5px 0 0 0; font-weight: 600;">Match & Tactical Analytics</p>
     </div>
 """,
     unsafe_allow_html=True,
@@ -166,9 +172,9 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Gegenpressing</h4>
-                    <p><b>Diagnóstico:</b> Las barras evidencian oscilaciones en la contra-presión tras pérdida. Los partidos con índices bajos coinciden con retrasos en los apoyos escalonados, permitiendo salidas limpias del rival.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Implementar tareas de <i>Rondos de 4v4 + comodines con restricción de 3 toques y transición a presión inmediata en 4 segundos</i> durante los microciclos de fuerza explosiva.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Gegenpressing</h4>
+                    <p><b>Diagnóstico Táctico:</b> Las barras evidencian oscilaciones en la contra-presión tras pérdida. Los partidos con índices bajos coinciden con retrasos en los apoyos escalonados, permitiendo salidas limpias del adversario.</p>
+                    <p><b>Prescripción Metodológica:</b> Implementar tareas analíticas de <i>rondos de 4v4 + comodines con restricción de 3 toques y transición inmediata a presión tras pérdida en 4 segundos</i> durante los microciclos de fuerza explosiva.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -188,9 +194,9 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Contra-ataque</h4>
-                    <p><b>Diagnóstico:</b> La inestabilidad en la eficacia transicional refleja desacoples temporales entre el recuperador y los extremos sprinters.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Prescribir <i>Juegos de Transición Rápida 3v2 y 4v3 en amplitud</i> con máxima exigencia metabólica anaeróbica al alza para sincronizar la velocidad gestual y perceptual.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Contra-ataque</h4>
+                    <p><b>Diagnóstico Táctico:</b> La inestabilidad en la eficacia transicional refleja desacoples temporales entre el recuperador y los carrileros/extremos en ruptura.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Prescribir <i>situaciones simuladoras de partido (SSG) de transición rápida 3v2 y 4v3 en amplitud</i> con máxima exigencia metabólica anaeróbica para sincronizar la velocidad gestual y perceptual.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -211,9 +217,9 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Presión Asfixiante</h4>
-                    <p><b>Diagnóstico:</b> Los picos de alta presión generan desgaste físico acumulado si no se acompañan de posesiones posteriores para recuperar el perfil aeróbico.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Dosificar las cargas de pressing coordinado en bloque adelantado mediante bloques alternos de presión y temporización defensiva en las sesiones tácticas de mitad de semana.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Presión Asfixiante</h4>
+                    <p><b>Diagnóstico Táctico:</b> Los picos de alta presión generan un desgaste condicional acumulado si no se acompañan de posesiones posteriores orientadas a la recuperación aeróbica activa.</p>
+                    <p><b>Prescripción Metodológica:</b> Dosificar las cargas de pressing coordinado en bloque adelantado mediante bloques alternos de presión alta y temporización defensiva en las sesiones tácticas de mitad de semana.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -233,9 +239,9 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Seguridad Defensiva</h4>
-                    <p><b>Diagnóstico:</b> Las jornadas con menor seguridad exponen riesgos excesivos asumidos en zona de iniciación bajo bloque rival adelantado.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Establecer el criterio de <i>'Pase de seguridad o envío vertical a espacio libre'</i> cuando el tercer hombre rival esté cerrado, evitando riesgos innecesarios en salida baja.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Seguridad Defensiva</h4>
+                    <p><b>Diagnóstico Táctico:</b> Las jornadas con menor índice de seguridad exponen riesgos excesivos asumidos en la fase de iniciación ante bloques rivales con presión intensiva.</p>
+                    <p><b>Prescripción Metodológica:</b> Consolidar el principio táctico de <i>pase de seguridad o envío vertical a espacio liberado</i> cuando el tercer hombre rival esté neutralizado, evitando pérdidas críticas en zona baja.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -280,9 +286,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Cuadrantes de Dispersión (Posesión vs Acierto)</h4>
-                    <p><b>Lectura de Cuadrantes:</b> Las líneas discontinuas dividen el rendimiento según la media del torneo. Los puntos en el <i>cuadrante superior derecho</i> validan un dominio constructivo excelente. Los puntos caídos en el <i>cuadrante inferior izquierdo</i> revelan partidos donde la posesión fue estéril y con pérdidas no forzadas.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Trabajar <i>circuitos de salida lavada de 3+1 (centrales + pivote) con superioridad numérica constante (+2)</i> para elevar el porcentaje de acierto por encima de la media en partidos de alta presión rival.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Cuadrantes de Dispersión (Posesión vs Acierto)</h4>
+                    <p><b>Lectura Analítica de Cuadrantes:</b> Las líneas discontinuas señalan la media aritmética del torneo. Los puntos situados en el <i>cuadrante superior derecho (Alto Dominio / Alta Precisión)</i> validan partidos de superioridad constructiva. Aquellos puntos en el <i>cuadrante inferior izquierdo</i> reflejan partidos de bajo control donde se multiplicaron las imprecisiones técnicas.</p>
+                    <p><b>Prescripción Metodológica:</b> Trabajar <i>circuitos automatizados de salida limpia de 3+1 (centrales + pivote) con superioridad numérica constante (+2)</i> para elevar el porcentaje de acierto en el pase bajo presión rival.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -306,9 +312,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Duelos Aéreos</h4>
-                    <p><b>Diagnóstico:</b> Los valles en la tasa de éxito exponen vulnerabilidades ante rivales con estructuras de juego directo y segundas jugadas agresivas.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Incorporar tareas de <i>duelos aéreos condicionados con oposición y trabajo de timing de salto y posicionamiento corporal defensivo</i> en los bloques de prevención de lesiones y fuerza excéntrica.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Duelos Aéreos</h4>
+                    <p><b>Diagnóstico Táctico:</b> Los descensos en la tasa de éxito exponen vulnerabilidades defensivas ante oponentes que priorizan el juego directo y la disputa de segundas jugadas.</p>
+                    <p><b>Prescripción Metodológica:</b> Incorporar tareas de <i>duelos aéreos condicionados con oposición real, ajuste de perfil corporal y temporización en el salto</i> dentro de los bloques de fuerza explosiva y prevención.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -357,9 +363,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Cuadrantes (Bloque vs Presión)</h4>
-                    <p><b>Lectura de Cuadrantes:</b> Los puntos ubicados a la derecha de la media en altura pero por debajo de la media en presión asfixiante revelan un bloque adelantado pasivo, exponiendo al equipo a contrataques a espaldas.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Sincronizar el salto de la línea defensiva con la presión del delantero centro mediante <i>ejercicios analíticos de 7v7 en espacio reducido acotado</i>, exigiendo achique coordinado de carriles.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Cuadrantes (Bloque vs Presión)</h4>
+                    <p><b>Lectura Analítica de Cuadrantes:</b> Los puntos ubicados a la derecha de la media en altura pero por debajo de la media en presión asfixiante revelan un bloque adelantado pasivo, dejando espacios críticos a espaldas de la línea defensiva.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Sincronizar el salto de la línea defensiva con la presión del delantero centro mediante <i>ejercicios analíticos de achique y basculación defensiva en 7v7</i>.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -430,9 +436,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Radar Multivariable</h4>
-                    <p><b>Diagnóstico Geométrico:</b> La superposición de polígonos permite auditar la estabilidad multidimensional. Áreas contraídas señalan partidos de bajo rendimiento global.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Utilizar el polígono equilibrado de los partidos ganados como <i>modelo patrón de referencia</i> para ajustar las cargas tácticas y condicionales en los microciclos de puesta a punto.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Radar Multivariable</h4>
+                    <p><b>Diagnóstico Geométrico:</b> La superposición de polígonos permite auditar la estabilidad multidimensional del modelo de juego entre diferentes partidos.</p>
+                    <p><b>Prescripción Metodológica:</b> Tomar el polígono equilibrado de los partidos con mejores contra-presiones como <i>modelo patrón de referencia</i> para corregir los desequilibrios tácticos detectados.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -478,9 +484,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Conectividad de Pases</h4>
-                    <p><b>Diagnóstico:</b> El balance entre pases rasos, diagonales y centros determina la verticalidad y amplitud de la construcción ofensiva.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Diseñar <i>automatismos de progresión por pasillos interiores mediante pases diagonales filtrados al tercer hombre</i> para incrementar la penetración en zonas de finalización sin perder el control de la posesión.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Conectividad de Pases</h4>
+                    <p><b>Diagnóstico Táctico:</b> El equilibrio tipológico define la fluidez combinativa. Un déficit en pases diagonales reduce la capacidad de romper líneas interiores del rival.</p>
+                    <p><b>Prescripción Metodológica:</b> Diseñar <i>automatismos ofensivos enfocados en pases diagonales filtrados al tercer hombre</i> para acelerar la progresión hacia el último tercio.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -521,9 +527,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Origen de Remates</h4>
-                    <p><b>Diagnóstico:</b> La baja proporción de tiros de corta distancia o 1v1 frente al arquero en comparación con la media distancia revela dificultades para romper la última línea rival por dentro.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Prescribir <i>bloques de entrenamiento específicos de finalización en superioridad 2v1 dentro del área y desmarques de ruptura a espalda de centrales</i> para maximizar el xG efectivo.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Origen de Remates</h4>
+                    <p><b>Diagnóstico Táctico:</b> Analizar la procedencia del remate permite medir la eficacia en la ocupación de los carriles de finalización dentro del área.</p>
+                    <p><b>Prescripción Metodológica:</b> Prescribir <i>tareas analíticas de finalización en superioridad 2v1 en zona de finalización y llegada de segundas líneas desde segunda línea</i> para incrementar el valor de xG.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -565,9 +571,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Mapa de Calor Táctico</h4>
-                    <p><b>Diagnóstico:</b> Las celdas de menor intensidad cromática exponen jornadas de desconexión sistémica donde no se cumplieron los mínimos tácticos colectivos.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Utilizar la matriz para programar <i>sesiones de refuerzo cognitivo y videoanálisis selectivo con los mediocentros y defensas</i> en las semanas posteriores a partidos con tonalidades frías.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Mapa de Calor Táctico</h4>
+                    <p><b>Diagnóstico Táctico:</b> Las celdas con menor saturación cromática revelan partidos de desconexión táctica donde no se alcanzaron los umbrales mínimos de rendimiento colectivo.</p>
+                    <p><b>Prescripción Metodológica:</b> Programar <i>sesiones de videoanálisis correctivo y refuerzo conceptual con las líneas de medios</i> tras jornadas con caídas en la matriz de calor.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -613,9 +619,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Distribución Zonal</h4>
-                    <p><b>Diagnóstico:</b> El mapa proporcional detalla la densidad operacional. Un exceso de volumen en zona baja defensiva indica problemas para superar la primera línea de presión rival.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Ajustar la ubicación táctica de los mediocentros ofensivos para que ofreciesen apoyos entre líneas, liberando densidad en zona baja y promoviendo la progresión al último tercio.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Distribución Zonal</h4>
+                    <p><b>Diagnóstico Táctico:</b> El mapa proporcional detalla la densidad operacional. Un exceso de volumen en zona baja defensiva indica problemas para superar la primera línea de presión rival.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Reajustar la ubicación posicional de los mediocentros ofensivos para garantizar apoyos constantes entre líneas, descongestionando la salida desde el fondo.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -673,12 +679,12 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Científico y Plan Prescriptivo - Embudo de Conversión</h4>
-                    <p><b>Diagnóstico:</b> La tasa de conversión final (relación entre tiros totales y goles reales) cuantifica la eficacia definitoria de la plantilla frente al volumen acumulado de construcción.</p>
-                    <p><b>Prescription / Plan de Mejora:</b> Prescribir <i>circuitos finalizadores con oposición real en espacios reducidos y tareas de toma de decisiones bajo fatiga</i> para elevar el porcentaje de conversión de gol.</p>
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Embudo de Conversión</h4>
+                    <p><b>Diagnóstico Táctico:</b> La tasa de conversión final (relación entre remates totales y goles reales) cuantifica la eficacia definitoria de la plantilla frente al volumen acumulado de construcción.</p>
+                    <p><b>Prescripción Metodológica:</b> Prescribir <i>circuitos finalizadores con oposición real y tareas de toma de decisiones bajo fatiga</i> para elevar el porcentaje de efectividad de cara a gol.</p>
                 </div>
                 """,
-            unsafe_allow_html=True,
+              unsafe_allow_html=True,
         )
 
       elif modulo_dimayor == "📊 Informe Técnico Prescriptivo & DOFA":
@@ -987,7 +993,7 @@ else:
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(
-    f"<p style='text-align:center; color:#666; font-size:11px;'>Dirección"
+    f"<p style='text-align:center; color:#64748b; font-size:11px;'>Dirección"
     f" Analítica: Nicolay Gracia</p>",
     unsafe_allow_html=True,
 )
