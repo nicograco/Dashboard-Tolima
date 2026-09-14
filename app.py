@@ -137,7 +137,30 @@ if competicion == "Liga Dimayor I 2026":
   archivo = "Liga_Dimayor_I_2026.xlsx"
   if os.path.exists(archivo):
     df = pd.read_excel(archivo, header=1)
-    team_df = df.copy()
+
+    # Procesamiento inteligente para extraer el rival de cada jornada y etiquetar limpio
+    if "Equipo" in df.columns and "Jornada" in df.columns:
+      opponents = []
+      for i in range(0, len(df), 2):
+        if i + 1 < len(df):
+          rival_name = str(df.loc[i + 1, "Equipo"]).split(" (")[
+              0
+          ]  # Extraer nombre limpio del rival
+          opponents.extend([rival_name, rival_name])
+        else:
+          opponents.extend(["Rival", "Rival"])
+      df["Rival_Clean"] = opponents
+
+      # Filtramos solo las filas del Deportes Tolima y creamos la etiqueta combinada
+      team_df = df[
+          df["Equipo"].str.contains("Deportes Tolima", na=False)
+      ].copy()
+      team_df["Match_Label"] = (
+          team_df["Jornada"] + " vs " + team_df["Rival_Clean"]
+      )
+    else:
+      team_df = df.copy()
+      team_df["Match_Label"] = team_df["Jornada"]
 
     if not team_df.empty:
       c1, c2, c3, c4 = st.columns(4)
@@ -177,17 +200,17 @@ if competicion == "Liga Dimayor I 2026":
 
       if modulo_dimayor == "🧠 Pilares de Identidad Táctica":
         st.subheader(
-            "🧠 Pilares de Identidad Táctica (Gráficos de Barras por Jornada)"
+            "🧠 Pilares de Identidad Táctica (Gráficos de Barras por Partido)"
         )
         col_t1, col_t2 = st.columns(2)
         with col_t1:
           if "Heavy metal" in team_df.columns:
             fig_hm = px.bar(
                 team_df,
-                x="Jornada",
+                x="Match_Label",
                 y="Heavy metal",
-                title="Intensidad Gegenpressing (Heavy Metal) por Jornada",
-                color="Jornada",
+                title="Intensidad Gegenpressing (Heavy Metal) por Partido",
+                color="Match_Label",
                 text_auto=True,
             )
             fig_hm.update_layout(plot_bgcolor="white", paper_bgcolor="white")
@@ -196,7 +219,7 @@ if competicion == "Liga Dimayor I 2026":
                 f"""
                 <div class="analysis-card">
                     <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Gegenpressing</h4>
-                    <p><b>Diagnóstico Táctico:</b> Las barras evidencian oscilaciones en la contra-presión tras pérdida. Los partidos con índices bajos coinciden con retrasos en los apoyos escalonados, permitiendo salidas limpias del adversario.</p>
+                    <p><b>Diagnóstico Táctico:</b> Las barras evidencian oscilaciones en la contra-presión tras pérdida frente a cada rival. Los partidos con índices bajos coinciden con retrasos en los apoyos escalonados, permitiendo salidas limpias del adversario.</p>
                     <p><b>Prescripción Metodológica:</b> Implementar tareas analíticas de <i>rondos de 4v4 + comodines con restricción de 3 toques y transición inmediata a presión tras pérdida en 4 segundos</i> durante los microciclos de fuerza explosiva.</p>
                 </div>
                 """,
@@ -206,10 +229,10 @@ if competicion == "Liga Dimayor I 2026":
           if "Contra-ataque" in team_df.columns:
             fig_ca = px.bar(
                 team_df,
-                x="Jornada",
+                x="Match_Label",
                 y="Contra-ataque",
-                title="Eficacia en Contra-ataque por Jornada",
-                color="Jornada",
+                title="Eficacia en Contra-ataque por Partido",
+                color="Match_Label",
                 text_auto=True,
             )
             fig_ca.update_layout(plot_bgcolor="white", paper_bgcolor="white")
@@ -218,7 +241,7 @@ if competicion == "Liga Dimayor I 2026":
                 f"""
                 <div class="analysis-card">
                     <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Contra-ataque</h4>
-                    <p><b>Diagnóstico Táctico:</b> La inestabilidad en la eficacia transicional refleja desacoples temporales entre el recuperador y los carrileros/extremos en ruptura.</p>
+                    <p><b>Diagnóstico Táctico:</b> La inestabilidad en la eficacia transicional refleja desacoples temporales entre el recuperador y los carrileros/extremos en ruptura frente a los distintos bloques rivales.</p>
                     <p><b>Prescripción Metodológica:</b> Prescribir <i>situaciones simuladoras de partido (SSG) de transición rápida 3v2 y 4v3 en amplitud</i> con máxima exigencia metabólica anaeróbica para sincronizar la velocidad gestual y perceptual.</p>
                 </div>
                 """,
@@ -229,10 +252,10 @@ if competicion == "Liga Dimayor I 2026":
           if "Presión asfixiante" in team_df.columns:
             fig_pa = px.bar(
                 team_df,
-                x="Jornada",
+                x="Match_Label",
                 y="Presión asfixiante",
-                title="Índice de Presión Asfixiante por Jornada",
-                color="Jornada",
+                title="Índice de Presión Asfixiante por Partido",
+                color="Match_Label",
                 text_auto=True,
             )
             fig_pa.update_layout(plot_bgcolor="white", paper_bgcolor="white")
@@ -251,10 +274,10 @@ if competicion == "Liga Dimayor I 2026":
           if "Seguridad lo primero" in team_df.columns:
             fig_sf = px.bar(
                 team_df,
-                x="Jornada",
+                x="Match_Label",
                 y="Seguridad lo primero",
-                title="Índice de Seguridad Defensiva por Jornada",
-                color="Jornada",
+                title="Índice de Seguridad Defensiva por Partido",
+                color="Match_Label",
                 text_auto=True,
             )
             fig_sf.update_layout(plot_bgcolor="white", paper_bgcolor="white")
@@ -276,7 +299,7 @@ if competicion == "Liga Dimayor I 2026":
         )
         if all(
             c in team_df.columns
-            for c in ["Posesión y control", "Acierto en el pase", "Jornada"]
+            for c in ["Posesión y control", "Acierto en el pase", "Match_Label"]
         ):
           mean_x = team_df["Posesión y control"].mean()
           mean_y = team_df["Acierto en el pase"].mean()
@@ -285,8 +308,8 @@ if competicion == "Liga Dimayor I 2026":
               team_df,
               x="Posesión y control",
               y="Acierto en el pase",
-              color="Jornada",
-              hover_name="Jornada",
+              color="Match_Label",
+              hover_name="Match_Label",
               title="Dispersión X-Y con Medias: Posesión y Control vs Acierto en el Pase",
           )
           fig_scatter_pases.update_traces(marker=dict(size=14))
@@ -310,7 +333,7 @@ if competicion == "Liga Dimayor I 2026":
               f"""
                 <div class="analysis-card">
                     <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Cuadrantes de Dispersión (Posesión vs Acierto)</h4>
-                    <p><b>Lectura Analítica de Cuadrantes:</b> Las líneas discontinuas señalan la media aritmética del torneo. Los puntos situados en el <i>cuadrante superior derecho (Alto Dominio / Alta Precisión)</i> validan partidos de superioridad constructiva. Aquellos puntos en el <i>cuadrante inferior izquierdo</i> reflejan partidos de bajo control donde se multiplicaron las imprecisiones técnicas.</p>
+                    <p><b>Lectura Analítica de Cuadrantes:</b> Las líneas discontinuas señalan la media aritmética del torneo. Los partidos situados en el <i>cuadrante superior derecho (Alto Dominio / Alta Precisión)</i> validan partidos de superioridad constructiva. Aquellos puntos en el <i>cuadrante inferior izquierdo</i> reflejan partidos de bajo control donde se multiplicaron las imprecisiones técnicas.</p>
                     <p><b>Prescripción Metodológica:</b> Trabajar <i>circuitos automatizados de salida limpia de 3+1 (centrales + pivote) con superioridad numérica constante (+2)</i> para elevar el porcentaje de acierto en el pase bajo presión rival.</p>
                 </div>
                 """,
@@ -320,14 +343,15 @@ if competicion == "Liga Dimayor I 2026":
       elif modulo_dimayor == "⚔️ Disputas & Duelos Aéreos":
         st.subheader("⚔️ Disputas y Duelos (Gráficos de Barras)")
         if all(
-            c in team_df.columns for c in ["Jornada", "Tasa de Éxito Duelos Aéreos"]
+            c in team_df.columns
+            for c in ["Match_Label", "Tasa de Éxito Duelos Aéreos"]
         ):
           fig_aero = px.bar(
               team_df,
-              x="Jornada",
+              x="Match_Label",
               y="Tasa de Éxito Duelos Aéreos",
-              title="Evolución - Tasa de Éxito en Duelos Aéreos",
-              color="Jornada",
+              title="Evolución - Tasa de Éxito en Duelos Aéreos por Partido",
+              color="Match_Label",
               text_auto=True,
           )
           fig_aero.update_layout(plot_bgcolor="white", paper_bgcolor="white")
@@ -352,7 +376,7 @@ if competicion == "Liga Dimayor I 2026":
             for c in [
                 "Altura de presión promedio (m)",
                 "Presión asfixiante",
-                "Jornada",
+                "Match_Label",
             ]
         ):
           mean_alt = team_df["Altura de presión promedio (m)"].mean()
@@ -362,8 +386,8 @@ if competicion == "Liga Dimayor I 2026":
               team_df,
               x="Altura de presión promedio (m)",
               y="Presión asfixiante",
-              color="Jornada",
-              hover_name="Jornada",
+              color="Match_Label",
+              hover_name="Match_Label",
               title="Dispersión X-Y con Medias: Altura de Bloque (m) vs Presión Asfixiante",
           )
           fig_scatter_pres.update_traces(marker=dict(size=14))
@@ -396,13 +420,13 @@ if competicion == "Liga Dimayor I 2026":
 
       elif modulo_dimayor == "🎯 Radar Multivariable":
         st.subheader(
-            "🎯 Radar Multivariable Comparativo (Multiselección por Jornada)"
+            "🎯 Radar Multivariable Comparativo (Multiselección por Partido)"
         )
-        jornadas_list = list(team_df["Jornada"].unique())
-        jornadas_sel = st.multiselect(
-            "Seleccionar Jornadas a Comparar:",
-            jornadas_list,
-            default=jornadas_list[: min(2, len(jornadas_list))],
+        match_list = list(team_df["Match_Label"].unique())
+        matches_sel = st.multiselect(
+            "Seleccionar Partidos a Comparar:",
+            match_list,
+            default=match_list[: min(2, len(match_list))],
         )
 
         cat_radar = [
@@ -422,9 +446,9 @@ if competicion == "Liga Dimayor I 2026":
             "#457b9d",
         ]
 
-        if jornadas_sel:
-          for idx, jor in enumerate(jornadas_sel):
-            row_data = team_df[team_df["Jornada"] == jor]
+        if matches_sel:
+          for idx, m_lbl in enumerate(matches_sel):
+            row_data = team_df[team_df["Match_Label"] == m_lbl]
             if not row_data.empty:
               r_val = row_data.iloc[0]
               val_radar = [
@@ -442,7 +466,7 @@ if competicion == "Liga Dimayor I 2026":
                       r=val_radar,
                       theta=cat_radar,
                       fill="toself",
-                      name=f"{jor} ({r_val.get('Equipo', '')})",
+                      name=m_lbl,
                       line_color=c_color,
                       opacity=0.7,
                   )
@@ -460,15 +484,15 @@ if competicion == "Liga Dimayor I 2026":
               f"""
                 <div class="analysis-card">
                     <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Radar Multivariable</h4>
-                    <p><b>Diagnóstico Geométrico:</b> La superposición de polígonos permite auditar la estabilidad multidimensional del modelo de juego entre diferentes partidos.</p>
-                    <p><b>Prescripción Metodológica:</b> Tomar el polígono equilibrado de los partidos con mejores contra-presiones como <i>modelo patrón de referencia</i> para corregir los desequilibrios tácticos detectados.</p>
+                    <p><b>Diagnóstico Geométrico:</b> La superposición de polígonos permite auditar la estabilidad multidimensional del modelo de juego frente a diferentes oponentes.</p>
+                    <p><b>Prescripción Metodológica:</b> Tomar el polígono equilibrado de los partidos con mejores resultados como <i>modelo patrón de referencia</i> para corregir los desequilibrios tácticos detectados.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
           )
         else:
           st.info(
-              "Por favor selecciona al menos una jornada en el filtro superior"
+              "Por favor selecciona al menos un partido en el filtro superior"
               " para visualizar el radar."
           )
 
@@ -559,7 +583,7 @@ if competicion == "Liga Dimayor I 2026":
           )
 
       elif modulo_dimayor == "🔥 Mapa de Calor Táctico":
-        st.subheader("🔥 Mapa de Calor Táctico (Heatmap por Jornada)")
+        st.subheader("🔥 Mapa de Calor Táctico (Heatmap por Partido)")
         heat_vars = [
             "Posesión y control",
             "Heavy metal",
@@ -569,14 +593,14 @@ if competicion == "Liga Dimayor I 2026":
         ]
         available_heat = [v for v in heat_vars if v in team_df.columns]
 
-        if available_heat and "Jornada" in team_df.columns:
-          df_heat = team_df.set_index("Jornada")[available_heat]
+        if available_heat and "Match_Label" in team_df.columns:
+          df_heat = team_df.set_index("Match_Label")[available_heat]
 
           fig_heatmap = px.imshow(
               df_heat,
               labels=dict(
                   x="Métrica Táctica",
-                  y="Jornada",
+                  y="Partido",
                   color="Intensidad / Índice",
               ),
               x=available_heat,
@@ -584,7 +608,7 @@ if competicion == "Liga Dimayor I 2026":
               color_continuous_scale="Tealgrn",
               aspect="auto",
               title=(
-                  "Matriz de Calor: Comportamiento Táctico Global por Jornada"
+                  "Matriz de Calor: Comportamiento Táctico Global por Partido"
               ),
           )
           fig_heatmap.update_layout(
