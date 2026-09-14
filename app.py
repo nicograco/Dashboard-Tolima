@@ -138,12 +138,16 @@ if competicion == "Liga Dimayor I 2026":
           tab7,
           tab8,
           tab9,
+          tab10,
+          tab11,
       ) = st.tabs([
           "🧠 Identidad (Barras)",
           "⚙️ Pases (Dispersión X-Y)",
           "⚔️ Duelos (Barras)",
           "🛡️ Presión (Dispersión X-Y)",
           "🎯 Radar Multivariable",
+          "🔗 Red de Pases y Tipología",
+          "🎯 Tipología y Origen de Remates",
           "🔥 Mapa de Calor Táctico",
           "🗺️ Zonas (Árbol Jerárquico)",
           "🔄 Embudo de Conversión",
@@ -154,11 +158,6 @@ if competicion == "Liga Dimayor I 2026":
         st.subheader(
             "🧠 Pilares de Identidad Táctica (Gráficos de Barras por Jornada)"
         )
-        st.markdown(
-            "*(Formato de Barras: Ideal para comparar la magnitud absoluta e"
-            " individual de cada indicador por partido).* "
-        )
-
         col_t1, col_t2 = st.columns(2)
         with col_t1:
           if "Heavy metal" in team_df.columns:
@@ -250,12 +249,6 @@ if competicion == "Liga Dimayor I 2026":
         st.subheader(
             "⚙️ Construcción de Juego (Gráfico de Dispersión X-Y con Medias)"
         )
-        st.markdown(
-            "*(Formato X-Y con Medias: Cruza la posesión del balón frente al"
-            " porcentaje de acierto en pases, dividiendo el gráfico en"
-            " cuadrantes analíticos).* "
-        )
-
         if all(
             c in team_df.columns
             for c in ["Posesión y control", "Acierto en el pase", "Jornada"]
@@ -300,11 +293,6 @@ if competicion == "Liga Dimayor I 2026":
 
       with tab3:
         st.subheader("⚔️ Disputas y Duelos (Gráficos de Barras)")
-        st.markdown(
-            "*(Formato de Barras: Evaluación individual de la tasa de éxito en"
-            " duelos aéreos por jornada).* "
-        )
-
         if all(
             c in team_df.columns for c in ["Jornada", "Tasa de Éxito Duelos Aéreos"]
         ):
@@ -332,11 +320,6 @@ if competicion == "Liga Dimayor I 2026":
         st.subheader(
             "🛡️ Presión Defensiva (Gráfico de Dispersión X-Y con Medias)"
         )
-        st.markdown(
-            "*(Formato X-Y con Medias: Relaciona la altura del bloque defensivo"
-            " frente a la presión asfixiante con líneas de referencia).* "
-        )
-
         if all(
             c in team_df.columns
             for c in [
@@ -387,11 +370,6 @@ if competicion == "Liga Dimayor I 2026":
         st.subheader(
             "🎯 Radar Multivariable Comparativo (Multiselección por Jornada)"
         )
-        st.markdown(
-            "Selecciona una o varias jornadas para comparar superpuestas las"
-            " dimensiones clave del rendimiento colectivo."
-        )
-
         jornadas_list = list(team_df["Jornada"].unique())
         jornadas_sel = st.multiselect(
             "Seleccionar Jornadas a Comparar:",
@@ -406,7 +384,6 @@ if competicion == "Liga Dimayor I 2026":
             "Contra-ataque",
             "Seguridad Defensiva",
         ]
-
         fig_radar = go.Figure()
         colors_list = [
             COLOR_NAVY,
@@ -467,12 +444,102 @@ if competicion == "Liga Dimayor I 2026":
           )
 
       with tab6:
-        st.subheader("🔥 Mapa de Calor Táctico (Heatmap por Jornada)")
+        st.subheader("🔗 Red de Conectividad y Tipología de Pases por Zona")
         st.markdown(
-            "Matriz de calor que cruza las principales métricas de identidad"
-            " táctica a lo largo de las jornadas disputadas."
+            "Análisis agregado de la tipología de pases (rasos, elevados,"
+            " diagonales, centros) para auditar la estructura de circulación"
+            " del equipo."
         )
 
+        pass_type_cols = [
+            "Pase raso",
+            "Pase Elevado",
+            "Pase Diagonal",
+            "Centro bajo",
+            "Centro alto",
+        ]
+        available_pass_cols = [c for c in pass_type_cols if c in team_df.columns]
+
+        if available_pass_cols:
+          pass_summary = team_df[available_pass_cols].sum().reset_index()
+          pass_summary.columns = ["Tipología de Pase", "Volumen Total"]
+
+          fig_passes = px.bar(
+              pass_summary,
+              x="Tipología de Pase",
+              y="Volumen Total",
+              title="Volumen Acumulado por Tipología de Pase",
+              color="Tipología de Pase",
+              color_discrete_sequence=[
+                  COLOR_NAVY,
+                  COLOR_BLUE,
+                  COLOR_ACCENT,
+                  COLOR_DARK,
+                  "#e63946",
+              ],
+              text_auto=True,
+          )
+          fig_passes.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          st.plotly_chart(fig_passes, use_container_width=True)
+          st.markdown(
+              f"""
+                <div class="analysis-card">
+                    <h4>💡 Análisis Técnico - Estructura y Conectividad de Pases</h4>
+                    <p>Este desglose tipológico permite evaluar el ADN constructivo del equipo. Un predominio de <b>pases rasos y diagonales</b> confirma una vocación combinativa orientada a romper líneas por abajo, mientras que el volumen de centros bajos y altos cuantifica la presencia ofensiva en amplitud por las bandas.</p>
+                </div>
+                """,
+              unsafe_allow_html=True,
+          )
+
+      with tab7:
+        st.subheader("🎯 Tipología y Origen de Remates")
+        st.markdown(
+            "Desglose técnico de la finalización ofensiva: distancias, duelos"
+            " individuales y tipos de remate por partido."
+        )
+
+        shoot_cols = [
+            "Tiros de media distancia",
+            "Tiros de corta distancia",
+            "Tiros en 1-contra-1 frente al Arquero",
+            "Cabezazo",
+            "Tiro a portería vacía",
+        ]
+        available_shoot_cols = [c for c in shoot_cols if c in team_df.columns]
+
+        if available_shoot_cols:
+          shoot_summary = team_df[available_shoot_cols].sum().reset_index()
+          shoot_summary.columns = ["Tipología de Remate", "Volumen Acumulado"]
+
+          fig_shoots = px.bar(
+              shoot_summary,
+              x="Tipología de Remate",
+              y="Volumen Acumulado",
+              title="Distribución Acumulada de Origen y Tipología de Remates",
+              color="Tipología de Remate",
+              color_discrete_sequence=[
+                  COLOR_NAVY,
+                  COLOR_BLUE,
+                  COLOR_ACCENT,
+                  COLOR_DARK,
+                  "#e63946",
+              ],
+              text_auto=True,
+          )
+          fig_shoots.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          st.plotly_chart(fig_shoots, use_container_width=True)
+          st.markdown(
+              f"""
+                <div class="analysis-card">
+                    <h4>💡 Análisis Técnico - Origen y Tipología de Finalización</h4>
+                    <p>Analizar cómo y desde dónde remata el equipo es vital para optimizar el plan de entrenamiento semanal. Identificar la proporción de tiros en 1 contra 1 frente al arquero o remates de media distancia permite al cuerpo técnico diseñar tareas de finalización orientadas a explotar las debilidades espaciales de los próximos oponentes.</p>
+                </div>
+                """,
+              unsafe_allow_html=True,
+          )
+
+      with tab8:
+        st.subheader("🔥 Mapa de Calor Táctico (Heatmap por Jornada)")
         heat_vars = [
             "Posesión y control",
             "Heavy metal",
@@ -483,7 +550,6 @@ if competicion == "Liga Dimayor I 2026":
         available_heat = [v for v in heat_vars if v in team_df.columns]
 
         if available_heat and "Jornada" in team_df.columns:
-          # Preparamos la matriz para el mapa de calor
           df_heat = team_df.set_index("Jornada")[available_heat]
 
           fig_heatmap = px.imshow(
@@ -515,16 +581,10 @@ if competicion == "Liga Dimayor I 2026":
               unsafe_allow_html=True,
           )
 
-      with tab7:
+      with tab9:
         st.subheader(
             "🗺️ Distribución Zonal (Diagrama de Árbol / Treemap Jerárquico)"
         )
-        st.markdown(
-            "Representación jerárquica mediante rectángulos proporcionales para"
-            " visualizar qué zonas del campo concentran mayor volumen de"
-            " operaciones."
-        )
-
         zone_cols_tree = [
             "Zona Defensa Central",
             "Zona Lateral (Derecho)",
@@ -568,14 +628,8 @@ if competicion == "Liga Dimayor I 2026":
               unsafe_allow_html=True,
           )
 
-      with tab8:
+      with tab10:
         st.subheader("🔄 Embudo de Conversión Ofensiva (Funnel Analysis)")
-        st.markdown(
-            "Mide la eficiencia real del equipo en la progresión ofensiva con"
-            " base en el archivo de datos (Pases exitosos ➔ Tiros totales ➔"
-            " Goles reales)."
-        )
-
         total_pases = (
             int(team_df["Pases exitosos"].sum())
             if "Pases exitosos" in team_df.columns
@@ -633,7 +687,7 @@ if competicion == "Liga Dimayor I 2026":
             unsafe_allow_html=True,
         )
 
-      with tab9:
+      with tab11:
         st.subheader("📊 Informe Técnico Global y Matriz DOFA Avanzada")
         col_d1, col_d2 = st.columns(2)
         with col_d1:
@@ -656,9 +710,9 @@ if competicion == "Liga Dimayor I 2026":
             """
         <div class="analysis-card">
             <h4>📋 Conclusión Analítica Integral - Dirección de Rendimiento</h4>
-            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y con líneas de referencia media, mapas de calor tácticos y el embudo de conversión real demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
-            <p><b>2. Factores de Riesgo Táctico:</b> Los momentos de mayor vulnerabilidad coinciden con caídas en la efectividad del embudo ofensivo en el último tercio, lo que subraya la necesidad de mejorar la toma de decisiones en zona de finalización.</p>
-            <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión con líneas de referencia media y los mapas de calor para enfocar los entrenamientos en la optimización de rendimientos que se encuentren por debajo del estándar colectivo.</p>
+            <p><b>1. Consolidación Estructural:</b> La incorporación de módulos de conectividad de pases y tipología de remates, combinada con diagramas de dispersión, mapas de calor y embudos de conversión, otorga al cuerpo técnico una visión holística y científica del rendimiento colectivo.</p>
+            <p><b>2. Factores de Riesgo Táctico:</b> Los momentos de mayor vulnerabilidad coinciden con desajustes en la presión alta y caídas en la efectividad del embudo ofensivo en el último tercio.</p>
+            <p><b>3. Plan de Acción Semanal:</b> Se recomienda enfocar las sesiones de entrenamiento en la optimización de la finalización según los orígenes de remate más frecuentes detectados en la plataforma.</p>
         </div>
         """,
             unsafe_allow_html=True,
