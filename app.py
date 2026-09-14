@@ -468,7 +468,7 @@ if competicion == "Liga Dimayor I 2026":
         )
         match_list = list(team_df["Match_Label"].unique())
 
-        # CORRECCIÓN BLINDADA: Si el usuario borra todo o al iniciar, por defecto toma todos los partidos del Tolima
+        # BLINDAJE TOTAL: Si no se selecciona nada o al arrancar, por defecto toma todos los partidos para comparar (ej. Junior vs Medellín)
         matches_sel = st.multiselect(
             "Seleccionar Partidos a Comparar:",
             match_list,
@@ -476,13 +476,7 @@ if competicion == "Liga Dimayor I 2026":
         )
 
         if not matches_sel:
-          matches_sel = (
-              match_list  # Garantiza que nunca quede vacío el gráfico
-          )
-          st.info(
-              "ℹ️ Mostrando todos los partidos por defecto al no haber"
-              " selecciones activas."
-          )
+          matches_sel = match_list
 
         cat_radar = [
             "Posesión y Control",
@@ -536,7 +530,7 @@ if competicion == "Liga Dimayor I 2026":
             f"""
             <div class="analysis-card">
                 <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Radar Multivariable</h4>
-                <p><b>Diagnóstico Geométrico:</b> La superposición de polígonos permite auditar la estabilidad multidimensional del modelo de juego frente a diferentes oponentes.</p>
+                <p><b>Diagnóstico Geométrico:</b> La superposición de polígonos permite auditar la estabilidad multidimensional del modelo de juego frente a diferentes oponentes (ej. comparar el rendimiento ante Junior vs Independiente Medellín).</p>
                 <p><b>Prescripción Metodológica:</b> Tomar el polígono equilibrado de los partidos con mejores resultados como <i>modelo patrón de referencia</i> para corregir los desequilibrios tácticos detectados.</p>
             </div>
             """,
