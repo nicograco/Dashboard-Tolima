@@ -128,13 +128,24 @@ if competicion == "Liga Dimayor I 2026":
 
       st.markdown("---")
 
-      tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
+      (
+          tab1,
+          tab2,
+          tab3,
+          tab4,
+          tab5,
+          tab6,
+          tab7,
+          tab8,
+          tab9,
+      ) = st.tabs([
           "🧠 Identidad (Barras)",
           "⚙️ Pases (Dispersión X-Y)",
           "⚔️ Duelos (Barras)",
           "🛡️ Presión (Dispersión X-Y)",
           "🎯 Radar Multivariable",
-          "📉 X-Y con Líneas de Media",
+          "🔥 Mapa de Calor Táctico",
+          "🗺️ Zonas (Árbol Jerárquico)",
           "🔄 Embudo de Conversión",
           "📊 Análisis Técnico & DOFA",
       ])
@@ -456,81 +467,108 @@ if competicion == "Liga Dimayor I 2026":
           )
 
       with tab6:
-        st.subheader(
-            "📉 Gráfico de Dispersión X-Y con Líneas de Media (Correlación de"
-            " Variables)"
-        )
+        st.subheader("🔥 Mapa de Calor Táctico (Heatmap por Jornada)")
         st.markdown(
-            "Gráfico de correlación libre con tamaño de burbuja proporcional a"
-            " los goles anotados y líneas de referencia de la media."
+            "Matriz de calor que cruza las principales métricas de identidad"
+            " táctica a lo largo de las jornadas disputadas."
         )
 
-        col_x_opt = st.selectbox(
-            "Eje X (Variable Independiente):",
-            [
-                "Posesión y control",
-                "Heavy metal",
-                "Presión asfixiante",
-                "Contra-ataque",
-                "Tiros totales",
-            ],
-            index=0,
-        )
-        col_y_opt = st.selectbox(
-            "Eje Y (Variable Dependiente):",
-            [
-                "xG basado en la posición del rematador",
-                "Acierto en el pase",
-                "Goles",
-                "Balones críticos perdidos",
-            ],
-            index=0,
-        )
+        heat_vars = [
+            "Posesión y control",
+            "Heavy metal",
+            "Presión asfixiante",
+            "Contra-ataque",
+            "Seguridad lo primero",
+        ]
+        available_heat = [v for v in heat_vars if v in team_df.columns]
 
-        if all(
-            c in team_df.columns
-            for c in [col_x_opt, col_y_opt, "Jornada", "Goles"]
-        ):
-          mx = team_df[col_x_opt].mean()
-          my = team_df[col_y_opt].mean()
+        if available_heat and "Jornada" in team_df.columns:
+          # Preparamos la matriz para el mapa de calor
+          df_heat = team_df.set_index("Jornada")[available_heat]
 
-          fig_scatter_med = px.scatter(
-              team_df,
-              x=col_x_opt,
-              y=col_y_opt,
-              size="Goles",
-              color="Jornada",
-              hover_name="Jornada",
-              title=f"Dispersión X-Y con Medias: {col_x_opt} vs {col_y_opt} (Tamaño = Goles)",
+          fig_heatmap = px.imshow(
+              df_heat,
+              labels=dict(
+                  x="Métrica Táctica",
+                  y="Jornada",
+                  color="Intensidad / Índice",
+              ),
+              x=available_heat,
+              y=df_heat.index,
+              color_continuous_scale="Tealgrn",
+              aspect="auto",
+              title=(
+                  "Matriz de Calor: Comportamiento Táctico Global por Jornada"
+              ),
           )
-          fig_scatter_med.update_traces(marker=dict(size=14, opacity=0.85))
-          fig_scatter_med.add_vline(
-              x=mx,
-              line_dash="dash",
-              line_color="gray",
-              annotation_text=f"Media X: {mx:.2f}",
+          fig_heatmap.update_layout(
+              plot_bgcolor="white", paper_bgcolor="white", height=450
           )
-          fig_scatter_med.add_hline(
-              y=my,
-              line_dash="dash",
-              line_color="gray",
-              annotation_text=f"Media Y: {my:.2f}",
-          )
-          fig_scatter_med.update_layout(
-              plot_bgcolor="white", paper_bgcolor="white", hovermode="closest"
-          )
-          st.plotly_chart(fig_scatter_med, use_container_width=True)
+          st.plotly_chart(fig_heatmap, use_container_width=True)
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico Detallado - Dispersión con Medias ({col_x_opt} vs {col_y_opt})</h4>
-                    <p><b>¿Por qué algunos puntos quedan por encima de la media y otros por debajo?</b> Al incorporar las líneas de referencia media, cada jornada se posiciona en uno de los cuatro cuadrantes del rendimiento. Los puntos con burbujas grandes situados por encima de la media en ambas dimensiones representan partidos de máxima eficacia colectiva. Aquellos partidos que quedan por debajo de la media en el eje Y a pesar de tener buenos valores en el eje X indican problemas de conversión o pérdida de eficacia en el último tercio.</p>
+                    <h4>💡 Análisis Técnico Detallado - Mapa de Calor Táctico</h4>
+                    <p>Este mapa de calor sintetiza en una sola visualización la intensidad de los cinco pilares tácticos en cada jornada. Las tonalidades más intensas (verde oscuro) destacan los partidos con mayor despliegue operacional, permitiendo al cuerpo técnico detectar de un vistazo en qué encuentros el equipo ejecutó de manera óptima el modelo de juego o experimentó caídas de rendimiento.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
           )
 
       with tab7:
+        st.subheader(
+            "🗺️ Distribución Zonal (Diagrama de Árbol / Treemap Jerárquico)"
+        )
+        st.markdown(
+            "Representación jerárquica mediante rectángulos proporcionales para"
+            " visualizar qué zonas del campo concentran mayor volumen de"
+            " operaciones."
+        )
+
+        zone_cols_tree = [
+            "Zona Defensa Central",
+            "Zona Lateral (Derecho)",
+            "Zona Lateral (Izquierdo)",
+            "Zona Mediocentro Defensivo",
+            "Zona Mediocentro",
+            "Zona Centrocampista Ofensivo",
+            "Zona Banda Derecha",
+            "Zona Banda Izquierda",
+        ]
+        existing_tree_cols = [c for c in zone_cols_tree if c in team_df.columns]
+
+        if existing_tree_cols:
+          tree_data = []
+          for col in existing_tree_cols:
+            tree_data.append(
+                {"Zona Táctica": col, "Volumen": team_df[col].sum()}
+            )
+          df_tree = pd.DataFrame(tree_data)
+
+          fig_treemap = px.treemap(
+              df_tree,
+              path=["Zona Táctica"],
+              values="Volumen",
+              title=(
+                  "Mapa de Árbol Proporcional: Concentración Operacional por"
+                  " Zona"
+              ),
+              color="Volumen",
+              color_continuous_scale="Teal",
+          )
+          fig_treemap.update_layout(plot_bgcolor="white", paper_bgcolor="white")
+          st.plotly_chart(fig_treemap, use_container_width=True)
+          st.markdown(
+              f"""
+                <div class="analysis-card">
+                    <h4>💡 Análisis Técnico - Diagrama de Árbol Zonal (Treemap)</h4>
+                    <p>Este diagrama jerárquico representa el volumen total de intervenciones mediante rectángulos proporcionales. Permite al cuerpo técnico identificar con absoluta claridad qué pasillos del campo (por ejemplo, el mediocentro defensivo o la defensa central) acaparan la mayor densidad operacional del equipo a lo largo del torneo.</p>
+                </div>
+                """,
+              unsafe_allow_html=True,
+          )
+
+      with tab8:
         st.subheader("🔄 Embudo de Conversión Ofensiva (Funnel Analysis)")
         st.markdown(
             "Mide la eficiencia real del equipo en la progresión ofensiva con"
@@ -595,7 +633,7 @@ if competicion == "Liga Dimayor I 2026":
             unsafe_allow_html=True,
         )
 
-      with tab8:
+      with tab9:
         st.subheader("📊 Informe Técnico Global y Matriz DOFA Avanzada")
         col_d1, col_d2 = st.columns(2)
         with col_d1:
@@ -618,9 +656,9 @@ if competicion == "Liga Dimayor I 2026":
             """
         <div class="analysis-card">
             <h4>📋 Conclusión Analítica Integral - Dirección de Rendimiento</h4>
-            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y con líneas de referencia media, y el embudo de conversión real demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
+            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y con líneas de referencia media, mapas de calor tácticos y el embudo de conversión real demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
             <p><b>2. Factores de Riesgo Táctico:</b> Los momentos de mayor vulnerabilidad coinciden con caídas en la efectividad del embudo ofensivo en el último tercio, lo que subraya la necesidad de mejorar la toma de decisiones en zona de finalización.</p>
-            <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión con líneas de referencia media para enfocar los entrenamientos en la optimización de rendimientos que se encuentren por debajo del estándar colectivo.</p>
+            <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión con líneas de referencia media y los mapas de calor para enfocar los entrenamientos en la optimización de rendimientos que se encuentren por debajo del estándar colectivo.</p>
         </div>
         """,
             unsafe_allow_html=True,
