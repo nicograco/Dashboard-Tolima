@@ -101,7 +101,7 @@ if competicion == "Liga Dimayor I 2026":
           "🔥 Mapa de Calor Táctico",
           "🗺️ Distribución Zonal (Árbol)",
           "🔄 Embudo de Conversión Ofensiva",
-          "📊 Informe Técnico & DOFA",
+          "📊 Informe Técnico Prescriptivo & DOFA",
       ],
   )
 
@@ -166,8 +166,9 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Gegenpressing (Barras)</h4>
-                    <p>El uso de barras con distinción cromática por jornada permite identificar de forma directa los encuentros donde la contra-presión superó el promedio táctico esperado, validando el esfuerzo físico colectivo posterior a la pérdida del balón en campo rival.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Gegenpressing</h4>
+                    <p><b>Diagnóstico:</b> Las barras evidencian oscilaciones en la contra-presión tras pérdida. Los partidos con índices bajos coinciden con retrasos en los apoyos escalonados, permitiendo salidas limpias del rival.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Implementar tareas de <i>Rondos de 4v4 + comodines con restricción de 3 toques y transición a presión inmediata en 4 segundos</i> durante los microciclos de fuerza explosiva.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -187,8 +188,9 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Contra-ataque (Barras)</h4>
-                    <p>Las barras muestran el rendimiento exacto en transiciones ofensivas rápidas, destacando aquellos partidos donde se capitalizaron los espacios dejados por bloques rivales adelantados.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Contra-ataque</h4>
+                    <p><b>Diagnóstico:</b> La inestabilidad en la eficacia transicional refleja desacoples temporales entre el recuperador y los extremos sprinters.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Prescribir <i>Juegos de Transición Rápida 3v2 y 4v3 en amplitud</i> con máxima exigencia metabólica anaeróbica al alza para sincronizar la velocidad gestual y perceptual.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -209,8 +211,9 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Presión Asfixiante (Barras)</h4>
-                    <p>Cuantifica la agresividad en campo rival. Visualmente en barras facilita evaluar qué encuentros presentaron mayor despliegue condicional en la primera línea de presión.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Presión Asfixiante</h4>
+                    <p><b>Diagnóstico:</b> Los picos de alta presión generan desgaste físico acumulado si no se acompañan de posesiones posteriores para recuperar el perfil aeróbico.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Dosificar las cargas de pressing coordinado en bloque adelantado mediante bloques alternos de presión y temporización defensiva en las sesiones tácticas de mitad de semana.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -230,8 +233,9 @@ if competicion == "Liga Dimayor I 2026":
             st.markdown(
                 f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Seguridad Defensiva (Barras)</h4>
-                    <p>Mide el pragmatismo defensivo por partido. Las barras resaltan los encuentros donde se priorizó el orden estructural sobre los riesgos en salida.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Seguridad Defensiva</h4>
+                    <p><b>Diagnóstico:</b> Las jornadas con menor seguridad exponen riesgos excesivos asumidos en zona de iniciación bajo bloque rival adelantado.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Establecer el criterio de <i>'Pase de seguridad o envío vertical a espacio libre'</i> cuando el tercer hombre rival esté cerrado, evitando riesgos innecesarios en salida baja.</p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -276,8 +280,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico Detallado - Cuadrantes de Dispersión (Posesión vs Acierto)</h4>
-                    <p><b>¿Por qué algunos puntos quedan por encima de la media y otros por debajo?</b> Las líneas discontinuas representan la <b>media aritmética del torneo</b>. Cuando un punto se ubica en el <i>cuadrante superior derecho (Alto/Alto)</i>, indica un partido donde el equipo dominó la posesión y mantuvo una circulación sumamente limpia. En contraste, puntos en el <i>cuadrante superior izquierdo (Bajo Posesión / Alto Acierto)</i> revelan encuentros de resistencia o bloque bajo altamente clínicos, donde se priorizó el pase seguro sin acaparar el balón. Los puntos por debajo de la media en ambos ejes exponen partidos de imprecisión general.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Cuadrantes de Dispersión (Posesión vs Acierto)</h4>
+                    <p><b>Lectura de Cuadrantes:</b> Las líneas discontinuas dividen el rendimiento según la media del torneo. Los puntos en el <i>cuadrante superior derecho</i> validan un dominio constructivo excelente. Los puntos caídos en el <i>cuadrante inferior izquierdo</i> revelan partidos donde la posesión fue estéril y con pérdidas no forzadas.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Trabajar <i>circuitos de salida lavada de 3+1 (centrales + pivote) con superioridad numérica constante (+2)</i> para elevar el porcentaje de acierto por encima de la media en partidos de alta presión rival.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -301,8 +306,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Duelos Aéreos (Barras)</h4>
-                    <p>Permite visualizar el dominio en balones divididos jornada a jornada, identificando los enfrentamientos donde el rival exigió mayor rigor en los despejes y duelos defensivos.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Duelos Aéreos</h4>
+                    <p><b>Diagnóstico:</b> Los valles en la tasa de éxito exponen vulnerabilidades ante rivales con estructuras de juego directo y segundas jugadas agresivas.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Incorporar tareas de <i>duelos aéreos condicionados con oposición y trabajo de timing de salto y posicionamiento corporal defensivo</i> en los bloques de prevención de lesiones y fuerza excéntrica.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -351,8 +357,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico Detallado - Cuadrantes de Dispersión (Bloque vs Presión)</h4>
-                    <p><b>¿Por qué algunos puntos quedan por encima de la media y otros por debajo?</b> Al cruzar la altura del bloque con la presión asfixiante, observamos que hay jornadas donde el equipo adelantó sus líneas (a la derecha de la media X) pero no logró asfixiar eficazmente al rival (por debajo de la media Y), lo que evidencia un desajuste temporal entre la línea defensiva y los centrocampistas. Los puntos en el cuadrante superior derecho muestran la sincronización perfecta de una presión alta y adelantada.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Cuadrantes (Bloque vs Presión)</h4>
+                    <p><b>Lectura de Cuadrantes:</b> Los puntos ubicados a la derecha de la media en altura pero por debajo de la media en presión asfixiante revelan un bloque adelantado pasivo, exponiendo al equipo a contrataques a espaldas.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Sincronizar el salto de la línea defensiva con la presión del delantero centro mediante <i>ejercicios analíticos de 7v7 en espacio reducido acotado</i>, exigiendo achique coordinado de carriles.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -423,8 +430,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Radar Multivariable</h4>
-                    <p>La superposición geométrica permite evaluar de forma integral si un incremento en posesión sacrifica la agresividad en la presión alta entre diferentes partidos.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Radar Multivariable</h4>
+                    <p><b>Diagnóstico Geométrico:</b> La superposición de polígonos permite auditar la estabilidad multidimensional. Áreas contraídas señalan partidos de bajo rendimiento global.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Utilizar el polígono equilibrado de los partidos ganados como <i>modelo patrón de referencia</i> para ajustar las cargas tácticas y condicionales en los microciclos de puesta a punto.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -470,8 +478,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Estructura y Conectividad de Pases</h4>
-                    <p>Este desglose tipológico permite evaluar el ADN constructivo del equipo. Un predominio de <b>pases rasos y diagonales</b> confirma una vocación combinativa orientada a romper líneas por abajo, mientras que el volumen de centros bajos y altos cuantifica la presencia ofensiva en amplitud por las bandas.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Conectividad de Pases</h4>
+                    <p><b>Diagnóstico:</b> El balance entre pases rasos, diagonales y centros determina la verticalidad y amplitud de la construcción ofensiva.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Diseñar <i>automatismos de progresión por pasillos interiores mediante pases diagonales filtrados al tercer hombre</i> para incrementar la penetración en zonas de finalización sin perder el control de la posesión.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -512,8 +521,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Origen y Tipología de Finalización</h4>
-                    <p>Analizar cómo y desde dónde remata el equipo es vital para optimizar el plan de entrenamiento semanal. Identificar la proporción de tiros en 1 contra 1 frente al arquero o remates de media distancia permite al cuerpo técnico diseñar tareas de finalización orientadas a explotar las debilidades espaciales de los próximos oponentes.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Origen de Remates</h4>
+                    <p><b>Diagnóstico:</b> La baja proporción de tiros de corta distancia o 1v1 frente al arquero en comparación con la media distancia revela dificultades para romper la última línea rival por dentro.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Prescribir <i>bloques de entrenamiento específicos de finalización en superioridad 2v1 dentro del área y desmarques de ruptura a espalda de centrales</i> para maximizar el xG efectivo.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -555,8 +565,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico Detallado - Mapa de Calor Táctico</h4>
-                    <p>Este mapa de calor sintetiza en una sola visualización la intensidad de los cinco pilares tácticos en cada jornada. Las tonalidades más intensas (verde oscuro) destacan los partidos con mayor despliegue operacional, permitiendo al cuerpo técnico detectar de un vistazo en qué encuentros el equipo ejecutó de manera óptima el modelo de juego o experimentó caídas de rendimiento.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Mapa de Calor Táctico</h4>
+                    <p><b>Diagnóstico:</b> Las celdas de menor intensidad cromática exponen jornadas de desconexión sistémica donde no se cumplieron los mínimos tácticos colectivos.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Utilizar la matriz para programar <i>sesiones de refuerzo cognitivo y videoanálisis selectivo con los mediocentros y defensas</i> en las semanas posteriores a partidos con tonalidades frías.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -602,8 +613,9 @@ if competicion == "Liga Dimayor I 2026":
           st.markdown(
               f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Diagrama de Árbol Zonal (Treemap)</h4>
-                    <p>Este diagrama jerárquico representa el volumen total de intervenciones mediante rectángulos proporcionales. Permite al cuerpo técnico identificar con absoluta claridad qué pasillos del campo (por ejemplo, el mediocentro defensivo o la defensa central) acaparan la mayor densidad operacional del equipo a lo largo del torneo.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Distribución Zonal</h4>
+                    <p><b>Diagnóstico:</b> El mapa proporcional detalla la densidad operacional. Un exceso de volumen en zona baja defensiva indica problemas para superar la primera línea de presión rival.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Ajustar la ubicación táctica de los mediocentros ofensivos para que ofreciesen apoyos entre líneas, liberando densidad en zona baja y promoviendo la progresión al último tercio.</p>
                 </div>
                 """,
               unsafe_allow_html=True,
@@ -661,15 +673,18 @@ if competicion == "Liga Dimayor I 2026":
         st.markdown(
             f"""
                 <div class="analysis-card">
-                    <h4>💡 Análisis Técnico - Embudo de Conversión Ofensiva Real</h4>
-                    <p>Este embudo refleja con absoluta fidelidad los <b>datos reales del archivo maestro</b>: de los <b>{total_pases} pases exitosos</b> acumulados en construcción y el volumen estimado de penetración, el equipo genera <b>{total_tiros} tiros totales</b>, culminando en <b>{total_goles} goles reales</b> anotados. Permite evaluar de forma transparente la tasa de conversión final de la plantilla.</p>
+                    <h4>💡 Análisis Científico y Plan Prescriptivo - Embudo de Conversión</h4>
+                    <p><b>Diagnóstico:</b> La tasa de conversión final (relación entre tiros totales y goles reales) cuantifica la eficacia definitoria de la plantilla frente al volumen acumulado de construcción.</p>
+                    <p><b>Prescription / Plan de Mejora:</b> Prescribir <i>circuitos finalizadores con oposición real en espacios reducidos y tareas de toma de decisiones bajo fatiga</i> para elevar el porcentaje de conversión de gol.</p>
                 </div>
                 """,
             unsafe_allow_html=True,
         )
 
-      elif modulo_dimayor == "📊 Informe Técnico & DOFA":
-        st.subheader("📊 Informe Técnico Global y Matriz DOFA Avanzada")
+      elif modulo_dimayor == "📊 Informe Técnico Prescriptivo & DOFA":
+        st.subheader(
+            "📊 Informe Técnico Global, Matriz DOFA y Plan Prescriptivo Avanzado"
+        )
         col_d1, col_d2 = st.columns(2)
         with col_d1:
           st.markdown(
@@ -684,16 +699,16 @@ if competicion == "Liga Dimayor I 2026":
 
         st.markdown("---")
         st.markdown(
-            "### 📌 Ampliación del Análisis General y Conclusiones para el"
+            "### 📌 Plan Prescriptivo y Actividades a Tener en Cuenta para el"
             " Cuerpo Técnico"
         )
         st.markdown(
             """
         <div class="analysis-card">
-            <h4>📋 Conclusión Analítica Integral - Dirección de Rendimiento</h4>
-            <p><b>1. Consolidación Estructural:</b> La combinación estratégica de gráficos de barras absolutas, diagramas de dispersión X-Y con líneas de referencia media, mapas de calor tácticos y el embudo de conversión real demuestra que el modelo de juego del equipo se sustenta en el dominio territorial a través de la posesión y una rápida contra-presión tras pérdida.</p>
-            <p><b>2. Factores de Riesgo Táctico:</b> Los momentos de mayor vulnerabilidad coinciden con caídas en la efectividad del embudo ofensivo en el último tercio, lo que subraya la necesidad de mejorar la toma de decisiones en zona de finalización.</p>
-            <p><b>3. Plan de Acción Semanal:</b> Se recomienda al cuerpo técnico utilizar los diagramas de dispersión con líneas de referencia media y los mapas de calor para enfocar los entrenamientos en la optimización de rendimientos que se encuentren por debajo del estándar colectivo.</p>
+            <h4>📋 Prescripción Metodológica y Actividades de Campo - Dirección de Rendimiento</h4>
+            <p><b>1. Microciclo de Construcción y Seguridad (Salida Limpia):</b> Basado en las dispersiones de posesión y el mapa de árbol zonal, se prescribe priorizar rondos de superioridad numérica en zona baja para reducir pérdidas críticas y asegurar la progresión limpia.</p>
+            <p><b>2. Microciclo de Duelos y Prevención Defensiva:</b> Atendiendo a la tasa de éxito en duelos aéreos y la altura de bloques, incorporar tareas de duelos condicionados y coberturas preventivas en transiciones defensivas.</p>
+            <p><b>3. Microciclo de Eficiencia Ofensiva:</b> Utilizando los datos del embudo de conversión y la tipología de remates, programar situaciones finalizadoras en superioridad numérica dentro del área y transiciones rápidas para elevar el rendimiento de cara a gol.</p>
         </div>
         """,
             unsafe_allow_html=True,
