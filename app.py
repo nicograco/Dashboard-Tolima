@@ -467,12 +467,22 @@ if competicion == "Liga Dimayor I 2026":
             "🎯 Radar Multivariable Comparativo (Multiselección por Partido)"
         )
         match_list = list(team_df["Match_Label"].unique())
-        # CORRECCIÓN: Por defecto selecciona todos los partidos para que nunca aparezca vacío
+
+        # CORRECCIÓN BLINDADA: Si el usuario borra todo o al iniciar, por defecto toma todos los partidos del Tolima
         matches_sel = st.multiselect(
             "Seleccionar Partidos a Comparar:",
             match_list,
             default=match_list,
         )
+
+        if not matches_sel:
+          matches_sel = (
+              match_list  # Garantiza que nunca quede vacío el gráfico
+          )
+          st.info(
+              "ℹ️ Mostrando todos los partidos por defecto al no haber"
+              " selecciones activas."
+          )
 
         cat_radar = [
             "Posesión y Control",
@@ -491,55 +501,47 @@ if competicion == "Liga Dimayor I 2026":
             "#457b9d",
         ]
 
-        if matches_sel:
-          for idx, m_lbl in enumerate(matches_sel):
-            row_data = team_df[team_df["Match_Label"] == m_lbl]
-            if not row_data.empty:
-              r_val = row_data.iloc[0]
-              val_radar = [
-                  min(100, float(r_val.get("Posesión y control", 0.5) * 100)),
-                  min(100, float(r_val.get("Heavy metal", 0.5) * 100)),
-                  min(100, float(r_val.get("Presión asfixiante", 0.5) * 100)),
-                  min(100, float(r_val.get("Contra-ataque", 0.5) * 100)),
-                  min(
-                      100, float(r_val.get("Seguridad lo primero", 0.5) * 100)
-                  ),
-              ]
-              c_color = colors_list[idx % len(colors_list)]
-              fig_radar.add_trace(
-                  go.Scatterpolar(
-                      r=val_radar,
-                      theta=cat_radar,
-                      fill="toself",
-                      name=m_lbl,
-                      line_color=c_color,
-                      opacity=0.6,
-                  )
-              )
+        for idx, m_lbl in enumerate(matches_sel):
+          row_data = team_df[team_df["Match_Label"] == m_lbl]
+          if not row_data.empty:
+            r_val = row_data.iloc[0]
+            val_radar = [
+                min(100, float(r_val.get("Posesión y control", 0.5) * 100)),
+                min(100, float(r_val.get("Heavy metal", 0.5) * 100)),
+                min(100, float(r_val.get("Presión asfixiante", 0.5) * 100)),
+                min(100, float(r_val.get("Contra-ataque", 0.5) * 100)),
+                min(100, float(r_val.get("Seguridad lo primero", 0.5) * 100)),
+            ]
+            c_color = colors_list[idx % len(colors_list)]
+            fig_radar.add_trace(
+                go.Scatterpolar(
+                    r=val_radar,
+                    theta=cat_radar,
+                    fill="toself",
+                    name=m_lbl,
+                    line_color=c_color,
+                    opacity=0.6,
+                )
+            )
 
-          fig_radar.update_layout(
-              polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
-              showlegend=True,
-              plot_bgcolor="white",
-              paper_bgcolor="white",
-              height=500,
-          )
-          st.plotly_chart(fig_radar, use_container_width=True)
-          st.markdown(
-              f"""
-                <div class="analysis-card">
-                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Radar Multivariable</h4>
-                    <p><b>Diagnóstico Geométrico:</b> La superposición de polígonos permite auditar la estabilidad multidimensional del modelo de juego frente a diferentes oponentes.</p>
-                    <p><b>Prescripción Metodológica:</b> Tomar el polígono equilibrado de los partidos con mejores resultados como <i>modelo patrón de referencia</i> para corregir los desequilibrios tácticos detectados.</p>
-                </div>
-                """,
-              unsafe_allow_html=True,
-          )
-        else:
-          st.info(
-              "Por favor selecciona al menos un partido en el filtro superior"
-              " para visualizar el radar."
-          )
+        fig_radar.update_layout(
+            polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
+            showlegend=True,
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+            height=500,
+        )
+        st.plotly_chart(fig_radar, use_container_width=True)
+        st.markdown(
+            f"""
+            <div class="analysis-card">
+                <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Radar Multivariable</h4>
+                <p><b>Diagnóstico Geométrico:</b> La superposición de polígonos permite auditar la estabilidad multidimensional del modelo de juego frente a diferentes oponentes.</p>
+                <p><b>Prescripción Metodológica:</b> Tomar el polígono equilibrado de los partidos con mejores resultados como <i>modelo patrón de referencia</i> para corregir los desequilibrios tácticos detectados.</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
       elif modulo_dimayor == "🔗 Red de Pases y Tipología":
         st.subheader("🔗 Red de Conectividad y Tipología de Pases por Zona")
