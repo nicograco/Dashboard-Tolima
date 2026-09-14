@@ -138,7 +138,7 @@ if competicion == "Liga Dimayor I 2026":
   if os.path.exists(archivo):
     df = pd.read_excel(archivo, header=1)
 
-    # Sustitución explícita de Equidad por Internacional de Bogotá en todo el dataframe
+    # Sustitución explícita de Equidad por Internacional de Bogotá
     for col in df.select_dtypes(include=["object"]).columns:
       df[col] = df[col].astype(str).str.replace(
           "CD La Equidad Seguros SA", "Internacional de Bogotá", regex=False
@@ -467,10 +467,11 @@ if competicion == "Liga Dimayor I 2026":
             "🎯 Radar Multivariable Comparativo (Multiselección por Partido)"
         )
         match_list = list(team_df["Match_Label"].unique())
+        # CORRECCIÓN: Por defecto selecciona todos los partidos para que nunca aparezca vacío
         matches_sel = st.multiselect(
             "Seleccionar Partidos a Comparar:",
             match_list,
-            default=match_list[: min(2, len(match_list))],
+            default=match_list,
         )
 
         cat_radar = [
@@ -512,7 +513,7 @@ if competicion == "Liga Dimayor I 2026":
                       fill="toself",
                       name=m_lbl,
                       line_color=c_color,
-                      opacity=0.7,
+                      opacity=0.6,
                   )
               )
 
@@ -638,7 +639,7 @@ if competicion == "Liga Dimayor I 2026":
         available_heat = [v for v in heat_vars if v in team_df.columns]
 
         if available_heat and "Match_Label" in team_df.columns:
-          df_heat = team_df.set_index("Match_Label")[available_heat]
+          df_heat = team_df.set_index("Match_Label")[heat_vars]
 
           fig_heatmap = px.imshow(
               df_heat,
@@ -647,7 +648,7 @@ if competicion == "Liga Dimayor I 2026":
                   y="Partido Rival",
                   color="Intensidad / Índice",
               ),
-              x=available_heat,
+              x=heat_vars,
               y=df_heat.index,
               color_continuous_scale="Tealgrn",
               aspect="auto",
