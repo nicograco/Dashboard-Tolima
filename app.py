@@ -463,20 +463,8 @@ if competicion == "Liga Dimayor I 2026":
           )
 
       elif modulo_dimayor == "🎯 Radar Multivariable":
-        st.subheader(
-            "🎯 Radar Multivariable Comparativo (Multiselección por Partido)"
-        )
+        st.subheader("🎯 Módulo de Radares Tácticos (Análisis Multivariable)")
         match_list = list(team_df["Match_Label"].unique())
-
-        # BLINDAJE TOTAL: Si no se selecciona nada o al arrancar, por defecto toma todos los partidos para comparar (ej. Junior vs Medellín)
-        matches_sel = st.multiselect(
-            "Seleccionar Partidos a Comparar:",
-            match_list,
-            default=match_list,
-        )
-
-        if not matches_sel:
-          matches_sel = match_list
 
         cat_radar = [
             "Posesión y Control",
@@ -485,7 +473,6 @@ if competicion == "Liga Dimayor I 2026":
             "Contra-ataque",
             "Seguridad Defensiva",
         ]
-        fig_radar = go.Figure()
         colors_list = [
             COLOR_NAVY,
             COLOR_ACCENT,
@@ -495,47 +482,123 @@ if competicion == "Liga Dimayor I 2026":
             "#457b9d",
         ]
 
-        for idx, m_lbl in enumerate(matches_sel):
-          row_data = team_df[team_df["Match_Label"] == m_lbl]
-          if not row_data.empty:
-            r_val = row_data.iloc[0]
-            val_radar = [
-                min(100, float(r_val.get("Posesión y control", 0.5) * 100)),
-                min(100, float(r_val.get("Heavy metal", 0.5) * 100)),
-                min(100, float(r_val.get("Presión asfixiante", 0.5) * 100)),
-                min(100, float(r_val.get("Contra-ataque", 0.5) * 100)),
-                min(100, float(r_val.get("Seguridad lo primero", 0.5) * 100)),
-            ]
-            c_color = colors_list[idx % len(colors_list)]
-            fig_radar.add_trace(
-                go.Scatterpolar(
-                    r=val_radar,
-                    theta=cat_radar,
-                    fill="toself",
-                    name=m_lbl,
-                    line_color=c_color,
-                    opacity=0.6,
-                )
-            )
+        # Pestañas internas para separar el Radar Individual y el Radar Comparativo
+        sub_tab1, sub_tab2 = st.tabs([
+            "🎯 1. Análisis de Partido Individual (Jornada a Jornada)",
+            "📊 2. Radar Comparativo Multirrival",
+        ])
 
-        fig_radar.update_layout(
-            polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
-            showlegend=True,
-            plot_bgcolor="white",
-            paper_bgcolor="white",
-            height=500,
-        )
-        st.plotly_chart(fig_radar, use_container_width=True)
-        st.markdown(
-            f"""
-            <div class="analysis-card">
-                <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Radar Multivariable</h4>
-                <p><b>Diagnóstico Geométrico:</b> La superposición de polígonos permite auditar la estabilidad multidimensional del modelo de juego frente a diferentes oponentes (ej. comparar el rendimiento ante Junior vs Independiente Medellín).</p>
-                <p><b>Prescripción Metodológica:</b> Tomar el polígono equilibrado de los partidos con mejores resultados como <i>modelo patrón de referencia</i> para corregir los desequilibrios tácticos detectados.</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        with sub_tab1:
+          st.markdown("##### 📌 Perfil Táctico Aislado por Partido")
+          selected_single_match = st.selectbox(
+              "Seleccionar Partido para Análisis Individual:", match_list
+          )
+
+          if selected_single_match:
+            row_data = team_df[team_df["Match_Label"] == selected_single_match]
+            if not row_data.empty:
+              r_val = row_data.iloc[0]
+              val_radar = [
+                  min(100, float(r_val.get("Posesión y control", 0.5) * 100)),
+                  min(100, float(r_val.get("Heavy metal", 0.5) * 100)),
+                  min(100, float(r_val.get("Presión asfixiante", 0.5) * 100)),
+                  min(100, float(r_val.get("Contra-ataque", 0.5) * 100)),
+                  min(
+                      100, float(r_val.get("Seguridad lo primero", 0.5) * 100)
+                  ),
+              ]
+
+              fig_single = go.Figure()
+              fig_single.add_trace(
+                  go.Scatterpolar(
+                      r=val_radar,
+                      theta=cat_radar,
+                      fill="toself",
+                      name=selected_single_match,
+                      line_color=COLOR_NAVY,
+                      opacity=0.7,
+                  )
+              )
+              fig_single.update_layout(
+                  polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
+                  showlegend=True,
+                  plot_bgcolor="white",
+                  paper_bgcolor="white",
+                  height=450,
+                  title=f"Perfil Táctico: {selected_single_match}",
+              )
+              st.plotly_chart(fig_single, use_container_width=True)
+              st.markdown(
+                  f"""
+                    <div class="analysis-card">
+                        <h4>💡 Diagnóstico Individual - {selected_single_match}</h4>
+                        <p>Este radar aísla el comportamiento táctico del Deportes Tolima en este encuentro específico, permitiendo evaluar la distribución de los 5 pilares frente a las exigencias particulares del oponente.</p>
+                    </div>
+                    """,
+                  unsafe_allow_html=True,
+              )
+
+        with sub_tab2:
+          st.markdown(
+              "##### 📌 Comparativa Cruzada (Tolima vs Múltiples Rivales)"
+          )
+          # Por defecto toma todos los partidos para comparar (ej. Junior vs Medellín)
+          matches_sel = st.multiselect(
+              "Seleccionar Partidos a Comparar en el Radar:",
+              match_list,
+              default=match_list,
+          )
+
+          if not matches_sel:
+            matches_sel = match_list
+
+          fig_radar = go.Figure()
+          for idx, m_lbl in enumerate(matches_sel):
+            row_data = team_df[team_df["Match_Label"] == m_lbl]
+            if not row_data.empty:
+              r_val = row_data.iloc[0]
+              val_radar = [
+                  min(100, float(r_val.get("Posesión y control", 0.5) * 100)),
+                  min(100, float(r_val.get("Heavy metal", 0.5) * 100)),
+                  min(100, float(r_val.get("Presión asfixiante", 0.5) * 100)),
+                  min(100, float(r_val.get("Contra-ataque", 0.5) * 100)),
+                  min(
+                      100, float(r_val.get("Seguridad lo primero", 0.5) * 100)
+                  ),
+              ]
+              c_color = colors_list[idx % len(colors_list)]
+              fig_radar.add_trace(
+                  go.Scatterpolar(
+                      r=val_radar,
+                      theta=cat_radar,
+                      fill="toself",
+                      name=m_lbl,
+                      line_color=c_color,
+                      opacity=0.5,
+                  )
+              )
+
+          fig_radar.update_layout(
+              polar=dict(radialaxis=dict(visible=True, range=[0, 100])),
+              showlegend=True,
+              plot_bgcolor="white",
+              paper_bgcolor="white",
+              height=500,
+              title=(
+                  "Radar Multirrival: Comparativa de Rendimiento del Tolima"
+              ),
+          )
+          st.plotly_chart(fig_radar, use_container_width=True)
+          st.markdown(
+              f"""
+                <div class="analysis-card">
+                    <h4>💡 Diagnóstico Científico y Plan Prescriptivo - Radar Comparativo</h4>
+                    <p><b>Diagnóstico Geométrico:</b> La superposición simultánea permite contrastar el rendimiento del Deportes Tolima entre diferentes enfrentamientos (por ejemplo, evaluar cómo varió la posesión frente al Junior en comparación con el Medellín).</p>
+                    <p><b>Prescripción Metodológica:</b> Tomar el polígono de mayor equilibrio como <i>modelo de referencia táctica</i> para ajustar los microciclos semanales.</p>
+                </div>
+                """,
+              unsafe_allow_html=True,
+          )
 
       elif modulo_dimayor == "🔗 Red de Pases y Tipología":
         st.subheader("🔗 Red de Conectividad y Tipología de Pases por Zona")
