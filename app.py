@@ -15,7 +15,7 @@ COLOR_ACCENT = "#f97316"
 COLOR_DARK = "#1e293b"
 COLOR_LIGHT = "#f8fafc"
 
-# Estilos CSS ejecutivos + Reglas profesionales de exportación a PDF (Impresión)
+# Estilos CSS ejecutivos + Reglas de impresión limpias para PDF
 st.markdown(
     f"""
     <style>
@@ -29,7 +29,7 @@ st.markdown(
         padding: 16px;
         border-radius: 10px;
         text-align: center;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }}
     .metric-val {{
         font-size: 28px;
@@ -66,31 +66,24 @@ st.markdown(
         margin-bottom: 10px;
     }}
 
-    /* 📄 REGLAS DE EXPORTACIÓN PROFESIONAL A PDF (IMPRESIÓN) */
+    /* 📄 REGLAS DE IMPRESIÓN PDF OPTIMIZADAS (SIN PÁGINAS EN BLANCO) */
     @media print {{
-        /* Ocultar elementos de navegación, barra lateral y controles de Streamlit */
         header, footer, [data-testid="stSidebar"], .stButton {{
             display: none !important;
         }}
-        
-        /* Ajustar el contenedor principal para aprovechar toda la hoja en blanco */
         .stApp {{
             background-color: #ffffff !important;
         }}
-        
-        /* Forzar salto de página limpio y evitar cortes en las tarjetas de análisis */
-        .analysis-card, div[data-testid="stVerticalBlock"] > div {{
-            page-break-after: always !important;
-            break-after: page !important;
-            page-break-inside: avoid !important;
+        .analysis-card {{
             break-inside: avoid !important;
-            margin-bottom: 20px;
+            page-break-inside: avoid !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: none !important;
+            margin-bottom: 15px !important;
         }}
-        
-        /* Configurar márgenes limpios y tipografía en papel */
         body {{
-            margin: 1.5cm !important;
-            font-size: 12pt !important;
+            margin: 1cm !important;
+            font-size: 11pt !important;
             color: #000000 !important;
         }}
     }}
